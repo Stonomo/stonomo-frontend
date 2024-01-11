@@ -8,6 +8,10 @@ import { HomePage } from './pages/Home'
 import { SignIn } from './routes/login'
 import { ProfilePage } from './pages/Profile'
 import './index.css'
+import { SearchPage } from './routes/search'
+import { ReportPage } from './routes/report'
+import { SettingsPage } from './routes/settings'
+import { ManagePage } from './routes/manage'
 
 const router = createBrowserRouter([
   {
@@ -33,10 +37,21 @@ const router = createBrowserRouter([
           {
             path: 'profile',
             element: <ProfilePage />,
+          }, {
+            path: 'search',
+            element: <SearchPage />,
             index: true
-            // search
-            // report
-            // manage
+          }, {
+            path: 'report',
+            element: <ReportPage />,
+            index: true
+          }, {
+            path: 'manage',
+            element: <ManagePage />,
+            index: true
+          }, {
+            path: 'settings',
+            element: <SettingsPage />,
           }]
       }]
   }

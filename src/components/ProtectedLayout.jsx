@@ -11,8 +11,9 @@ export const ProtectedLayout = () => {
 	return (
 		<div>
 			<nav>
-				<Link to="/evictions/search">Search Evictions</Link>
-				<Link to="/evictions/new">Report Eviction</Link>
+				<Link to="search">Search Evictions</Link>
+				<Link to="report">Report Eviction</Link>
+				<Link to="manage">Manage Reports</Link>
 				<Link to="settings">Settings</Link>
 				<Link to="profile">Profile</Link>
 				<Link to="/" onClick={logout}>Log Out</Link>

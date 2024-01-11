@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { Form, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
@@ -17,6 +17,7 @@ function Copyright() {
 
 export function SignIn() {
 	const { login } = useAuth();
+	const [failedLogin, setFailedLogin] = useState(false);
 
 	async function handleSubmit(event) {
 		event.preventDefault();
@@ -26,20 +27,12 @@ export function SignIn() {
 			username: data.get('username'),
 			password: data.get('password'),
 		};
-		console.log(user);
-		login(user);
-		// handle failed login
+		login(user, () => setFailedLogin(true));
 	}
 
 	return (
 		<div>
 			<div className='SignIn'
-			/* sx={{
-				marginTop: 8,
-				display: 'flex',
-				flexDirection: 'column',
-				alignItems: 'center',
-			}} */
 			>
 				<h1>
 					Sign in
@@ -69,8 +62,11 @@ export function SignIn() {
 					>
 						Sign In
 					</button>
-					<ul>
-						{/* <li>
+					<div className='invalidLogin' hidden={!failedLogin}>
+						Incorrect Login Information
+					</div>
+					{/*<ul>
+						 <li>
 							<Link href='#'>
 								Forgot password?
 							</Link>
@@ -79,8 +75,8 @@ export function SignIn() {
 							<Link href='#'>
 								{'Don't have an account? Sign Up'}
 							</Link>
-						</li> */}
-					</ul>
+						</li> 
+					</ul>*/}
 				</Form>
 			</div>
 			<Copyright />
