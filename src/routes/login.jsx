@@ -4,9 +4,9 @@ import { useAuth } from '../hooks/useAuth';
 
 function Copyright() {
 	return (
-		<div className='Copyright' align="center">
+		<div className='Copyright' align='center'>
 			{'Copyright © '}
-			<Link color="inherit" href="/">
+			<Link color='inherit' href='/'>
 				Stonomo LLC
 			</Link>{' '}
 			{new Date().getFullYear()}
@@ -23,12 +23,11 @@ export function SignIn() {
 
 		const data = new FormData(event.currentTarget);
 		const user = {
-			email: data.get('email'),
+			username: data.get('username'),
 			password: data.get('password'),
 		};
 		console.log(user);
 		login(user);
-		// call fetch token
 		// handle failed login
 	}
 
@@ -48,37 +47,37 @@ export function SignIn() {
 				<Form onSubmit={handleSubmit} noValidate >
 					<input
 						required
-						id="email"
-						label="Email Address"
-						type="email"
-						name="email"
-						autoComplete="email"
+						id='username'
+						label='Username'
+						type='username'
+						name='username'
+						autoComplete='username'
 						autoFocus
-						placeholder="Email Address"
+						placeholder='Username'
 					/>
 					<input
 						required
-						name="password"
-						label="Password"
-						type="password"
-						id="password"
-						autoComplete="current-password"
+						name='password'
+						label='Password'
+						type='password'
+						id='password'
+						autoComplete='current-password'
 						placeholder='Password'
 					/>
 					<button
-						type="submit"
+						type='submit'
 					>
 						Sign In
 					</button>
 					<ul>
 						{/* <li>
-							<Link href="#">
+							<Link href='#'>
 								Forgot password?
 							</Link>
 						</li>
 						<li>
-							<Link href="#">
-								{"Don't have an account? Sign Up"}
+							<Link href='#'>
+								{'Don't have an account? Sign Up'}
 							</Link>
 						</li> */}
 					</ul>
