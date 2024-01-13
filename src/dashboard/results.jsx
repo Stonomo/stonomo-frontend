@@ -25,24 +25,27 @@ export async function loader({ request }) {
 export function ResultsPage() {
 	const results = useLoaderData();
 	const { user, token } = useAuth();
+	const [debugRes, setDebugRes] = useState(results);
 
 	return (
 		<div>
 			<h1>This is the Results page</h1>
 			<p>current user: {user}</p>
-			<p>token: {token}</p>
-			<p>{results[0]._id}</p>
-			<ul>
-				{Object.values(results).forEach((result) => {
+			<ul className="Results">
+				{results.map((result) => (
 					<li key={result._id}>
 						<Result params={result} />
 					</li>
-				})}
+				))}
 			</ul>
 		</div>
 	);
 }
 
 export function Result({ params }) {
-	return (<p>{params.tenantName}</p>);
+	return (
+		<>
+			<p>{params.tenantName}</p>
+			<p>{params.tenantPhone}</p>
+		</>);
 }
