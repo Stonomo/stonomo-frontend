@@ -1,12 +1,13 @@
 import { useAuth } from "../hooks/useAuth";
 
-export function ResultsPage() {
+export function ReportPage() {
 	const { user } = useAuth();
 
 	return (
 		<div>
-			<h1>This is the Results page</h1>
+			<h1>This is the Report page</h1>
 			<p>current user: {user}</p>
 		</div>
 	);
 }
+

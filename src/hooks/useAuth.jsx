@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from './useLocalStorage';
 
-const DEBUG = true;
+const DEBUG = false;
 
 const AuthContext = createContext();
 
@@ -20,13 +20,14 @@ export const AuthProvider = ({ children }) => {
 			},
 			body: JSON.stringify({ username: data.username, password: data.password })
 		})
-			.then(response => {
+			.then(async (response) => {
 				if (!response.ok) {
 					throw new Error('HTTP status ' + response.status);
-				} else {
-					console.log('HTTP status ' + response.status)
 				}
-				setToken('token', response.text());
+				// console.log('HTTP status ' + response.status)
+				const tkn = await response.json();
+				// console.log(tkn);
+				setToken(tkn);
 				setUser(data.username);
 				navigate('/dashboard/profile', { replace: true });
 			});
@@ -56,10 +57,11 @@ export const AuthProvider = ({ children }) => {
 	const value = useMemo(
 		() => ({
 			user,
+			token,
 			login: loginCallback,
 			logout: logoutCallback
 		}),
-		[user, loginCallback, logoutCallback]
+		[user, token, loginCallback, logoutCallback]
 	);
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

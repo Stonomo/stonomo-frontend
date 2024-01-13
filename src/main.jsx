@@ -4,15 +4,18 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { AuthLayout } from './components/AuthLayout'
 import { HomeLayout } from './components/HomeLayout'
 import { ProtectedLayout } from './components/ProtectedLayout'
-import { HomePage } from './pages/Home'
+import { HomePage } from './dashboard/Home'
 import { SignIn } from './routes/login'
-import { ProfilePage } from './pages/Profile'
-import { SearchPage } from './routes/search'
-import { ReportPage } from './routes/report'
-import { SettingsPage } from './routes/settings'
-import { ManagePage } from './routes/manage'
-import { ConfirmPage } from './routes/confirm'
-import { ResultsPage } from './routes/results'
+import { ProfilePage } from './dashboard/Profile'
+import {
+  SearchPage,
+  // action as searchAction
+} from './dashboard/search'
+import { ReportPage } from './dashboard/report'
+import { SettingsPage } from './dashboard/settings'
+import { ManagePage } from './dashboard/manage'
+import { ConfirmPage } from './dashboard/confirm'
+import { ResultsPage, loader as resultsLoader } from './dashboard/results'
 import './index.css'
 
 const router = createBrowserRouter([
@@ -39,13 +42,15 @@ const router = createBrowserRouter([
           {
             path: 'profile',
             element: <ProfilePage />,
+            index: true
           }, {
             path: 'search',
             element: <SearchPage />,
-            index: true
+            // action: searchAction,
           }, {
             path: 'results',
             element: <ResultsPage />,
+            loader: resultsLoader,
           }, {
             path: 'report',
             element: <ReportPage />,
