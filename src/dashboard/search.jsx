@@ -1,23 +1,6 @@
 import { useState } from "react";
-import {
-	Form,
-	createSearchParams,
-	redirect
-} from "react-router-dom";
+import { Form } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-
-// export async function action({ request }) {
-// 	const data = await request.formData();
-// 	const q = data.get('q');
-// 	// console.log(q);
-// 	return redirect(
-// 		'/dashboard/results',
-// 		createSearchParams({
-// 			q: q,
-// 			token: token
-// 		})
-// 	);
-// }
 
 export function SearchPage() {
 	const { token } = useAuth();

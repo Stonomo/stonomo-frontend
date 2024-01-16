@@ -1,6 +1,7 @@
 import { useLoaderData, useLocation } from "react-router";
 import { useState } from 'react'
 import { useAuth } from "../hooks/useAuth";
+import { Eviction } from "../routes/eviction";
 
 export async function loader({ request }) {
 	const url = new URL(request.url);
@@ -34,18 +35,10 @@ export function ResultsPage() {
 			<ul className="Results">
 				{results.map((result) => (
 					<li key={result._id}>
-						<Result params={result} />
+						<Eviction params={result} />
 					</li>
 				))}
 			</ul>
 		</div>
 	);
-}
-
-export function Result({ params }) {
-	return (
-		<>
-			<p>{params.tenantName}</p>
-			<p>{params.tenantPhone}</p>
-		</>);
 }
