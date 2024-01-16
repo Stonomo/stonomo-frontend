@@ -4,13 +4,10 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { AuthLayout } from './components/AuthLayout'
 import { HomeLayout } from './components/HomeLayout'
 import { ProtectedLayout } from './components/ProtectedLayout'
-import { HomePage } from './dashboard/Home'
-import { SignIn } from './routes/login'
-import { ProfilePage } from './dashboard/Profile'
-import {
-  SearchPage,
-  // action as searchAction
-} from './dashboard/search'
+import { HomePage } from './dashboard/home'
+import { SignIn } from './dashboard/login'
+import { ProfilePage } from './dashboard/profile'
+import { SearchPage } from './dashboard/search'
 import { ReportPage } from './dashboard/report'
 import { SettingsPage } from './dashboard/settings'
 import { ManagePage } from './dashboard/manage'
