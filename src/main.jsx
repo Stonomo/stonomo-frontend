@@ -10,7 +10,7 @@ import { ProfilePage } from './dashboard/profile'
 import { SearchPage } from './dashboard/search'
 import { ReportPage } from './dashboard/report'
 import { SettingsPage } from './dashboard/settings'
-import { ManagePage } from './dashboard/manage'
+import { ManagePage, loader as manageLoader } from './dashboard/manage'
 import { ConfirmPage } from './dashboard/confirm'
 import { ResultsPage, loader as resultsLoader } from './dashboard/results'
 import './index.css'
@@ -57,6 +57,7 @@ const router = createBrowserRouter([
           }, {
             path: 'manage',
             element: <ManagePage />,
+            loader: manageLoader,
           }, {
             path: 'settings',
             element: <SettingsPage />,
