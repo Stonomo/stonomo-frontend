@@ -1,33 +1,29 @@
-import { Navigate, Outlet, Link, Form } from "react-router-dom";
+import { Navigate, Outlet, Link, Form, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { AppBar, Button, Container, Toolbar } from "@mui/material";
+import { useEffect } from "react";
 
 export const ProtectedLayout = () => {
 	const { user, token, logout } = useAuth();
+	const navigate = useNavigate();
 
-	if (!user) {
-		return <Navigate to="/" />;
-	}
+	useEffect(() => {
+		if (!user) {
+			return navigate('/');
+		}
+	})
 
 	return (
-		<div>
-			<nav>
-				<Link to="search">Search Evictions</Link>
-				<Link to="report">Report Eviction</Link>
-				<Form action='manage'>
-					<input type='hidden'
-						name='token'
-						id='token'
-						value={token} />
-					<button
-						type='submit'>
-						Manage Reports
-					</button>
-				</Form>
-				<Link to="settings">Settings</Link>
-				<Link to="profile">Profile</Link>
-				<Link to="/" onClick={logout}>Log Out</Link>
-			</nav>
+		<Container>
+			<Toolbar disableGutters>
+				<Button onClick={() => navigate('search')}>Search Evictions</Button>
+				<Button onClick={() => navigate('report')}>Report Eviction</Button>
+				<Button onClick={() => navigate('manage/' + token)}>Manage Reports</Button>
+				<Button onClick={() => navigate('profile')}>Profile</Button>
+				<Button onClick={() => navigate('profile/settings')}>Settings</Button>
+				<Button onClick={() => { logout(); navigate('/') }}>Log Out</Button>
+			</Toolbar>
 			<Outlet />
-		</div>
+		</Container >
 	)
 };

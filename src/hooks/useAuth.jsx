@@ -8,11 +8,12 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
 	const [user, setUser] = useLocalStorage('user', null);
+	const [userId, setUserId] = useLocalStorage('id', null);
 	const [token, setToken] = useLocalStorage('token', null);
 	const navigate = useNavigate();
 
 	// Throws error if login fails, sets token if successful
-	const fetchToken = (data) => {
+	const fetchToken = (data, onFailCallback) => {
 		fetch('http://localhost:7867/login', {
 			method: 'POST',
 			headers: {
@@ -25,25 +26,24 @@ export const AuthProvider = ({ children }) => {
 					throw new Error('HTTP status ' + response.status);
 				}
 				// console.log('HTTP status ' + response.status)
-				const tkn = await response.json();
+				const res = await response.json()
+				const tkn = res['token']
+				const userId = res['userId']
 				// console.log(tkn);
 				setToken(tkn);
 				setUser(data.username);
+				setUserId(userId)
 				navigate('/dashboard/profile', { replace: true });
-			});
+			}).catch(onFailCallback);
 	};
 
 	// call this function when you want to authenticate the user
 	const login = (data, onFailCallback) => {
-		try {
-			if (DEBUG) {
-				setUser(data.username);
-				navigate('/dashboard/profile', { replace: true });
-			}
-			fetchToken(data);
-		} catch (e) {
-			onFailCallback();
+		if (DEBUG) {
+			setUser(data.username);
+			navigate('/dashboard/profile', { replace: true });
 		}
+		fetchToken(data, onFailCallback);
 	};
 
 	// call this function to sign out logged in user
@@ -57,11 +57,12 @@ export const AuthProvider = ({ children }) => {
 	const value = useMemo(
 		() => ({
 			user,
+			userId,
 			token,
 			login: loginCallback,
 			logout: logoutCallback
 		}),
-		[user, token, loginCallback, logoutCallback]
+		[user, userId, token, loginCallback, logoutCallback]
 	);
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

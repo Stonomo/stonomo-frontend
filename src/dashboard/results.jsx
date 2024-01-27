@@ -2,29 +2,35 @@ import { useLoaderData } from 'react-router'
 import { useAuth } from '../hooks/useAuth'
 import { Eviction } from '../routes/eviction'
 import { searchEvictions } from '../scripts/evictions'
+import { Container, Paper, Stack, Typography, styled } from '@mui/material'
 
-export async function loader({ request }) {
-	const url = new URL(request.url)
-	const q = url.searchParams.get('q')
-	const token = url.searchParams.get('token')
-	return await searchEvictions(q, token)
+export async function loader({ params }) {
+	return await searchEvictions(params.q, params.token)
 }
 
-export function ResultsPage() {
+export function ResultsPage({ params }) {
 	const results = useLoaderData()
 	const { user, token } = useAuth()
 
+	const Item = styled(Paper)(({ theme }) => ({
+		backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+		...theme.typography.body2,
+		padding: theme.spacing(1),
+		marginTop: theme.spacing(1),
+		textAlign: 'center',
+		color: theme.palette.text.secondary,
+	}));
+
 	return (
-		<div>
-			<h1>This is the Results page</h1>
-			<p>current user: {user}</p>
-			<ul className='Results'>
-				{results.map((result) => (
-					<li key={result._id}>
+		<Container>
+			<Stack>
+				{results ? results.map((result) => (
+					<Item key={result._id
+					} >
 						<Eviction params={result} />
-					</li>
-				))}
-			</ul>
-		</div>
+					</Item>
+				)) : 'No results found'}
+			</Stack>
+		</Container >
 	)
 }

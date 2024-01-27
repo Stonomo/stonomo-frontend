@@ -1,3 +1,4 @@
+import { Outlet } from "react-router";
 import { useAuth } from "../hooks/useAuth";
 
 export function ProfilePage() {
@@ -8,6 +9,7 @@ export function ProfilePage() {
 			<h1>This is the Profile Page</h1>
 			<p>current user: {user}</p>
 			<p>token: {token}</p>
+			<Outlet />
 		</div>
 	);
 }

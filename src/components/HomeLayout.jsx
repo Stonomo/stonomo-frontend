@@ -1,23 +1,25 @@
-import { Navigate, Outlet, Link } from "react-router-dom";
+import { Navigate, Outlet, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { Box, Button, Container, Toolbar, Typography } from "@mui/material";
+import { useEffect } from "react";
 
 export const HomeLayout = () => {
-	const { user } = useAuth();
+	const { user } = useAuth()
+	const navigate = useNavigate()
 
-	if (user) {
-		return <Navigate to="/dashboard/profile" />;
-	}
+	useEffect(() => {
+		if (user) {
+			return navigate('/dashboard/profile')
+		}
+	})
 
 	return (
-		<div className="HomeLayout">
-			<div className="header">
-				<div className="title">Stonomo</div>
-				<nav>
-					<Link to="/">Home</Link>
-					<Link to="/login">Login</Link>
-				</nav>
-			</div>
+		<Container>
+			<Toolbar disableGutters>
+				<Button onClick={() => navigate('/')}>Home</Button>
+				<Button onClick={() => navigate('/login')}>Login</Button>
+			</Toolbar>
 			<Outlet />
-		</div>
+		</Container>
 	)
 };

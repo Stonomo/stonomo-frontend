@@ -59,7 +59,13 @@ export async function getEvictionsByUser(token) {
 
 export async function getEviction(id, token) {
 	const response = await fetch(
-		evictionsUrl + id
+		evictionsUrl + id,
+		{
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + token,
+			}
+		}
 	);
 	if (!response.ok) {
 		throw new Error('Failed to fetch eviction. Status: ' + response.status);
@@ -67,21 +73,34 @@ export async function getEviction(id, token) {
 	return response.json();
 }
 
-export async function modifyEviction(id, params, token) {
+export async function modifyEviction(id, details, token) {
 	// TODO: add check for required fields
 	const response = await fetch(
-		evictionsUrl,
+		evictionsUrl + id,
 		{
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json',
 				'Authorization': 'Bearer ' + token,
 			},
-			body: JSON.stringify(params)
+			body: JSON.stringify({ details: details })
 		}
 	);
 	if (!response.ok) {
-		throw new Error('Failed to create eviction. Status: ' + response.status);
+		throw new Error('Failed to modify eviction. Status: ' + response.status);
 	}
 	return response.json();
+}
+
+export async function deleteEviction(id, token) {
+	const response = await fetch(
+		evictionsUrl + id,
+		{
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + token,
+			},
+		}
+	);
 }

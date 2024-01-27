@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Form, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { Box, Button, Container, TextField, Typography } from '@mui/material';
 
 function Copyright() {
 	return (
@@ -31,14 +32,14 @@ export function SignIn() {
 	}
 
 	return (
-		<div>
-			<div className='SignIn'
-			>
-				<h1>
+		<Container>
+			<Box>
+				<Typography variant='h3'>
 					Sign in
-				</h1>
+				</Typography>
 				<Form onSubmit={handleSubmit} noValidate >
-					<input
+					<TextField
+						fullWidth
 						required
 						id='username'
 						label='Username'
@@ -48,7 +49,7 @@ export function SignIn() {
 						autoFocus
 						placeholder='Username'
 					/>
-					<input
+					<TextField
 						required
 						name='password'
 						label='Password'
@@ -57,14 +58,15 @@ export function SignIn() {
 						autoComplete='current-password'
 						placeholder='Password'
 					/>
-					<button
+					<Button
 						type='submit'
+						variant='contained'
 					>
 						Sign In
-					</button>
-					<div className='invalidLogin' hidden={!failedLogin}>
+					</Button>
+					<Box className='invalidLogin' hidden={!failedLogin}>
 						Incorrect Login Information
-					</div>
+					</Box>
 					{/*<ul>
 						 <li>
 							<Link href='#'>
@@ -78,8 +80,8 @@ export function SignIn() {
 						</li> 
 					</ul>*/}
 				</Form>
-			</div>
+			</Box>
 			<Copyright />
-		</div>
+		</Container>
 	);
 }

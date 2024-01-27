@@ -1,29 +1,34 @@
 import { useLoaderData } from "react-router"
 import { useAuth } from "../hooks/useAuth"
 import { Eviction } from "../routes/eviction"
-import { getEvictionsByUser } from "../scripts/evictions"
+import { getEvictionsByUser, modifyEviction } from "../scripts/evictions"
+import { Container, Paper, Stack, styled } from "@mui/material"
 
-export async function loader({ request }) {
-	const url = new URL(request.url)
-	const token = url.searchParams.get('token')
-	return await getEvictionsByUser(token)
+export async function loader({ request, params }) {
+	return await getEvictionsByUser(params.token)
 }
 
 export function ManagePage() {
 	const evictions = useLoaderData()
-	const { user } = useAuth()
+	const { user, token } = useAuth()
+
+	const Item = styled(Paper)(({ theme }) => ({
+		backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+		...theme.typography.body2,
+		padding: theme.spacing(1),
+		textAlign: 'center',
+		color: theme.palette.text.secondary,
+	}));
 
 	return (
-		<div>
-			<h1>This is the Manage page</h1>
-			<p>current user: {user}</p>
-			<ul className='Manage'>
+		<Container>
+			<Stack>
 				{evictions.map((e) => (
-					<li key={e._id}>
-						<Eviction params={e} />
-					</li>
+					<Item key={e._id}>
+						<Eviction params={e} allowEdit={true} />
+					</Item>
 				))}
-			</ul>
-		</div>
+			</Stack>
+		</Container>
 	);
 }
