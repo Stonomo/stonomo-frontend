@@ -103,3 +103,7 @@ form {
   color: red;
   background-color: oldlace;
 }
+
+ul li a {
+  margin: 3px;
+}

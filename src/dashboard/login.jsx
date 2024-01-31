@@ -47,6 +47,7 @@ export function SignIn() {
 						name='username'
 						autoComplete='username'
 						autoFocus
+						margin='dense'
 						placeholder='Username'
 					/>
 					<TextField
@@ -55,6 +56,7 @@ export function SignIn() {
 						label='Password'
 						type='password'
 						id='password'
+						margin='dense'
 						autoComplete='current-password'
 						placeholder='Password'
 					/>
