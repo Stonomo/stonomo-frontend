@@ -24,7 +24,7 @@ export function ResultsPage({ params }) {
 	return (
 		<Container>
 			<Stack>
-				{results ? results.map((result) => (
+				{results.length ? results.map((result) => (
 					<Item key={result._id
 					} >
 						<Eviction params={result} />

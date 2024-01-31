@@ -9,15 +9,17 @@ import { HomePage } from './dashboard/home'
 import { SignIn } from './dashboard/login'
 import { ProfilePage } from './dashboard/profile'
 import { SearchPage, action as searchAction } from './dashboard/search'
-import { ReportPage } from './dashboard/report'
+import { ReportPage, loader as reportLoader } from './dashboard/report'
 import { SettingsPage } from './dashboard/settings'
 import { ManagePage, loader as manageLoader } from './dashboard/manage'
 import { Eviction, action as evictionAction } from './routes/eviction'
-import { ConfirmPage } from './dashboard/confirm'
+import { ConfirmPage, action as confirmAction } from './dashboard/confirm'
 import { ResultsPage, loader as resultsLoader } from './dashboard/results'
 import { Container, CssBaseline, ThemeProvider, createTheme } from '@mui/material'
 import './index.css'
 import '@fontsource/roboto/300.css'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 const router = createBrowserRouter([
   {
@@ -59,15 +61,14 @@ const router = createBrowserRouter([
                 loader: resultsLoader,
               }]
           }, {
-            path: 'report',
+            path: 'report/:token',
             element: <ReportPage />,
+            loader: reportLoader,
             // action: reportAction,
-            children: [
-              {
-                path: 'confirm',
-                element: <ConfirmPage />,
-                // action: confirmAction
-              }]
+          }, {
+            path: 'confirm',
+            element: <ConfirmPage />,
+            action: confirmAction,
           }, {
             path: 'manage/:token',
             element: <ManagePage />,
@@ -89,12 +90,14 @@ const theme = createTheme();
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
-      <Container maxWidth='xl'>
-        <Container maxWidth='md'>
-          <CssBaseline />
-          <RouterProvider router={router} />
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <Container maxWidth='xl'>
+          <Container maxWidth='md'>
+            <CssBaseline />
+            <RouterProvider router={router} />
+          </Container>
         </Container>
-      </Container>
+      </LocalizationProvider>
     </ThemeProvider>
   </StrictMode >,
 )
