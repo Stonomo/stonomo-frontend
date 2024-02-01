@@ -1,34 +1,36 @@
 import { Button, Container, ListItem, Stack, TextField, Typography } from "@mui/material";
 import { useAuth } from "../hooks/useAuth";
-import { Form, useLoaderData, useParams } from "react-router-dom";
+import { Form, redirect, useLoaderData, useParams } from "react-router-dom";
 import { createEviction, getConfirmEviction } from "../scripts/evictions";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export async function loader({ params }) {
-	return await getConfirmEviction(params.confirmId, params.token)
+	return await getConfirmEviction(
+		params.confirmId,
+		params.token
+	)
 }
-// 	// console.log(request)
-// 	const url = new URL(request.url)
-// 	const formData = url.searchParams
-// 	const tenantName = formData.get['tenantName']
-// 	console.log(formData)
-// 	return { tenantName: tenantName }
-// 	// <input type='hidden' id='tenantPhone' value={params.phone} />
-// 	// <input type='hidden' id='tenantEmail' value={params.email} />
-// 	// <input type='hidden' id='user' value={params.user} />
-// 	// <input type='hidden' id='reason' value={params.reason} />
-// 	// <input type='hidden' id='details' value={params.details} />
-// 	// <input type='hidden' id='evictedOn' value={params.evictedOn} />
 
 // }
 
-export async function action({ params }) {
-	// return await createEviction(token, params)
-	return null
+export async function action({ request }) {
+	const formData = await request.formData()
+	const token = formData.get('token');
+	const docId = await createEviction(
+		token,
+		formData.get('tenantName'),
+		formData.get('tenantPhone'),
+		formData.get('tenantEmail'),
+		formData.get('evictedOn'),
+		formData.get('reason'),
+		formData.get('details'),
+		formData.get('user')
+	)
+	return redirect(`/dashboard/manage/${token}/${docId}`)
 }
 
 export function ConfirmPage() {
-	const { user } = useAuth()
+	const { token } = useAuth()
 	const params = useLoaderData()
 
 	return (
@@ -43,7 +45,7 @@ export function ConfirmPage() {
 					label='Tenant Name'
 					margin='dense'
 				>
-					{params.get('tenantName')}
+					{params['tenantName']}
 				</ListItem>
 				<ListItem
 					id='tenantPhone'
@@ -51,7 +53,7 @@ export function ConfirmPage() {
 					label='Tenant Phone'
 					margin='dense'
 				>
-					{params.get('tenantPhone')}
+					{params.tenantPhone}
 				</ListItem>
 				<ListItem
 					id='tenantEmail'
@@ -59,7 +61,7 @@ export function ConfirmPage() {
 					label='Tenant Email'
 					margin='dense'
 				>
-					{params.get('tenantEmail')}
+					{params.tenantEmail}
 				</ListItem>
 				<ListItem
 					id='user'
@@ -67,7 +69,7 @@ export function ConfirmPage() {
 					label='User ID'
 					margin='dense'
 				>
-					{params.get('user')}
+					{params.user?.facilityName}
 				</ListItem>
 				<ListItem
 					id='reason'
@@ -75,7 +77,7 @@ export function ConfirmPage() {
 					label='Reason'
 					margin='dense'
 				>
-					{params.get('reason')}
+					{params.reason.desc}
 				</ListItem>
 				<ListItem
 					id='evictedOn'
@@ -83,7 +85,7 @@ export function ConfirmPage() {
 					label='Evicted On'
 					margin='dense'
 				>
-					{params.get('evictedOn')}
+					{params.evictedOn}
 				</ListItem>
 				<ListItem
 					id='details'
@@ -91,43 +93,56 @@ export function ConfirmPage() {
 					label='Details'
 					margin='dense'
 				>
-					{params.get('details')}
+					{params.details}
 				</ListItem>
 				<Form method='POST'>
 					<input
 						type='hidden'
 						id='tenantName'
+						name='tenantName'
 						value={params.tenantName}
 					/>
 					<input
 						type='hidden'
 						id='tenantPhone'
+						name='tenantPhone'
 						value={params.tenantPhone}
 					/>
 					<input
 						type='hidden'
 						id='tenantEmail'
+						name='tenantEmail'
 						value={params.tenantEmail}
 					/>
 					<input
 						type='hidden'
 						id='user'
-						value={params.user}
+						name='user'
+						value={params.user._id}
 					/>
 					<input
 						type='hidden'
 						id='reason'
-						value={params.reason}
+						name='reason'
+						value={params.reason._id}
 					/>
 					<input
 						type='hidden'
 						id='details'
+						name='details'
 						value={params.details}
 					/>
 					<input
 						type='hidden'
 						id='evictedOn'
+						name='evictedOn'
 						value={params.evictedOn}
+					/>
+					<input
+						type='hidden'
+						id='token'
+						name='token'
+						value={token}
 					/>
 					<Container direction='row' maxWidth='md'>
 						<Button

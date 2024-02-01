@@ -22,7 +22,16 @@ export async function searchEvictions(q, token) {
 	return response.json()
 }
 
-export async function createEviction(token, ...params) {
+export async function createEviction(
+	token,
+	tenantName,
+	tenantPhone,
+	tenantEmail,
+	evictedOn,
+	reason,
+	details,
+	user
+) {
 	// TODO: add check for required fields
 	const response = await fetch(
 		evictionsUrl,
@@ -32,13 +41,21 @@ export async function createEviction(token, ...params) {
 				'Content-Type': 'application/json',
 				'Authorization': 'Bearer ' + token,
 			},
-			body: JSON.stringify(params)
+			body: JSON.stringify({
+				tenantName: tenantName,
+				tenantPhone: tenantPhone,
+				tenantEmail: tenantEmail,
+				evictedOn: evictedOn,
+				reason: reason,
+				details: details,
+				user: user
+			})
 		}
 	);
 	if (!response.ok) {
 		throw new Error('Failed to create eviction. Status: ' + response.status);
 	}
-	return response.json();
+	return response.text();
 }
 
 export async function createConfirmEviction(
@@ -123,7 +140,7 @@ export async function getConfirmEviction(id, token) {
 	if (!response.ok) {
 		throw new Error('Failed to fetch confirm eviction. Status: ' + response.status);
 	}
-	return response.json();
+	return response;
 }
 
 export async function modifyEviction(id, details, token) {

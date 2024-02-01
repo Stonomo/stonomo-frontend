@@ -71,7 +71,7 @@ const router = createBrowserRouter([
             loader: confirmLoader,
             action: confirmAction,
           }, {
-            path: 'manage/:token',
+            path: 'manage/:token/:docId?',
             element: <ManagePage />,
             loader: manageLoader,
             children: [
