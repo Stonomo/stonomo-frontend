@@ -1,8 +1,7 @@
-import { Button, Container, ListItem, Stack, TextField, Typography } from "@mui/material";
+import { Button, Container, ListItem, Stack, Typography } from "@mui/material";
 import { useAuth } from "../hooks/useAuth";
-import { Form, redirect, useLoaderData, useParams } from "react-router-dom";
+import { Form, redirect, useLoaderData } from "react-router-dom";
 import { createEviction, getConfirmEviction } from "../scripts/evictions";
-import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export async function loader({ params }) {
 	return await getConfirmEviction(
