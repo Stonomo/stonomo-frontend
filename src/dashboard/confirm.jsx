@@ -10,8 +10,6 @@ export async function loader({ params }) {
 	)
 }
 
-// }
-
 export async function action({ request }) {
 	const formData = await request.formData()
 	const token = formData.get('token');
