@@ -1,16 +1,35 @@
 import { Button, Container, ListItem, Stack, TextField, Typography } from "@mui/material";
 import { useAuth } from "../hooks/useAuth";
-import { Form, useParams } from "react-router-dom";
-import { createEviction } from "../scripts/evictions";
+import { Form, useLoaderData, useParams } from "react-router-dom";
+import { createEviction, getConfirmEviction } from "../scripts/evictions";
+import { useLocalStorage } from "../hooks/useLocalStorage";
+
+export async function loader({ params }) {
+	return await getConfirmEviction(params.confirmId, params.token)
+}
+// 	// console.log(request)
+// 	const url = new URL(request.url)
+// 	const formData = url.searchParams
+// 	const tenantName = formData.get['tenantName']
+// 	console.log(formData)
+// 	return { tenantName: tenantName }
+// 	// <input type='hidden' id='tenantPhone' value={params.phone} />
+// 	// <input type='hidden' id='tenantEmail' value={params.email} />
+// 	// <input type='hidden' id='user' value={params.user} />
+// 	// <input type='hidden' id='reason' value={params.reason} />
+// 	// <input type='hidden' id='details' value={params.details} />
+// 	// <input type='hidden' id='evictedOn' value={params.evictedOn} />
+
+// }
 
 export async function action({ params }) {
-	// return await createEviction(params)
+	// return await createEviction(token, params)
 	return null
 }
 
 export function ConfirmPage() {
 	const { user } = useAuth()
-	const params = useParams()
+	const params = useLoaderData()
 
 	return (
 		<Container>
@@ -24,7 +43,7 @@ export function ConfirmPage() {
 					label='Tenant Name'
 					margin='dense'
 				>
-					{params.name}
+					{params.get('tenantName')}
 				</ListItem>
 				<ListItem
 					id='tenantPhone'
@@ -32,7 +51,7 @@ export function ConfirmPage() {
 					label='Tenant Phone'
 					margin='dense'
 				>
-					{params.phone}
+					{params.get('tenantPhone')}
 				</ListItem>
 				<ListItem
 					id='tenantEmail'
@@ -40,16 +59,76 @@ export function ConfirmPage() {
 					label='Tenant Email'
 					margin='dense'
 				>
-					{params.email}
+					{params.get('tenantEmail')}
+				</ListItem>
+				<ListItem
+					id='user'
+					name='user'
+					label='User ID'
+					margin='dense'
+				>
+					{params.get('user')}
+				</ListItem>
+				<ListItem
+					id='reason'
+					name='reason'
+					label='Reason'
+					margin='dense'
+				>
+					{params.get('reason')}
+				</ListItem>
+				<ListItem
+					id='evictedOn'
+					name='evictedOn'
+					label='Evicted On'
+					margin='dense'
+				>
+					{params.get('evictedOn')}
+				</ListItem>
+				<ListItem
+					id='details'
+					name='details'
+					label='Details'
+					margin='dense'
+				>
+					{params.get('details')}
 				</ListItem>
 				<Form method='POST'>
-					<input type='hidden' id='tenantName' value={params.name} />
-					<input type='hidden' id='tenantPhone' value={params.phone} />
-					<input type='hidden' id='tenantEmail' value={params.email} />
-					<input type='hidden' id='user' value={params.name} />
-					<input type='hidden' id='reason' value={params.name} />
-					<input type='hidden' id='details' value={params.name} />
-					<input type='hidden' id='evictedOn' value={params.name} />
+					<input
+						type='hidden'
+						id='tenantName'
+						value={params.tenantName}
+					/>
+					<input
+						type='hidden'
+						id='tenantPhone'
+						value={params.tenantPhone}
+					/>
+					<input
+						type='hidden'
+						id='tenantEmail'
+						value={params.tenantEmail}
+					/>
+					<input
+						type='hidden'
+						id='user'
+						value={params.user}
+					/>
+					<input
+						type='hidden'
+						id='reason'
+						value={params.reason}
+					/>
+					<input
+						type='hidden'
+						id='details'
+						value={params.details}
+					/>
+					<input
+						type='hidden'
+						id='evictedOn'
+						value={params.evictedOn}
+					/>
 					<Container direction='row' maxWidth='md'>
 						<Button
 							type='submit'

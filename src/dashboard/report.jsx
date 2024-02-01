@@ -1,24 +1,35 @@
 import { Button, Container, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import { useAuth } from '../hooks/useAuth';
-import { Form, useActionData, useLoaderData } from 'react-router-dom';
+import { Form, redirect, useActionData, useLoaderData } from 'react-router-dom';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { DatePicker } from '@mui/x-date-pickers';
 import { getReasons } from '../scripts/reasons';
+import dayjs from 'dayjs';
+import { createConfirmEviction } from '../scripts/evictions';
 
 export async function loader({ params }) {
 	return await getReasons(params.token)
 }
 
-// export async function action({ request }) {
-// 	const formData = await request.formData()
-// 	const name = formData.get('tenantName')
-// 	const phone = formData.get('tenantPhone')
-// 	const email = formData.get('tenantEmail')
-// 	return redirect(`/dashboard/confirm/${name}/${phone}/${email}`)
-// }
+export async function action({ request }) {
+	const formData = await request.formData()
+	const token = formData.get('token');
+	const confirmDocId = await createConfirmEviction(
+		token,
+		formData.get('tenantName'),
+		formData.get('tenantPhone'),
+		formData.get('tenantEmail'),
+		formData.get('evictedOn'),
+		formData.get('reason'),
+		formData.get('details'),
+		formData.get('user')
+	)
+	console.log(confirmDocId)
+	return redirect(`/dashboard/confirm/${confirmDocId}/${token}`)
+}
 
 export function ReportPage() {
-	const { user } = useAuth()
+	const { userId, token } = useAuth()
 	const [formData, setFormData] = useLocalStorage('reportForm', {})
 	const actionData = useActionData()
 	const reasons = useLoaderData()
@@ -31,9 +42,16 @@ export function ReportPage() {
 	}
 
 	function handleChange(e) {
-		const field = e.target.id
-		const val = e.target.value
-		setFormData(d => ({ ...d, [field]: val }))
+		let field, value
+		if (!e.target) {
+			field = 'evictedOn'
+			value = dayjs(e).format()
+		} else {
+			field = e.target.name
+			value = e.target.value
+		}
+		setFormData(d => ({ ...d, [field]: value }))
+		// console.log(formData)
 	}
 
 	return (
@@ -41,10 +59,9 @@ export function ReportPage() {
 			<Typography variant='h3'>
 				Report an Eviction
 			</Typography>
-			<p>
-				{formData.reason}
-			</p>
-			<Form method='POST' action='/dashboard/confirm'>
+			<Form
+				method='POST'
+			>
 				<Stack>
 					<TextField
 						id='tenantName'
@@ -84,18 +101,23 @@ export function ReportPage() {
 						<Typography variant='small'>{actionData?.tenantEmail}</Typography>}
 					<DatePicker
 						id='evictedOn'
+						name='evictedOn'
 						label='Evicted On'
 						views={['year', 'month', 'day']}
-						value={formData.evictedOn || ''}
+						value={dayjs(formData.evictedOn)}
+						defaultValue={dayjs()}
 						onChange={handleChange}
+						required
 					/>
 					{actionData?.evictedOn &&
 						<Typography variant='small'>{actionData?.evictedOn}</Typography>}
 					<InputLabel id='reason-select-label'>Reason For Eviction</InputLabel>
 					<Select
 						id='reason'
+						name='reason'
 						label='Reason For Eviction'
-						value={formData.reason}
+						labelId='reason-select-label'
+						value={formData.reason || ''}
 						onChange={handleChange}
 						displayEmpty
 						required
@@ -103,7 +125,8 @@ export function ReportPage() {
 						<MenuItem disabled value=''><em>Select Reason</em></MenuItem>
 						{reasons.map((r) => (
 							<MenuItem
-								value={r.label}
+								key={r._id}
+								value={r._id}
 							>
 								{r.desc}
 							</MenuItem>
@@ -123,6 +146,18 @@ export function ReportPage() {
 					/>
 					{actionData?.details &&
 						<Typography variant='small'>{actionData?.details}</Typography>}
+					<input
+						type='hidden'
+						id='token'
+						name='token'
+						value={token}
+					/>
+					<input
+						type='hidden'
+						id='user'
+						name='user'
+						value={userId}
+					/>
 					<Container direction='row' maxWidth='md'>
 						<Button
 							type='submit'

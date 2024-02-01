@@ -1,6 +1,7 @@
 const STONOMO_URL = 'http://localhost:7867'
 const STONOMO_API_URL = STONOMO_URL + '/v1/'
 const evictionsUrl = STONOMO_API_URL + 'evictions/'
+const confirmUrl = evictionsUrl + 'confirm/'
 const searchUrl = STONOMO_API_URL + 'search/'
 
 
@@ -21,7 +22,7 @@ export async function searchEvictions(q, token) {
 	return response.json()
 }
 
-export async function createEviction(params, token) {
+export async function createEviction(token, ...params) {
 	// TODO: add check for required fields
 	const response = await fetch(
 		evictionsUrl,
@@ -38,6 +39,42 @@ export async function createEviction(params, token) {
 		throw new Error('Failed to create eviction. Status: ' + response.status);
 	}
 	return response.json();
+}
+
+export async function createConfirmEviction(
+	token,
+	tenantName,
+	tenantPhone,
+	tenantEmail,
+	evictedOn,
+	reason,
+	details,
+	user
+) {
+	const response = await fetch(
+		confirmUrl,
+		{
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + token,
+			},
+			body: JSON.stringify({
+				tenantName: tenantName,
+				tenantPhone: tenantPhone,
+				tenantEmail: tenantEmail,
+				evictedOn: evictedOn,
+				reason: reason,
+				details: details,
+				user: user
+			})
+		}
+	);
+	if (!response.ok) {
+		throw new Error('Failed to create confirm eviction. Status: ' + response.status);
+	}
+	return response.text();
+
 }
 
 export async function getEvictionsByUser(token) {
@@ -69,6 +106,22 @@ export async function getEviction(id, token) {
 	);
 	if (!response.ok) {
 		throw new Error('Failed to fetch eviction. Status: ' + response.status);
+	}
+	return response.json();
+}
+
+export async function getConfirmEviction(id, token) {
+	const response = await fetch(
+		confirmUrl + id,
+		{
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + token,
+			}
+		}
+	);
+	if (!response.ok) {
+		throw new Error('Failed to fetch confirm eviction. Status: ' + response.status);
 	}
 	return response.json();
 }

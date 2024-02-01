@@ -9,11 +9,11 @@ import { HomePage } from './dashboard/home'
 import { SignIn } from './dashboard/login'
 import { ProfilePage } from './dashboard/profile'
 import { SearchPage, action as searchAction } from './dashboard/search'
-import { ReportPage, loader as reportLoader } from './dashboard/report'
+import { ReportPage, loader as reportLoader, action as reportAction } from './dashboard/report'
 import { SettingsPage } from './dashboard/settings'
 import { ManagePage, loader as manageLoader } from './dashboard/manage'
 import { Eviction, action as evictionAction } from './routes/eviction'
-import { ConfirmPage, action as confirmAction } from './dashboard/confirm'
+import { ConfirmPage, loader as confirmLoader, action as confirmAction } from './dashboard/confirm'
 import { ResultsPage, loader as resultsLoader } from './dashboard/results'
 import { Container, CssBaseline, ThemeProvider, createTheme } from '@mui/material'
 import './index.css'
@@ -64,10 +64,11 @@ const router = createBrowserRouter([
             path: 'report/:token',
             element: <ReportPage />,
             loader: reportLoader,
-            // action: reportAction,
+            action: reportAction,
           }, {
-            path: 'confirm',
+            path: 'confirm/:confirmId/:token',
             element: <ConfirmPage />,
+            loader: confirmLoader,
             action: confirmAction,
           }, {
             path: 'manage/:token',
