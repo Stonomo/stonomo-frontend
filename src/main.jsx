@@ -1,26 +1,55 @@
 // import 'dotenv/config'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import {
+  RouterProvider,
+  createBrowserRouter
+} from 'react-router-dom'
+import {
+  Container,
+  CssBaseline,
+  ThemeProvider,
+  createTheme
+} from '@mui/material'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { AuthLayout } from './components/AuthLayout'
 import { HomeLayout } from './components/HomeLayout'
 import { ProtectedLayout } from './components/ProtectedLayout'
 import { HomePage } from './dashboard/home'
 import { SignIn } from './dashboard/login'
 import { ProfilePage } from './dashboard/profile'
-import { SearchPage, action as searchAction } from './dashboard/search'
-import { ReportPage, loader as reportLoader, action as reportAction } from './dashboard/report'
 import { SettingsPage } from './dashboard/settings'
-import { ManagePage, loader as manageLoader } from './dashboard/manage'
-import { Eviction, action as evictionAction } from './routes/eviction'
-import { ConfirmPage, loader as confirmLoader, action as confirmAction } from './dashboard/confirm'
-import { ResultsPage, loader as resultsLoader } from './dashboard/results'
-import { Container, CssBaseline, ThemeProvider, createTheme } from '@mui/material'
+import {
+  SearchPage,
+  action as searchAction
+} from './dashboard/search'
+import {
+  ResultsPage,
+  loader as resultsLoader
+} from './dashboard/results'
+import {
+  ReportPage,
+  loader as reportLoader,
+  action as reportAction
+} from './dashboard/report'
+import {
+  ConfirmPage,
+  loader as confirmLoader,
+  action as confirmAction
+} from './dashboard/confirm'
+import {
+  ManagePage,
+  loader as manageLoader
+} from './dashboard/manage'
+import {
+  Eviction,
+  action as evictionAction
+} from './routes/eviction'
+import { action as destroyAction } from './routes/destroyEviction'
+
 import './index.css'
 import '@fontsource/roboto/300.css'
-import { LocalizationProvider } from '@mui/x-date-pickers'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-
 const router = createBrowserRouter([
   {
     element: <AuthLayout />,
