@@ -3,7 +3,7 @@ import { DeleteForever, EditNote } from '@mui/icons-material';
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { deleteEviction, modifyEviction } from '../scripts/evictions';
-import { Form } from 'react-router-dom';
+import { Form, useFetcher } from 'react-router-dom';
 
 export async function action({ request }) {
 	const formData = await request.formData()
@@ -13,57 +13,16 @@ export async function action({ request }) {
 	return await modifyEviction(id, details, token)
 }
 
-export function ConfirmDeleteDialog({ id }) {
-	const { token } = useAuth()
-	const [isOpen, setIsOpen] = useState(true)
-
-	async function handleClose(del = false) {
-		setIsOpen(false)
-		if (del) {
-			return await deleteEviction(id, token)
-		}
-	}
-
-	return (
-		<Dialog
-			open={isOpen}
-			onClose={handleClose}
-			aria-labelledby='delete-dialog-title'
-			aria-describedby='delete-dialog-desc'
-		>
-			<DialogTitle
-				id='delete-dialog-title'
-			>
-				{'Delete Eviction Record?'}
-			</DialogTitle>
-			<DialogContent>
-				<DialogContentText id='delete-dialog-desc'>
-					Are you sure you want to delete this record? (CANNOT BE UNDONE!)
-				</DialogContentText>
-			</DialogContent>
-			<DialogActions>
-				<Button variant='outlined' onClick={() => handleClose(true)}>Yes</Button>
-				<Button variant='contained' onClick={() => handleClose(false)}>No</Button>
-			</DialogActions>
-		</Dialog>
-	)
-}
-
-export function Eviction({ params, allowEdit = false }) {
+export function Eviction({ params, allowEdit = false, setConfirmDelete }) {
 	const { userId, token } = useAuth()
-	const [confirmDelete, setConfirmDelete] = useState(false)
 	const [showDetails, setShowDetails] = useState(false)
-
-	function handleDeleteClick(e) {
-		e.preventDefault()
-		setConfirmDelete(true)
-	}
+	const [render, setRender] = useState(true)
+	const fetcher = useFetcher({ key: 'delete-eviction' })
 
 	const Item = styled(Paper)(({ theme }) => ({
 		backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
 		...theme.typography.body2,
 		padding: theme.spacing(1),
-		marginTop: theme.spacing(1),
 		textAlign: 'center',
 		color: theme.palette.text.secondary,
 	}));
@@ -71,8 +30,13 @@ export function Eviction({ params, allowEdit = false }) {
 	const detailsButtonText = (!showDetails ? 'Show' : 'Hide') + ' Details'
 	const showEditButtons = (allowEdit && params.user._id === userId)
 
-	return (
-		<>
+	function handleDeleteClick(e) {
+		e.preventDefault()
+		setConfirmDelete(params._id)
+	}
+
+	return render && (
+		<Item>
 			<Stack direction='row' spacing={2}>
 				<Grid container>
 					<Grid xs={4}><Typography>{params.tenantName}</Typography></Grid>
@@ -87,9 +51,12 @@ export function Eviction({ params, allowEdit = false }) {
 							{detailsButtonText}
 						</Button>
 						{showEditButtons && (
-							<DeleteForever
-								onClick={handleDeleteClick}
-							/>
+							<Form method='DELETE' onSubmit={handleDeleteClick}>
+								<Button type='submit'>
+									<DeleteForever
+									/>
+								</Button>
+							</Form>
 						)}
 					</Grid>
 					{showDetails &&
@@ -125,8 +92,6 @@ export function Eviction({ params, allowEdit = false }) {
 					</Grid>}
 				</Grid >
 			</Stack >
-			{confirmDelete && <ConfirmDeleteDialog id={params._id} />
-			}
-		</>
+		</Item>
 	);
 }
