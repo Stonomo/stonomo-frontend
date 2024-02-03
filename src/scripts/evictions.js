@@ -1,8 +1,9 @@
 const STONOMO_URL = 'http://localhost:7867'
 const STONOMO_API_URL = STONOMO_URL + '/v1/'
-const evictionsUrl = STONOMO_API_URL + 'evictions/'
-const confirmUrl = evictionsUrl + 'confirm/'
 const searchUrl = STONOMO_API_URL + 'search/'
+const evictionsUrl = STONOMO_API_URL + 'evictions/'
+const byUserUrl = evictionsUrl + 'by-user/'
+const confirmUrl = evictionsUrl + 'confirm/'
 
 
 export async function searchEvictions(q, token) {
@@ -96,7 +97,7 @@ export async function createConfirmEviction(
 
 export async function getEvictionsByUser(token) {
 	const response = await fetch(
-		evictionsUrl + 'by-user',
+		byUserUrl,
 		{
 			method: 'POST',
 			headers: {
@@ -124,7 +125,7 @@ export async function getEviction(id, token) {
 	if (!response.ok) {
 		throw new Error('Failed to fetch eviction. Status: ' + response.status);
 	}
-	return response.json();
+	return response.text();
 }
 
 export async function getConfirmEviction(id, token) {
@@ -140,7 +141,7 @@ export async function getConfirmEviction(id, token) {
 	if (!response.ok) {
 		throw new Error('Failed to fetch confirm eviction. Status: ' + response.status);
 	}
-	return response;
+	return response.json();
 }
 
 export async function modifyEviction(id, details, token) {
@@ -173,4 +174,8 @@ export async function deleteEviction(id, token) {
 			},
 		}
 	);
+	if (!response.ok) {
+		throw new Error('Failed to delete eviction. Status: ' + response.status);
+	}
+	return response.text();
 }
