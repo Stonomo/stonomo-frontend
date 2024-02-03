@@ -74,7 +74,7 @@ export function ConfirmPage() {
 					label='Reason'
 					margin='dense'
 				>
-					{params.reason.desc}
+					{params.reason?.desc}
 				</ListItem>
 				<ListItem
 					id='evictedOn'
@@ -115,13 +115,13 @@ export function ConfirmPage() {
 						type='hidden'
 						id='user'
 						name='user'
-						value={params.user._id}
+						value={params.user?._id}
 					/>
 					<input
 						type='hidden'
 						id='reason'
 						name='reason'
-						value={params.reason._id}
+						value={params.reason?._id}
 					/>
 					<input
 						type='hidden'
