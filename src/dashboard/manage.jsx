@@ -37,7 +37,6 @@ export function ManagePage() {
 			setConfirmDelete(null)
 			if (del) {
 				const res = await deleteEviction(confirmDelete, token)
-				console.log(res)
 				return revalidator.revalidate()
 			}
 		}
