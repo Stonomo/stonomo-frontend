@@ -8,8 +8,7 @@ import {
 import {
   Container,
   CssBaseline,
-  ThemeProvider,
-  createTheme
+  ThemeProvider
 } from '@mui/material'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -46,10 +45,10 @@ import {
   Eviction,
   action as evictionAction
 } from './routes/eviction'
-import { action as destroyAction } from './routes/destroyEviction'
 
-import './index.css'
 import '@fontsource/roboto/300.css'
+import theme from './theme'
+
 const router = createBrowserRouter([
   {
     element: <AuthLayout />,
@@ -114,8 +113,6 @@ const router = createBrowserRouter([
       }]
   }
 ]);
-
-const theme = createTheme();
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
