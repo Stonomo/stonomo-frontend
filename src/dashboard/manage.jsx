@@ -29,12 +29,11 @@ export async function loader({ request, params }) {
 export function ManagePage() {
 	const evictions = useLoaderData()
 	const revalidator = useRevalidator()
-	const { token } = useAuth()
-	const [confirmDelete, setConfirmDelete] = useState(null)
+	const [confirmDelete, setConfirmDelete] = useState('')
 
 	function ConfirmDeleteDialog() {
 		async function handleClose(del = false) {
-			setConfirmDelete(null)
+			setConfirmDelete('')
 			if (del) {
 				const res = await deleteEviction(confirmDelete, token)
 				return revalidator.revalidate()
@@ -43,7 +42,7 @@ export function ManagePage() {
 
 		return (
 			<Dialog
-				open={confirmDelete !== null}
+				open={confirmDelete !== ''}
 				onClose={handleClose}
 				aria-labelledby='delete-dialog-title'
 				aria-describedby='delete-dialog-desc'
@@ -67,15 +66,15 @@ export function ManagePage() {
 	}
 
 	return (
-		<Container>
+		<Container sx={{ bgcolor: 'primary.main' }}>
 			<Stack>
-				{evictions.map((e) => (
-					<div key={e._id}>
+				{evictions.length ? evictions.map((e) => (
+					<Container key={e._id} sx={{ my: 1 }}>
 						<Eviction params={e} allowEdit={true} setConfirmDelete={setConfirmDelete} />
-					</div>
-				))}
+					</Container>
+				)) : <Typography color='white'>No reported evictions found</Typography>}
 			</Stack>
-			{confirmDelete !== null && <ConfirmDeleteDialog id={confirmDelete} />}
+			{confirmDelete !== '' && <ConfirmDeleteDialog id={confirmDelete} />}
 		</Container>
 	);
 }
