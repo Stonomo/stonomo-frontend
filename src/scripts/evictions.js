@@ -30,8 +30,7 @@ export async function createEviction(
 	tenantEmail,
 	evictedOn,
 	reason,
-	details,
-	user
+	details
 ) {
 	// TODO: add check for required fields
 	const response = await fetch(
@@ -48,8 +47,7 @@ export async function createEviction(
 				tenantEmail: tenantEmail,
 				evictedOn: evictedOn,
 				reason: reason,
-				details: details,
-				user: user
+				details: details
 			})
 		}
 	);
@@ -66,8 +64,7 @@ export async function createConfirmEviction(
 	tenantEmail,
 	evictedOn,
 	reason,
-	details,
-	user
+	details
 ) {
 	const response = await fetch(
 		confirmUrl,
@@ -83,8 +80,7 @@ export async function createConfirmEviction(
 				tenantEmail: tenantEmail,
 				evictedOn: evictedOn,
 				reason: reason,
-				details: details,
-				user: user
+				details: details
 			})
 		}
 	);
