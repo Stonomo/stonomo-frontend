@@ -1,7 +1,8 @@
-import { Navigate, Outlet, Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
-import { Box, Button, Container, Toolbar, Typography } from "@mui/material";
+import { Outlet, useNavigate } from "react-router-dom";
+import { Button, Container } from "@mui/material";
 import { useEffect } from "react";
+import { NavBar } from "./NavBar";
+import { useAuth } from "../hooks/useAuth";
 
 export const HomeLayout = () => {
 	const { user } = useAuth()
@@ -17,7 +18,7 @@ export const HomeLayout = () => {
 
 	return (
 		<Container>
-			<Toolbar disableGutters >
+			<NavBar>
 				<Button
 					sx={buttonStyle}
 					onClick={() => navigate('/')}
@@ -30,7 +31,7 @@ export const HomeLayout = () => {
 				>
 					Login
 				</Button>
-			</Toolbar>
+			</NavBar>
 			<Outlet />
 		</Container>
 	)
