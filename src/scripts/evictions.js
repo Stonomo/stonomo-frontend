@@ -177,5 +177,5 @@ export async function deleteEviction(id, token) {
 	if (!response.ok) {
 		throw new Error('Failed to delete eviction. Status: ' + response.status);
 	}
-	return response.text();
+	return response.json();
 }

@@ -27,8 +27,7 @@ export async function loader({ params }) {
 }
 
 export function ManagePage() {
-	const evictions = useLoaderData()
-	const revalidator = useRevalidator()
+	const [evictions, setEvictions] = useState(useLoaderData())
 	const [confirmDelete, setConfirmDelete] = useState('')
 	const { token } = useAuth()
 
@@ -36,8 +35,7 @@ export function ManagePage() {
 		async function handleClose(del = false) {
 			setConfirmDelete('')
 			if (del) {
-				await deleteEviction(confirmDelete, token)
-				return revalidator.revalidate()
+				return setEvictions(await deleteEviction(confirmDelete, token))
 			}
 		}
 
