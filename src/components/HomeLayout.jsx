@@ -7,6 +7,8 @@ export const HomeLayout = () => {
 	const { user } = useAuth()
 	const navigate = useNavigate()
 
+	const buttonStyle = { color: 'white' }
+
 	useEffect(() => {
 		if (user) {
 			return navigate('/dashboard/profile')
@@ -15,9 +17,19 @@ export const HomeLayout = () => {
 
 	return (
 		<Container>
-			<Toolbar disableGutters>
-				<Button onClick={() => navigate('/')}>Home</Button>
-				<Button onClick={() => navigate('/login')}>Login</Button>
+			<Toolbar disableGutters >
+				<Button
+					sx={buttonStyle}
+					onClick={() => navigate('/')}
+				>
+					Home
+				</Button>
+				<Button
+					sx={buttonStyle}
+					onClick={() => navigate('/login')}
+				>
+					Login
+				</Button>
 			</Toolbar>
 			<Outlet />
 		</Container>

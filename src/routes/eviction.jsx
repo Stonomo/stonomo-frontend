@@ -1,9 +1,18 @@
-import { Unstable_Grid2 as Grid, styled, Paper, Typography, Stack, Button, TextField, Box, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
-import { DeleteForever, EditNote } from '@mui/icons-material';
+import {
+	Unstable_Grid2 as Grid,
+	styled,
+	Paper,
+	Typography,
+	Stack,
+	Button,
+	TextField,
+	Box
+} from '@mui/material';
+import { DeleteForever } from '@mui/icons-material';
 import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { deleteEviction, modifyEviction } from '../scripts/evictions';
-import { Form, useFetcher } from 'react-router-dom';
+import { modifyEviction } from '../scripts/evictions';
+import { Form } from 'react-router-dom';
 
 export async function action({ request }) {
 	const formData = await request.formData()
@@ -14,10 +23,8 @@ export async function action({ request }) {
 }
 
 export function Eviction({ params, allowEdit = false, setConfirmDelete }) {
-	const { userId, token } = useAuth()
+	const { token } = useAuth()
 	const [showDetails, setShowDetails] = useState(false)
-	const [render, setRender] = useState(true)
-	const fetcher = useFetcher({ key: 'delete-eviction' })
 
 	const Item = styled(Paper)(({ theme }) => ({
 		backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -28,22 +35,22 @@ export function Eviction({ params, allowEdit = false, setConfirmDelete }) {
 	}));
 
 	const detailsButtonText = (!showDetails ? 'Show' : 'Hide') + ' Details'
-	const showEditButtons = (allowEdit && params.user._id === userId)
+	const showEditButtons = (allowEdit)
 
 	function handleDeleteClick(e) {
 		e.preventDefault()
 		setConfirmDelete(params._id)
 	}
 
-	return render && (
+	return (
 		<Item>
-			<Stack direction='row' spacing={2}>
+			<Stack direction='row' gap={2}>
 				<Grid container>
 					<Grid xs={4}><Typography>{params.tenantName}</Typography></Grid>
 					<Grid xs={4}><Typography>{params.tenantPhone}</Typography></Grid>
 					<Grid xs={4}><Typography>{params.evictedOn}</Typography></Grid>
-					<Grid xs={4}><Typography>{params.user.facilityName}</Typography></Grid>
-					<Grid xs={4}><Typography>{params.reason.desc}</Typography></Grid>
+					<Grid xs={4}><Typography>{params.user?.facilityName}</Typography></Grid>
+					<Grid xs={4}><Typography>{params.reason?.desc}</Typography></Grid>
 					<Grid xs={4}>
 						<Button
 							onClick={() => { setShowDetails(!showDetails); }}

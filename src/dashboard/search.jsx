@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Form, Outlet, redirect } from "react-router-dom";
+import { Form, Outlet, redirect, useLoaderData } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { Button, Typography, Container, TextField } from "@mui/material";
+import { Button, Typography, Container, TextField, Stack } from "@mui/material";
 
 export async function action({ request }) {
 	const formData = await request.formData();
@@ -10,9 +10,15 @@ export async function action({ request }) {
 	return redirect(`results/${q}/${token}`)
 }
 
+export async function loader({ params }) {
+	const q = params.q
+	return q
+}
+
 export function SearchPage() {
 	const { token } = useAuth()
-	const [searchValue, setSearchValue] = useState('')
+	const q = useLoaderData()
+	const [searchValue, setSearchValue] = useState(q)
 
 
 	function handleChange(e) {
@@ -20,10 +26,12 @@ export function SearchPage() {
 	}
 
 	return (
-		<>
-			<Typography variant='h3'>Search Eviction Database</Typography>
+		<Container
+		// sx={{ bgcolor: 'primary.dark' }}
+		>
+			<Typography variant='h3' /*color='white'*/>Search Eviction Database</Typography>
 			<Form method="POST">
-				<Container className="search">
+				<Stack alignItems='center' className="search">
 					<input type="hidden"
 						id="token"
 						name="token"
@@ -34,12 +42,14 @@ export function SearchPage() {
 						name="q"
 						onChange={handleChange}
 						value={searchValue}
+						fullWidth
+					// sx={{ bgcolor: "white", borderRadius: 1, textAlign: 'center' }}
 					/>
-					<Button variant="contained" type="submit" >Search</Button>
-				</Container>
+					<Button variant="contained" type="submit" fullWidth >Search</Button>
+				</Stack>
 			</Form >
 			<Outlet />
-		</>
+		</Container>
 	);
 }
 

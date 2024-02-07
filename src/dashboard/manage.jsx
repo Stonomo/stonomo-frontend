@@ -1,7 +1,11 @@
-import { useLoaderData, useRevalidator } from "react-router"
-import { useAuth } from "../hooks/useAuth"
-import { Eviction } from "../routes/eviction"
-import { deleteEviction, getEvictionsByUser, modifyEviction } from "../scripts/evictions"
+import {
+	useLoaderData,
+	useRevalidator
+} from "react-router"
+import {
+	deleteEviction,
+	getEvictionsByUser
+} from "../scripts/evictions"
 import {
 	Button,
 	Container,
@@ -10,19 +14,15 @@ import {
 	DialogContent,
 	DialogContentText,
 	DialogTitle,
-	Paper,
 	Stack,
-	styled
+	Typography
 } from "@mui/material"
 import { useState } from "react"
-import { useFetcher } from "react-router-dom"
+import { Eviction } from "../routes/eviction"
+import { useAuth } from "../hooks/useAuth"
 
-const STONOMO_URL = 'http://localhost:7867'
-const STONOMO_API_URL = STONOMO_URL + '/v1/'
-const evictionsUrl = STONOMO_API_URL + 'evictions/'
-const byUserUrl = evictionsUrl + 'by-user'
 
-export async function loader({ request, params }) {
+export async function loader({ params }) {
 	return await getEvictionsByUser(params.token)
 }
 
@@ -30,12 +30,13 @@ export function ManagePage() {
 	const evictions = useLoaderData()
 	const revalidator = useRevalidator()
 	const [confirmDelete, setConfirmDelete] = useState('')
+	const { token } = useAuth()
 
 	function ConfirmDeleteDialog() {
 		async function handleClose(del = false) {
 			setConfirmDelete('')
 			if (del) {
-				const res = await deleteEviction(confirmDelete, token)
+				await deleteEviction(confirmDelete, token)
 				return revalidator.revalidate()
 			}
 		}

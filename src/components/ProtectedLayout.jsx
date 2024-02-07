@@ -7,6 +7,8 @@ export const ProtectedLayout = () => {
 	const { user, token, logout } = useAuth();
 	const navigate = useNavigate();
 
+	const buttonStyle = { color: 'white' }
+
 	useEffect(() => {
 		if (!user) {
 			return navigate('/');
@@ -15,14 +17,42 @@ export const ProtectedLayout = () => {
 
 	return (
 		<Container>
-			<Toolbar disableGutters>
-				<Button onClick={() => navigate('search')}>Search Evictions</Button>
-				<Button onClick={() => navigate('report/' + token)}>Report Eviction</Button>
-				<Button onClick={() => navigate('manage/' + token)}>Manage Reports</Button>
-				<Button onClick={() => navigate('profile')}>Profile</Button>
-				<Button onClick={() => navigate('profile/settings')}>Settings</Button>
-				<Button onClick={() => { logout(); navigate('/') }}>Log Out</Button>
-			</Toolbar>
+			<AppBar position="static">
+				<Container maxWidth='xl'>
+					<Toolbar disableGutters>
+						<Button
+							sx={buttonStyle}
+							onClick={() => navigate('search')}>
+							Search Evictions
+						</Button>
+						<Button
+							sx={buttonStyle}
+							onClick={() => navigate('report/' + token)}>
+							Report Eviction
+						</Button>
+						<Button
+							sx={buttonStyle}
+							onClick={() => navigate('manage/' + token)}>
+							Manage Reports
+						</Button>
+						<Button
+							sx={buttonStyle}
+							onClick={() => navigate('profile')}>
+							Profile
+						</Button>
+						<Button
+							sx={buttonStyle}
+							onClick={() => navigate('profile/settings')}>
+							Settings
+						</Button>
+						<Button
+							sx={buttonStyle}
+							onClick={() => { logout(); navigate('/') }}>
+							Log Out
+						</Button>
+					</Toolbar>
+				</Container>
+			</AppBar>
 			<Outlet />
 		</Container >
 	)
