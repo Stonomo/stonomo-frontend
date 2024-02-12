@@ -1,20 +1,30 @@
-import { Button, Container, ListItem, Stack, Typography } from "@mui/material";
-import { useAuth } from "../hooks/useAuth";
-import { Form, redirect, useLoaderData } from "react-router-dom";
-import { createEviction, getConfirmEviction } from "../scripts/evictions";
+import {
+	Button,
+	Container,
+	ListItem,
+	Stack,
+	Typography
+} from "@mui/material";
+import {
+	Form,
+	redirect,
+	useLoaderData
+} from "react-router-dom";
+import {
+	createEviction,
+	getConfirmEviction
+} from "../scripts/evictions";
 
-export async function loader({ params }) {
-	return await getConfirmEviction(
-		params.confirmId,
-		params.token
+export const loader = async ({ apiClient }) => async ({ params }) => {
+	return await getConfirmEviction(apiClient,
+		params.confirmId
 	)
 }
 
-export async function action({ request }) {
+export const action = async (apiClient) => async ({ request }) => {
 	const formData = await request.formData()
-	const token = formData.get('token');
 	const docId = await createEviction(
-		token,
+		apiClient,
 		formData.get('tenantName'),
 		formData.get('tenantPhone'),
 		formData.get('tenantEmail'),
@@ -23,11 +33,10 @@ export async function action({ request }) {
 		formData.get('details'),
 		formData.get('user')
 	)
-	return redirect(`/dashboard/manage/${token}/${docId}`)
+	return redirect(`/dashboard/manage`)
 }
 
 export function ConfirmPage() {
-	const { token } = useAuth()
 	const params = useLoaderData()
 
 	return (
@@ -134,12 +143,6 @@ export function ConfirmPage() {
 						id='evictedOn'
 						name='evictedOn'
 						value={params.evictedOn}
-					/>
-					<input
-						type='hidden'
-						id='token'
-						name='token'
-						value={token}
 					/>
 					<Container direction='row' maxWidth='md'>
 						<Button

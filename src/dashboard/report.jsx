@@ -7,15 +7,14 @@ import { getReasons } from '../scripts/reasons';
 import dayjs from 'dayjs';
 import { createConfirmEviction } from '../scripts/evictions';
 
-export async function loader({ params }) {
-	return await getReasons(params.token)
+export const loader = async ({ apiClient }) => {
+	return await getReasons(apiClient)
 }
 
-export async function action({ request }) {
+export const action = async ({ apiClient }) => async ({ request }) => {
 	const formData = await request.formData()
-	const token = formData.get('token');
 	const confirmDocId = await createConfirmEviction(
-		token,
+		apiClient,
 		formData.get('tenantName'),
 		formData.get('tenantPhone'),
 		formData.get('tenantEmail'),
@@ -25,11 +24,11 @@ export async function action({ request }) {
 		formData.get('user')
 	)
 	console.log(confirmDocId)
-	return redirect(`/dashboard/confirm/${confirmDocId}/${token}`)
+	return redirect(`/dashboard/confirm/${confirmDocId}`)
 }
 
 export function ReportPage() {
-	const { userId, token } = useAuth()
+	// const { userId, token } = useAuth()
 	const [formData, setFormData] = useLocalStorage('reportForm', {})
 	const actionData = useActionData()
 	const reasons = useLoaderData()
@@ -146,18 +145,6 @@ export function ReportPage() {
 					/>
 					{actionData?.details &&
 						<Typography variant='small'>{actionData?.details}</Typography>}
-					<input
-						type='hidden'
-						id='token'
-						name='token'
-						value={token}
-					/>
-					<input
-						type='hidden'
-						id='user'
-						name='user'
-						value={userId}
-					/>
 					<Container direction='row' maxWidth='md'>
 						<Button
 							type='submit'

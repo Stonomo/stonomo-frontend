@@ -5,6 +5,7 @@ import {
   RouterProvider,
   createBrowserRouter
 } from 'react-router-dom'
+import axios from 'axios'
 import {
   Container,
   CssBaseline,
@@ -49,9 +50,19 @@ import {
 import '@fontsource/roboto/300.css'
 import theme from './theme'
 
+const STONOMO_URL = 'http://localhost:7867'
+const STONOMO_API_URL = STONOMO_URL + '/v1/'
+
+const apiClient = axios.create({
+  baseUrl: STONOMO_API_URL,
+  headers: {
+    "Content-Type": "application/json"
+  },
+})
+
 const router = createBrowserRouter([
   {
-    element: <AuthLayout />,
+    element: <AuthLayout apiClient={apiClient} />,
     children: [
       {
         element: <HomeLayout />,
@@ -84,29 +95,29 @@ const router = createBrowserRouter([
             action: searchAction,
             children: [
               {
-                path: 'results/:q/:token',
+                path: 'results/:q',
                 element: <ResultsPage />,
-                loader: resultsLoader,
+                loader: resultsLoader(apiClient),
               }]
           }, {
-            path: 'report/:token',
+            path: 'report',
             element: <ReportPage />,
-            loader: reportLoader,
-            action: reportAction,
+            loader: reportLoader(apiClient),
+            action: reportAction(apiClient),
           }, {
-            path: 'confirm/:confirmId/:token',
+            path: 'confirm/:confirmId',
             element: <ConfirmPage />,
-            loader: confirmLoader,
-            action: confirmAction,
+            loader: confirmLoader(apiClient),
+            action: confirmAction(apiClient),
           }, {
-            path: 'manage/:token/:docId?',
+            path: 'manage/:docId?',
             element: <ManagePage />,
-            loader: manageLoader,
+            loader: manageLoader(apiClient),
             children: [
               {
                 path: 'eviction',
                 element: <Eviction />,
-                action: evictionAction,
+                action: evictionAction(apiClient),
               }
             ]
           }]

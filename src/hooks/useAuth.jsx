@@ -1,72 +1,73 @@
-import { createContext, useCallback, useContext, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useLocalStorage } from './useLocalStorage';
+import { createContext, useContext, useRef, useEffect } from 'react';
+import { Outlet } from 'react-router';
 
-const DEBUG = false;
+const AuthContext = createContext({
+	login: (username, password) => { },
+	get: () => { },
+	post: () => { },
+	patch: () => { },
+	del: () => { }
+});
 
-const AuthContext = createContext();
+export const AuthProvider = ({ apiClient }) => {
+	const accessTokenRef = useRef()
+	// const refreshTokenRef = useRef()
 
-export const AuthProvider = ({ children }) => {
-	const [user, setUser] = useLocalStorage('user', null);
-	const [userId, setUserId] = useLocalStorage('id', null);
-	const [token, setToken] = useLocalStorage('token', null);
-	const navigate = useNavigate();
+	// useEffect(() => {
+	// 	const requestInterceptor = apiClient.interceptors.request.use(
+	// 		(request) => {
+	// 			// Attach current access token ref value to outgoing request headers
+	// 			request.headers["authorization"] = accessTokenRef.current;
+	// 			return request;
+	// 		},
+	// 	);
 
-	// Throws error if login fails, sets token if successful
-	const fetchToken = (data, onFailCallback) => {
-		fetch('http://localhost:7867/login', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ username: data.username, password: data.password })
-		})
-			.then(async (response) => {
-				if (!response.ok) {
-					throw new Error('HTTP status ' + response.status);
-				}
-				// console.log('HTTP status ' + response.status)
-				const res = await response.json()
-				const tkn = res['token']
-				const userId = res['userId']
-				// console.log(tkn);
-				setToken(tkn);
-				setUser(data.username);
-				setUserId(userId)
-				navigate('/dashboard/profile', { replace: true });
-			}).catch(onFailCallback);
-	};
+	// 	const responseInterceptor = apiClient.interceptors.response.use(
+	// 		(response) => {
+	// 			// Cache new token from incoming response headers
+	// 			accessTokenRef.current = response.headers["access-token"];
+	// 			return response;
+	// 		},
+	// 	);
+
+	// 	// Return cleanup function to remove interceptors if apiClient updates
+	// 	return () => {
+	// 		apiClient.interceptors.request.eject(requestInterceptor);
+	// 		apiClient.interceptors.response.eject(responseInterceptor);
+	// 	};
+	// }, [apiClient]);
 
 	// call this function when you want to authenticate the user
-	const login = (data, onFailCallback) => {
-		if (DEBUG) {
-			setUser(data.username);
-			navigate('/dashboard/profile', { replace: true });
+	const login = async (username, password, onFailCallback) => {
+		const response = await apiClient.post('/login',
+			{ username: username, password: password }
+		)
+		if (!response.ok) {
+			onFailCallback();
 		}
-		fetchToken(data, onFailCallback);
+		navigate('/dashboard/profile', { replace: true });
 	};
 
-	// call this function to sign out logged in user
-	const logout = () => {
-		setUser(null);
-		navigate('/', { replace: true });
-	};
+	const isLoggedIn = () => {
+		return accessTokenRef.current !== ''
+	}
 
-	const loginCallback = useCallback(login, [login])
-	const logoutCallback = useCallback(logout, [logout])
-	const value = useMemo(
-		() => ({
-			user,
-			userId,
-			token,
-			login: loginCallback,
-			logout: logoutCallback
-		}),
-		[user, userId, token, loginCallback, logoutCallback]
-	);
-	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+	const context = {
+		login,
+		isLoggedIn,
+		get: apiClient.get,
+		post: apiClient.post,
+		patch: apiClient.patch,
+		del: apiClient.delete
+	}
+
+	return (
+		<AuthContext.Provider value={context}>
+			<Outlet />
+		</AuthContext.Provider>
+	)
 };
 
 export const useAuth = () => {
 	return useContext(AuthContext);
-};
+}

@@ -6,8 +6,7 @@ import { Button, Typography, Container, TextField, Stack } from "@mui/material";
 export async function action({ request }) {
 	const formData = await request.formData();
 	const q = formData.get('q')
-	const token = formData.get('token')
-	return redirect(`results/${q}/${token}`)
+	return redirect(`results/${q}`)
 }
 
 export async function loader({ params }) {
@@ -16,7 +15,6 @@ export async function loader({ params }) {
 }
 
 export function SearchPage() {
-	const { token } = useAuth()
 	const q = useLoaderData()
 	const [searchValue, setSearchValue] = useState(q)
 
@@ -32,10 +30,6 @@ export function SearchPage() {
 			<Typography variant='h3' /*color='white'*/>Search Eviction Database</Typography>
 			<Form method="POST">
 				<Stack alignItems='center' className="search">
-					<input type="hidden"
-						id="token"
-						name="token"
-						value={token} />
 					<TextField
 						required
 						id="q"

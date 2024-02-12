@@ -6,17 +6,17 @@ const byUserUrl = evictionsUrl + 'by-user/'
 const confirmUrl = evictionsUrl + 'confirm/'
 
 
-export async function searchEvictions(q, token) {
-	const response = await fetch(
-		searchUrl,
-		{
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + token,
-			},
-			body: JSON.stringify({ q: q })
-		})
+export async function searchEvictions(apiClient, q) {
+	const response = await apiClient.post(searchUrl,
+		// {
+		// method: 'POST',
+		// headers: {
+		// 'Content-Type': 'application/json',
+		// 'Authorization': 'Bearer ' + token,
+		// },
+		JSON.stringify({ q: q })
+		// }
+	)
 	if (!response.ok) {
 		throw new Error('HTTP status ' + response.status)
 	}
@@ -24,7 +24,7 @@ export async function searchEvictions(q, token) {
 }
 
 export async function createEviction(
-	token,
+	apiClient,
 	tenantName,
 	tenantPhone,
 	tenantEmail,
@@ -33,23 +33,22 @@ export async function createEviction(
 	details
 ) {
 	// TODO: add check for required fields
-	const response = await fetch(
-		evictionsUrl,
-		{
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + token,
-			},
-			body: JSON.stringify({
-				tenantName: tenantName,
-				tenantPhone: tenantPhone,
-				tenantEmail: tenantEmail,
-				evictedOn: evictedOn,
-				reason: reason,
-				details: details
-			})
-		}
+	const response = await apiClient.post(evictionsUrl,
+		// {
+		// method: 'POST',
+		// headers: {
+		// 'Content-Type': 'application/json',
+		// 'Authorization': 'Bearer ' + token,
+		// },
+		JSON.stringify({
+			tenantName: tenantName,
+			tenantPhone: tenantPhone,
+			tenantEmail: tenantEmail,
+			evictedOn: evictedOn,
+			reason: reason,
+			details: details
+		})
+		// }
 	);
 	if (!response.ok) {
 		throw new Error('Failed to create eviction. Status: ' + response.status);
@@ -91,17 +90,8 @@ export async function createConfirmEviction(
 
 }
 
-export async function getEvictionsByUser(token) {
-	const response = await fetch(
-		byUserUrl,
-		{
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + token,
-			}
-		}
-	);
+export async function getEvictionsByUser(apiClient) {
+	const response = await apiClient.get(byUserUrl);
 	if (!response.ok) {
 		throw new Error('Failed to fetch eviction list. Status: ' + response.status);
 	}
@@ -140,18 +130,11 @@ export async function getConfirmEviction(id, token) {
 	return response.json();
 }
 
-export async function modifyEviction(id, details, token) {
+export async function modifyEviction(apiClient, id, details) {
 	// TODO: add check for required fields
-	const response = await fetch(
+	const response = await apiClient.patch(
 		evictionsUrl + id,
-		{
-			method: 'PATCH',
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + token,
-			},
-			body: JSON.stringify({ details: details })
-		}
+		{ details: details }
 	);
 	if (!response.ok) {
 		throw new Error('Failed to modify eviction. Status: ' + response.status);
@@ -159,17 +142,8 @@ export async function modifyEviction(id, details, token) {
 	return response.json();
 }
 
-export async function deleteEviction(id, token) {
-	const response = await fetch(
-		evictionsUrl + id,
-		{
-			method: 'DELETE',
-			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + token,
-			},
-		}
-	);
+export async function deleteEviction(apiClient, id) {
+	const response = await apiClient.delete(evictionsUrl + id);
 	if (!response.ok) {
 		throw new Error('Failed to delete eviction. Status: ' + response.status);
 	}

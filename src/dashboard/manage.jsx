@@ -22,20 +22,20 @@ import { Eviction } from "../routes/eviction"
 import { useAuth } from "../hooks/useAuth"
 
 
-export async function loader({ params }) {
-	return await getEvictionsByUser(params.token)
+export const loader = async (apiClient) => {
+	return await getEvictionsByUser(apiClient)
 }
 
 export function ManagePage() {
 	const [evictions, setEvictions] = useState(useLoaderData())
 	const [confirmDelete, setConfirmDelete] = useState('')
-	const { token } = useAuth()
+	const { apiClient } = useAuth()
 
 	function ConfirmDeleteDialog() {
 		async function handleClose(del = false) {
 			setConfirmDelete('')
 			if (del) {
-				return setEvictions(await deleteEviction(confirmDelete, token))
+				return setEvictions(await deleteEviction(apiClient, confirmDelete))
 			}
 		}
 

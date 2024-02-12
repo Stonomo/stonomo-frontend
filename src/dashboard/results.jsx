@@ -6,11 +6,11 @@ import {
 	Stack
 } from '@mui/material'
 
-export async function loader({ params }) {
-	return await searchEvictions(params.q, params.token)
+export const loader = (apiClient) => async ({ params }) => {
+	return await searchEvictions(apiClient, params.q)
 }
 
-export function ResultsPage({ params }) {
+export function ResultsPage() {
 	const results = useLoaderData()
 
 	return (
