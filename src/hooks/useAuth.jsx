@@ -65,4 +65,4 @@ export const AuthProvider = () => {
 
 export const useAuth = () => {
 	return useContext(AuthContext);
-};
+}
