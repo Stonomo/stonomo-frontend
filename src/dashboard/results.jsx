@@ -7,7 +7,7 @@ import {
 } from '@mui/material'
 
 export async function loader({ params }) {
-	return await searchEvictions(params.q, params.token)
+	return await searchEvictions(params.q)
 }
 
 export function ResultsPage({ params }) {

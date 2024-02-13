@@ -5,16 +5,16 @@ import { NavBar } from "./NavBar";
 import { useAuth } from "../hooks/useAuth";
 
 export const HomeLayout = () => {
-	const { user } = useAuth()
+	const { isLoggedIn } = useAuth()
 	const navigate = useNavigate()
 
 	const buttonStyle = { color: 'white' }
 
-	useEffect(() => {
-		if (user) {
-			return navigate('/dashboard/profile')
-		}
-	})
+	// useEffect(() => {
+	// 	if (isLoggedIn) {
+	// 		return navigate('/dashboard/profile')
+	// 	}
+	// })
 
 	return (
 		<Container>

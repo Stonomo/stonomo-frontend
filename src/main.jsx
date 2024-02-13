@@ -84,22 +84,22 @@ const router = createBrowserRouter([
             action: searchAction,
             children: [
               {
-                path: 'results/:q/:token',
+                path: 'results/:q',
                 element: <ResultsPage />,
                 loader: resultsLoader,
               }]
           }, {
-            path: 'report/:token',
+            path: 'report',
             element: <ReportPage />,
             loader: reportLoader,
             action: reportAction,
           }, {
-            path: 'confirm/:confirmId/:token',
+            path: 'confirm/:confirmId',
             element: <ConfirmPage />,
             loader: confirmLoader,
             action: confirmAction,
           }, {
-            path: 'manage/:token/:docId?',
+            path: 'manage/:docId?',
             element: <ManagePage />,
             loader: manageLoader,
             children: [

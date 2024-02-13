@@ -6,15 +6,15 @@ const byUserUrl = evictionsUrl + 'by-user/'
 const confirmUrl = evictionsUrl + 'confirm/'
 
 
-export async function searchEvictions(q, token) {
+export async function searchEvictions(q) {
 	const response = await fetch(
 		searchUrl,
 		{
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + token,
 			},
+			credentials: 'include',
 			body: JSON.stringify({ q: q })
 		})
 	if (!response.ok) {
@@ -24,7 +24,6 @@ export async function searchEvictions(q, token) {
 }
 
 export async function createEviction(
-	token,
 	tenantName,
 	tenantPhone,
 	tenantEmail,
@@ -39,8 +38,8 @@ export async function createEviction(
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + token,
 			},
+			credentials: 'include',
 			body: JSON.stringify({
 				tenantName: tenantName,
 				tenantPhone: tenantPhone,
@@ -58,7 +57,6 @@ export async function createEviction(
 }
 
 export async function createConfirmEviction(
-	token,
 	tenantName,
 	tenantPhone,
 	tenantEmail,
@@ -72,8 +70,8 @@ export async function createConfirmEviction(
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + token,
 			},
+			credentials: 'include',
 			body: JSON.stringify({
 				tenantName: tenantName,
 				tenantPhone: tenantPhone,
@@ -91,15 +89,15 @@ export async function createConfirmEviction(
 
 }
 
-export async function getEvictionsByUser(token) {
+export async function getEvictionsByUser() {
 	const response = await fetch(
 		byUserUrl,
 		{
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + token,
-			}
+			},
+			credentials: 'include'
 		}
 	);
 	if (!response.ok) {
@@ -108,14 +106,14 @@ export async function getEvictionsByUser(token) {
 	return response.json();
 }
 
-export async function getEviction(id, token) {
+export async function getEviction(id) {
 	const response = await fetch(
 		evictionsUrl + id,
 		{
 			headers: {
 				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + token,
-			}
+			},
+			credentials: 'include'
 		}
 	);
 	if (!response.ok) {
@@ -124,14 +122,14 @@ export async function getEviction(id, token) {
 	return response.text();
 }
 
-export async function getConfirmEviction(id, token) {
+export async function getConfirmEviction(id) {
 	const response = await fetch(
 		confirmUrl + id,
 		{
 			headers: {
 				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + token,
-			}
+			},
+			credentials: 'include'
 		}
 	);
 	if (!response.ok) {
@@ -140,7 +138,7 @@ export async function getConfirmEviction(id, token) {
 	return response.json();
 }
 
-export async function modifyEviction(id, details, token) {
+export async function modifyEviction(id, details) {
 	// TODO: add check for required fields
 	const response = await fetch(
 		evictionsUrl + id,
@@ -148,8 +146,8 @@ export async function modifyEviction(id, details, token) {
 			method: 'PATCH',
 			headers: {
 				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + token,
 			},
+			credentials: 'include',
 			body: JSON.stringify({ details: details })
 		}
 	);
@@ -159,15 +157,15 @@ export async function modifyEviction(id, details, token) {
 	return response.json();
 }
 
-export async function deleteEviction(id, token) {
+export async function deleteEviction(id) {
 	const response = await fetch(
 		evictionsUrl + id,
 		{
 			method: 'DELETE',
 			headers: {
 				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + token,
 			},
+			credentials: 'include'
 		}
 	);
 	if (!response.ok) {

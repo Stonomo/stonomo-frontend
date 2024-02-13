@@ -1,5 +1,4 @@
 import { Button, Container, ListItem, Stack, Typography } from "@mui/material";
-import { useAuth } from "../hooks/useAuth";
 import { Form, redirect, useLoaderData } from "react-router-dom";
 import { createEviction, getConfirmEviction } from "../scripts/evictions";
 
@@ -14,7 +13,6 @@ export async function action({ request }) {
 	const formData = await request.formData()
 	const token = formData.get('token');
 	const docId = await createEviction(
-		token,
 		formData.get('tenantName'),
 		formData.get('tenantPhone'),
 		formData.get('tenantEmail'),
@@ -27,7 +25,6 @@ export async function action({ request }) {
 }
 
 export function ConfirmPage() {
-	const { token } = useAuth()
 	const params = useLoaderData()
 
 	return (
@@ -134,12 +131,6 @@ export function ConfirmPage() {
 						id='evictedOn'
 						name='evictedOn'
 						value={params.evictedOn}
-					/>
-					<input
-						type='hidden'
-						id='token'
-						name='token'
-						value={token}
 					/>
 					<Container direction='row' maxWidth='md'>
 						<Button

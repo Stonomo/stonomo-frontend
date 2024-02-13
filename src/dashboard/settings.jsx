@@ -1,12 +1,12 @@
 import { useAuth } from "../hooks/useAuth";
 
 export function SettingsPage() {
-	const { user } = useAuth();
+	const { isLoggedIn } = useAuth();
 
 	return (
 		<div>
 			<h1>This is the Settings page</h1>
-			<p>current user: {user}</p>
+			<p>Logged in = {isLoggedIn().toString()}</p>
 		</div>
 	);
 }

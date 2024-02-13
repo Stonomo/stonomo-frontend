@@ -10,20 +10,17 @@ import {
 } from '@mui/material';
 import { DeleteForever } from '@mui/icons-material';
 import { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
 import { modifyEviction } from '../scripts/evictions';
 import { Form } from 'react-router-dom';
 
 export async function action({ request }) {
 	const formData = await request.formData()
 	const id = formData.get('id')
-	const token = formData.get('token')
 	const details = formData.get('details')
-	return await modifyEviction(id, details, token)
+	return await modifyEviction(id, details)
 }
 
 export function Eviction({ params, allowEdit = false, setConfirmDelete }) {
-	const { token } = useAuth()
 	const [showDetails, setShowDetails] = useState(false)
 
 	const Item = styled(Paper)(({ theme }) => ({
@@ -84,7 +81,6 @@ export function Eviction({ params, allowEdit = false, setConfirmDelete }) {
 								fullWidth
 							/>
 							<input type='hidden' name='id' id='id' value={params._id} />
-							<input type='hidden' name='token' id='token' value={token} />
 							<Box>
 								<Button type='submit'
 									variant='outlined'>

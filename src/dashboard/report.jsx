@@ -7,15 +7,13 @@ import { getReasons } from '../scripts/reasons';
 import dayjs from 'dayjs';
 import { createConfirmEviction } from '../scripts/evictions';
 
-export async function loader({ params }) {
-	return await getReasons(params.token)
+export async function loader() {
+	return await getReasons()
 }
 
 export async function action({ request }) {
 	const formData = await request.formData()
-	const token = formData.get('token');
 	const confirmDocId = await createConfirmEviction(
-		token,
 		formData.get('tenantName'),
 		formData.get('tenantPhone'),
 		formData.get('tenantEmail'),
@@ -25,7 +23,7 @@ export async function action({ request }) {
 		formData.get('user')
 	)
 	console.log(confirmDocId)
-	return redirect(`/dashboard/confirm/${confirmDocId}/${token}`)
+	return redirect(`/dashboard/confirm/${confirmDocId}`)
 }
 
 export function ReportPage() {
@@ -146,18 +144,6 @@ export function ReportPage() {
 					/>
 					{actionData?.details &&
 						<Typography variant='small'>{actionData?.details}</Typography>}
-					<input
-						type='hidden'
-						id='token'
-						name='token'
-						value={token}
-					/>
-					<input
-						type='hidden'
-						id='user'
-						name='user'
-						value={userId}
-					/>
 					<Container direction='row' maxWidth='md'>
 						<Button
 							type='submit'
