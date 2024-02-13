@@ -1,6 +1,5 @@
 import {
-	useLoaderData,
-	useRevalidator
+	useLoaderData
 } from "react-router"
 import {
 	deleteEviction,
@@ -19,17 +18,15 @@ import {
 } from "@mui/material"
 import { useState } from "react"
 import { Eviction } from "../routes/eviction"
-import { useAuth } from "../hooks/useAuth"
 
 
-export const loader = async (apiClient) => {
-	return await getEvictionsByUser(apiClient)
+export async function loader() {
+	return await getEvictionsByUser()
 }
 
 export function ManagePage() {
 	const [evictions, setEvictions] = useState(useLoaderData())
 	const [confirmDelete, setConfirmDelete] = useState('')
-	const { apiClient } = useAuth()
 
 	function ConfirmDeleteDialog() {
 		async function handleClose(del = false) {

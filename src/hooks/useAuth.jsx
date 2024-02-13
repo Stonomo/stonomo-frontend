@@ -1,73 +1,64 @@
-import { createContext, useContext, useRef, useEffect } from 'react';
-import { Outlet } from 'react-router';
+import { createContext, useCallback, useContext, useMemo, useRef } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode'
 
-const AuthContext = createContext({
-	login: (username, password) => { },
-	get: () => { },
-	post: () => { },
-	patch: () => { },
-	del: () => { }
-});
+const AuthContext = createContext();
 
-export const AuthProvider = ({ apiClient }) => {
-	const accessTokenRef = useRef()
-	// const refreshTokenRef = useRef()
-
-	// useEffect(() => {
-	// 	const requestInterceptor = apiClient.interceptors.request.use(
-	// 		(request) => {
-	// 			// Attach current access token ref value to outgoing request headers
-	// 			request.headers["authorization"] = accessTokenRef.current;
-	// 			return request;
-	// 		},
-	// 	);
-
-	// 	const responseInterceptor = apiClient.interceptors.response.use(
-	// 		(response) => {
-	// 			// Cache new token from incoming response headers
-	// 			accessTokenRef.current = response.headers["access-token"];
-	// 			return response;
-	// 		},
-	// 	);
-
-	// 	// Return cleanup function to remove interceptors if apiClient updates
-	// 	return () => {
-	// 		apiClient.interceptors.request.eject(requestInterceptor);
-	// 		apiClient.interceptors.response.eject(responseInterceptor);
-	// 	};
-	// }, [apiClient]);
+export const AuthProvider = () => {
+	const refreshToken = useRef();
+	const navigate = useNavigate();
 
 	// call this function when you want to authenticate the user
-	const login = async (username, password, onFailCallback) => {
-		const response = await apiClient.post('/login',
-			{ username: username, password: password }
-		)
-		if (!response.ok) {
-			onFailCallback();
-		}
-		navigate('/dashboard/profile', { replace: true });
-	};
+	const login = (data, onFailCallback) => {
+		fetch('http://localhost:7867/login', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			credentials: 'include',
+			body: JSON.stringify({ username: data.username, password: data.password })
+		})
+			.then(async (response) => {
+				if (!response.ok) {
+					throw new Error('HTTP status ' + response.status);
+				}
+				// console.log('HTTP status ' + response.status)
+				// decode and cache refresh token from response
+				response.json().then((data) => {
+					refreshToken.current = jwtDecode(data)
+					navigate('/dashboard/profile', { replace: true })
+				});
+			}).catch(onFailCallback);
+	}
 
 	const isLoggedIn = () => {
-		return accessTokenRef.current !== ''
+		return refreshToken.current !== ''
 	}
 
-	const context = {
-		login,
-		isLoggedIn,
-		get: apiClient.get,
-		post: apiClient.post,
-		patch: apiClient.patch,
-		del: apiClient.delete
+	const logout = () => {
+		refreshToken.current = ''
+		navigate('/', { replace: true })
 	}
 
+
+	const loginCallback = useCallback(login, [login])
+	const logoutCallback = useCallback(logout, [logout])
+	const isLoggedInCallback = useCallback(isLoggedIn, [isLoggedIn])
+	const value = useMemo(
+		() => ({
+			isLoggedIn: isLoggedInCallback,
+			login: loginCallback,
+			logout: logoutCallback
+		}),
+		[isLoggedInCallback, loginCallback, logoutCallback]
+	);
 	return (
-		<AuthContext.Provider value={context}>
+		<AuthContext.Provider value={value}>
 			<Outlet />
 		</AuthContext.Provider>
-	)
+	);
 };
 
 export const useAuth = () => {
 	return useContext(AuthContext);
-}
+};

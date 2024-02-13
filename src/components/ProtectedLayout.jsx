@@ -5,13 +5,13 @@ import { useEffect } from "react";
 import { NavBar } from "./NavBar";
 
 export function ProtectedLayout() {
-	const { isLoggedIn } = useAuth();
+	const { isLoggedIn, logout } = useAuth();
 	const navigate = useNavigate();
 
 	const buttonStyle = { color: 'white' }
 
 	useEffect(() => {
-		if (!isLoggedIn) {
+		if (!isLoggedIn()) {
 			return navigate('/');
 		}
 	})

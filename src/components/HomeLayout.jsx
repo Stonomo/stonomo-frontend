@@ -10,11 +10,11 @@ export const HomeLayout = () => {
 
 	const buttonStyle = { color: 'white' }
 
-	useEffect(() => {
-		if (isLoggedIn) {
-			return navigate('/dashboard/profile')
-		}
-	})
+	// useEffect(() => {
+	// 	if (isLoggedIn) {
+	// 		return navigate('/dashboard/profile')
+	// 	}
+	// })
 
 	return (
 		<Container>

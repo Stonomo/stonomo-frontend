@@ -7,14 +7,13 @@ import { getReasons } from '../scripts/reasons';
 import dayjs from 'dayjs';
 import { createConfirmEviction } from '../scripts/evictions';
 
-export const loader = async ({ apiClient }) => {
-	return await getReasons(apiClient)
+export async function loader() {
+	return await getReasons()
 }
 
 export const action = async ({ apiClient }) => async ({ request }) => {
 	const formData = await request.formData()
 	const confirmDocId = await createConfirmEviction(
-		apiClient,
 		formData.get('tenantName'),
 		formData.get('tenantPhone'),
 		formData.get('tenantEmail'),

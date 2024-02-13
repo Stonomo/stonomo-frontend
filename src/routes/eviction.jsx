@@ -17,7 +17,7 @@ export const action = async ({ apiClient }) => async ({ request }) => {
 	const formData = await request.formData()
 	const id = formData.get('id')
 	const details = formData.get('details')
-	return await modifyEviction(apiClient, id, details)
+	return await modifyEviction(id, details)
 }
 
 export function Eviction({ params, allowEdit = false, setConfirmDelete }) {

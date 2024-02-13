@@ -1,19 +1,6 @@
-import {
-	Button,
-	Container,
-	ListItem,
-	Stack,
-	Typography
-} from "@mui/material";
-import {
-	Form,
-	redirect,
-	useLoaderData
-} from "react-router-dom";
-import {
-	createEviction,
-	getConfirmEviction
-} from "../scripts/evictions";
+import { Button, Container, ListItem, Stack, Typography } from "@mui/material";
+import { Form, redirect, useLoaderData } from "react-router-dom";
+import { createEviction, getConfirmEviction } from "../scripts/evictions";
 
 export const loader = async ({ apiClient }) => async ({ params }) => {
 	return await getConfirmEviction(apiClient,
@@ -24,7 +11,6 @@ export const loader = async ({ apiClient }) => async ({ params }) => {
 export const action = async (apiClient) => async ({ request }) => {
 	const formData = await request.formData()
 	const docId = await createEviction(
-		apiClient,
 		formData.get('tenantName'),
 		formData.get('tenantPhone'),
 		formData.get('tenantEmail'),

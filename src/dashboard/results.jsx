@@ -6,8 +6,8 @@ import {
 	Stack
 } from '@mui/material'
 
-export const loader = (apiClient) => async ({ params }) => {
-	return await searchEvictions(apiClient, params.q)
+export async function loader({ params }) {
+	return await searchEvictions(params.q)
 }
 
 export function ResultsPage() {
