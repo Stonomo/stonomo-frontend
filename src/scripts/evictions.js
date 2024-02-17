@@ -1,5 +1,4 @@
-const STONOMO_URL = 'http://localhost:7867'
-const STONOMO_API_URL = STONOMO_URL + '/v1/'
+const STONOMO_API_URL = import.meta.env.VITE_STONOMO_API_URL
 const searchUrl = STONOMO_API_URL + 'search/'
 const evictionsUrl = STONOMO_API_URL + 'evictions/'
 const byUserUrl = evictionsUrl + 'by-user/'
