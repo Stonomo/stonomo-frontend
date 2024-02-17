@@ -10,7 +10,7 @@ export const AuthProvider = () => {
 
 	// call this function when you want to authenticate the user
 	const login = (data, onFailCallback) => {
-		fetch('http://localhost:7867/login', {
+		fetch(import.meta.env.VITE_STONOMO_API_URL + 'login', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -26,13 +26,17 @@ export const AuthProvider = () => {
 				// decode and cache refresh token from response
 				response.json().then((data) => {
 					refreshToken.current = jwtDecode(data)
-					navigate('/dashboard/profile', { replace: true })
+					navigate('/dashboard/search', { replace: true })
 				});
 			}).catch(onFailCallback);
 	}
 
 	const isLoggedIn = () => {
-		return refreshToken.current !== ''
+		if (!refreshToken.current || refreshToken.current === '') {
+			return false
+		}
+		const expiresAt = refreshToken.current.exp
+		return Date.now() > expiresAt
 	}
 
 	const logout = () => {
