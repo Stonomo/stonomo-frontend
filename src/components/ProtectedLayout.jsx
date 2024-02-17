@@ -12,7 +12,7 @@ export function ProtectedLayout() {
 
 	useEffect(() => {
 		if (!isLoggedIn()) {
-			return navigate('/');
+			return navigate('/login');
 		}
 	})
 
