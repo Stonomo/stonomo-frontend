@@ -17,7 +17,6 @@
     "@mui/material": "^5.15.6",
     "@mui/x-date-pickers": "^6.19.2",
     "dayjs": "^1.11.10",
-    "dotenv": "^16.3.1",
     "jwt-decode": "^4.0.0",
     "react": "^17.0.0 || ^18.0.0",
     "react-dom": "^17.0.0 || ^18.0.0",
