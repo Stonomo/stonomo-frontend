@@ -7,7 +7,7 @@ function Copyright() {
 	return (
 		<div className='Copyright' align='center'>
 			{'Copyright © '}
-			<Link color='inherit' href='/'>
+			<Link color='inherit' to='/'>
 				Stonomo LLC
 			</Link>{' '}
 			{new Date().getFullYear()}
