@@ -15,7 +15,7 @@ export async function loader({ params }) {
 
 export function SearchPage() {
 	const q = useLoaderData()
-	const [searchValue, setSearchValue] = useState(q)
+	const [searchValue, setSearchValue] = useState(q || '')
 
 
 	function handleChange(e) {
@@ -26,7 +26,13 @@ export function SearchPage() {
 		<Container
 		// sx={{ bgcolor: 'primary.dark' }}
 		>
-			<Typography variant='h3' /*color='white'*/>Search Eviction Database</Typography>
+			<Container
+				sx={{ textAlign: "center" }}
+			>
+				<Typography variant='h3' /*color='white'*/>
+					Search Eviction Database
+				</Typography>
+			</Container>
 			<Form method="POST">
 				<Stack alignItems='center' className="search">
 					<TextField
@@ -36,9 +42,18 @@ export function SearchPage() {
 						onChange={handleChange}
 						value={searchValue}
 						fullWidth
-					// sx={{ bgcolor: "white", borderRadius: 1, textAlign: 'center' }}
 					/>
-					<Button variant="contained" type="submit" fullWidth >Search</Button>
+					<Button
+						variant="contained"
+						type="submit"
+					>
+						<Typography
+							variant="h6"
+							component="a"
+						>
+							Search
+						</Typography>
+					</Button>
 				</Stack>
 			</Form >
 			<Outlet />
