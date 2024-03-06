@@ -34,11 +34,11 @@ export function SearchPage() {
 
 	return (
 		<Container
-			sx={{ bgcolor: 'primary.main', padding: 2 }}
+			sx={{ bgcolor: 'primary.main', paddingBottom: 2, borderBottomLeftRadius: 5, borderBottomRightRadius: 5 }}
 		>
 			<Container sx={{ bgcolor: 'white', borderRadius: 2 }}>
 				<Container
-					sx={{ textAlign: "center", paddingTop: 2 }}
+					sx={{ textAlign: "center", paddingTop: 1 }}
 				>
 					<Typography variant='h3'>
 						Search Eviction Database

@@ -5,14 +5,21 @@ import { Box, Button, Container, TextField, Typography } from '@mui/material';
 
 function Copyright() {
 	return (
-		<div className='Copyright' align='center'>
-			{'Copyright © '}
-			<Link color='inherit' to='/'>
-				Stonomo LLC
-			</Link>{' '}
-			{new Date().getFullYear()}
-			{'.'}
-		</div>
+		<Container className='Copyright'
+			sx={{
+				textAlign: 'center',
+				padding: 1
+			}}>
+			<Box
+				sx={{ bgcolor: 'white', borderRadius: 2 }}>
+				{'Copyright © '}
+				<Link color='inherit' to='/'>
+					Stonomo LLC
+				</Link>{' '}
+				{new Date().getFullYear()}
+				{'.'}
+			</Box>
+		</Container>
 	);
 }
 
@@ -32,9 +39,16 @@ export function SignIn() {
 	}
 
 	return (
-		<Container>
-			<Box>
-				<Typography variant='h3'>
+		<Container
+			sx={{ bgcolor: 'primary.main', borderBottomLeftRadius: 5, borderBottomRightRadius: 5 }}>
+			<Container
+				sx={{
+					textAlign: 'center',
+					bgcolor: 'white',
+					borderRadius: 2
+				}}>
+				<Typography variant='h3'
+					sx={{ paddingTop: 1 }}>
 					Sign in
 				</Typography>
 				<Form onSubmit={handleSubmit} noValidate >
@@ -51,6 +65,7 @@ export function SignIn() {
 						placeholder='Username'
 					/>
 					<TextField
+						fullWidth
 						required
 						name='password'
 						label='Password'
@@ -63,6 +78,7 @@ export function SignIn() {
 					<Button
 						type='submit'
 						variant='contained'
+						sx={{ margin: 1 }}
 					>
 						Sign In
 					</Button>
@@ -82,7 +98,7 @@ export function SignIn() {
 						</li> 
 					</ul>*/}
 				</Form>
-			</Box>
+			</Container>
 			<Copyright />
 		</Container>
 	);

@@ -65,7 +65,7 @@ export function Eviction({ params, allowEdit = false, setConfirmDelete }) {
 						</Form>
 					)}
 				</Grid>
-				{showDetails && <Grid container>
+				{showDetails && <Stack container xs={12}>
 					{params.details.map((d) => (
 						<Item
 							xs={12}
@@ -79,7 +79,7 @@ export function Eviction({ params, allowEdit = false, setConfirmDelete }) {
 								{d.content}
 							</Typography>
 						</Item>))}
-				</Grid>}
+				</Stack>}
 				{allowEdit && showDetails && <Grid xs={12}>
 					<Form method='POST' id='detailsForm' action='eviction'>
 						<TextField
