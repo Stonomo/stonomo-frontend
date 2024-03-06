@@ -1,5 +1,4 @@
 import { Button, Container, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
-import { useAuth } from '../hooks/useAuth';
 import { Form, redirect, useActionData, useLoaderData } from 'react-router-dom';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { DatePicker } from '@mui/x-date-pickers';
@@ -27,7 +26,6 @@ export async function action({ request }) {
 }
 
 export function ReportPage() {
-	const { userId, token } = useAuth()
 	const [formData, setFormData] = useLocalStorage('reportForm', {})
 	const actionData = useActionData()
 	const reasons = useLoaderData()
