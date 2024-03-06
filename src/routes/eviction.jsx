@@ -32,7 +32,7 @@ export function Eviction({ params, allowEdit = false, setConfirmDelete }) {
 	}));
 
 	const detailsButtonText = (!showDetails ? 'Show' : 'Hide') + ' Details'
-	const showEditButtons = (allowEdit)
+	const blurredText = { color: 'transparent', textShadow: '0 0 10px rgba(0,0,0,0.75)', userSelect: 'none' };
 
 	function handleDeleteClick(e) {
 		e.preventDefault()
@@ -41,60 +41,67 @@ export function Eviction({ params, allowEdit = false, setConfirmDelete }) {
 
 	return (
 		<Item>
-			<Stack direction='row' gap={2}>
-				<Grid container>
-					<Grid xs={4}><Typography>{params.tenantName}</Typography></Grid>
-					<Grid xs={4}><Typography>{params.tenantPhone}</Typography></Grid>
-					<Grid xs={4}><Typography>{params.evictedOn}</Typography></Grid>
-					<Grid xs={4}><Typography>{params.user?.facilityName}</Typography></Grid>
-					<Grid xs={4}><Typography>{params.reason?.desc}</Typography></Grid>
-					<Grid xs={4}>
-						<Button
-							onClick={() => { setShowDetails(!showDetails); }}
+			<Grid container xs={12}>
+				<Grid xs={4}><Typography>{params.tenantName}</Typography></Grid>
+				<Grid xs={4}><Typography sx={blurredText}>{params.tenantPhone}</Typography></Grid>
+				<Grid xs={4}><Typography sx={blurredText}>{params.tenantEmail}</Typography></Grid>
+			</Grid>
+			<Grid container xs={12}>
+				{/* <Grid xs={4}><Typography>{params.evictedOn}</Typography></Grid> */}
+				<Grid xs={4}><Typography>{params.user?.facilityName}</Typography></Grid>
+				<Grid xs={4}><Typography>{params.reason.desc}</Typography></Grid>
+				<Grid xs={4}>
+					<Button
+						onClick={() => { setShowDetails(!showDetails); }}
+					>
+						{detailsButtonText}
+					</Button>
+					{(allowEdit) && (
+						<Form method='DELETE' onSubmit={handleDeleteClick}>
+							<Button type='submit'>
+								<DeleteForever
+								/>
+							</Button>
+						</Form>
+					)}
+				</Grid>
+				{showDetails && <Grid container>
+					{params.details.map((d) => (
+						<Item
+							xs={12}
+							key={d._id}
+							sx={{ marginBottom: 1 }}
 						>
-							{detailsButtonText}
-						</Button>
-						{showEditButtons && (
-							<Form method='DELETE' onSubmit={handleDeleteClick}>
-								<Button type='submit'>
-									<DeleteForever
-									/>
-								</Button>
-							</Form>
-						)}
-					</Grid>
-					{showDetails &&
-						<Grid xs={12}>
 							<Typography
 								variant='body1'
 								style={{ whiteSpace: 'pre-wrap' }}
 							>
-								{params.details}
+								{d.content}
 							</Typography>
-						</Grid>}
-					{showEditButtons && showDetails && <Grid xs={12}>
-						<Form method='POST' id='detailsForm' action='eviction'>
-							<TextField
-								name='details'
-								id='details'
-								label='Additional Details'
-								fullWidth
-							/>
-							<input type='hidden' name='id' id='id' value={params._id} />
-							<Box>
-								<Button type='submit'
-									variant='outlined'>
-									Append
-								</Button>
-								<Button type='reset'
-									variant='contained'>
-									Cancel
-								</Button>
-							</Box>
-						</Form>
-					</Grid>}
-				</Grid >
-			</Stack >
+						</Item>))}
+				</Grid>}
+				{allowEdit && showDetails && <Grid xs={12}>
+					<Form method='POST' id='detailsForm' action='eviction'>
+						<TextField
+							name='details'
+							id='details'
+							label='Additional Details'
+							fullWidth
+						/>
+						<input type='hidden' name='id' id='id' value={params._id} />
+						<Box>
+							<Button type='submit'
+								variant='outlined'>
+								Append
+							</Button>
+							<Button type='reset'
+								variant='contained'>
+								Cancel
+							</Button>
+						</Box>
+					</Form>
+				</Grid>}
+			</Grid >
 		</Item>
 	);
 }
