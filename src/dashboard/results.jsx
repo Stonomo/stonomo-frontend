@@ -7,7 +7,12 @@ import {
 } from '@mui/material'
 
 export async function loader({ params }) {
-	return await searchEvictions(params.q)
+	const { searchName, searchPhone, searchEmail } = params
+	return await searchEvictions(
+		searchName,
+		searchPhone,
+		searchEmail
+	)
 }
 
 export function ResultsPage({ params }) {

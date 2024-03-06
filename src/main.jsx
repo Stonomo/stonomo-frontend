@@ -83,7 +83,7 @@ const router = createBrowserRouter([
             action: searchAction,
             children: [
               {
-                path: 'results/:q',
+                path: 'results/:searchName/:searchPhone/:searchEmail?',
                 element: <ResultsPage />,
                 loader: resultsLoader,
               }]

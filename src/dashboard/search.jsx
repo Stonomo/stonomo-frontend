@@ -4,58 +4,96 @@ import { Button, Typography, Container, TextField, Stack } from "@mui/material";
 
 export async function action({ request }) {
 	const formData = await request.formData();
-	const q = formData.get('q')
-	return redirect(`results/${q}`)
+	const searchName = formData.get('searchName')
+	const searchPhone = formData.get('searchPhone')
+	const searchEmail = formData.get('searchEmail')
+	return redirect(`results/${searchName}/${searchPhone}/${searchEmail}`)
 }
 
 export async function loader({ params }) {
-	const q = params.q
-	return q
+	const searchName = params.searchName
+	const searchPhone = params.searchPhone
+	const searchEmail = params.searchEmail
+	return {
+		searchName: searchName,
+		searchPhone: searchPhone,
+		searchEmail: searchEmail
+	}
 }
 
 export function SearchPage() {
 	const q = useLoaderData()
-	const [searchValue, setSearchValue] = useState(q || '')
+	const [searchValues, setSearchValues] = useState(q || {})
 
 
 	function handleChange(e) {
-		setSearchValue(e.target.value);
+		const field = e.target.name
+		const value = e.target.value
+		setSearchValues(val => ({ ...val, [field]: value }));
 	}
 
 	return (
 		<Container
-		// sx={{ bgcolor: 'primary.dark' }}
+			sx={{ bgcolor: 'primary.main', padding: 2 }}
 		>
-			<Container
-				sx={{ textAlign: "center" }}
-			>
-				<Typography variant='h3' /*color='white'*/>
-					Search Eviction Database
-				</Typography>
-			</Container>
-			<Form method="POST">
-				<Stack alignItems='center' className="search">
-					<TextField
-						required
-						id="q"
-						name="q"
-						onChange={handleChange}
-						value={searchValue}
-						fullWidth
-					/>
-					<Button
-						variant="contained"
-						type="submit"
-					>
-						<Typography
-							variant="h6"
-							component="a"
+			<Container sx={{ bgcolor: 'white', borderRadius: 2 }}>
+				<Container
+					sx={{ textAlign: "center", padding: 2 }}
+				>
+					<Typography variant='h3'>
+						Search Eviction Database
+					</Typography>
+				</Container>
+				<Form method="POST">
+					<Stack alignItems='center' className="search">
+						<TextField
+							required
+							id="searchName"
+							name="searchName"
+							onChange={handleChange}
+							value={searchValues.searchName || ''}
+							fullWidth
+							autoFocus
+							placeholder="Name"
+							label="Name"
+							sx={{ margin: 1 }}
+						/>
+						<TextField
+							required
+							id="searchPhone"
+							name="searchPhone"
+							onChange={handleChange}
+							value={searchValues.searchPhone || ''}
+							fullWidth
+							placeholder="Phone Number"
+							label="Phone Number"
+							sx={{ margin: 1 }}
+						/>
+						<TextField
+							id="searchEmail"
+							name="searchEmail"
+							onChange={handleChange}
+							value={searchValues.searchEmail || ''}
+							fullWidth
+							placeholder="Email (Optional)"
+							label="Email"
+							sx={{ margin: 1 }}
+						/>
+						<Button
+							variant="contained"
+							type="submit"
+							sx={{ margin: 1 }}
 						>
-							Search
-						</Typography>
-					</Button>
-				</Stack>
-			</Form >
+							<Typography
+								variant="h6"
+								component="a"
+							>
+								Search
+							</Typography>
+						</Button>
+					</Stack>
+				</Form >
+			</Container>
 			<Outlet />
 		</Container>
 	);

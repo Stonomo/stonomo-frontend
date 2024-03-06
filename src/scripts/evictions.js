@@ -5,7 +5,7 @@ const byUserUrl = evictionsUrl + 'by-user/'
 const confirmUrl = evictionsUrl + 'confirm/'
 
 
-export async function searchEvictions(q) {
+export async function searchEvictions(searchName, searchPhone, searchEmail) {
 	const response = await fetch(
 		searchUrl,
 		{
@@ -14,7 +14,11 @@ export async function searchEvictions(q) {
 				'Content-Type': 'application/json',
 			},
 			credentials: 'include',
-			body: JSON.stringify({ q: q })
+			body: JSON.stringify({
+				searchName: searchName,
+				searchPhone, searchPhone,
+				searchEmail: searchEmail
+			})
 		})
 	if (!response.ok) {
 		throw new Error('HTTP status ' + response.status)
