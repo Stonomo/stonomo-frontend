@@ -4,8 +4,7 @@ import { createEviction, getConfirmEviction } from "../scripts/evictions";
 
 export async function loader({ params }) {
 	return await getConfirmEviction(
-		params.confirmId,
-		params.token
+		params.confirmId
 	)
 }
 
@@ -21,11 +20,11 @@ export async function action({ request }) {
 		formData.get('details'),
 		formData.get('user')
 	)
-	return redirect(`/dashboard/manage/${token}/${docId}`)
+	return redirect(`/dashboard/manage/${docId}`)
 }
 
 export function ConfirmPage() {
-	const params = useLoaderData()
+	const report = useLoaderData()
 
 	return (
 		<Container>
@@ -39,7 +38,7 @@ export function ConfirmPage() {
 					label='Tenant Name'
 					margin='dense'
 				>
-					{params['tenantName']}
+					{report.tenantName}
 				</ListItem>
 				<ListItem
 					id='tenantPhone'
@@ -47,7 +46,7 @@ export function ConfirmPage() {
 					label='Tenant Phone'
 					margin='dense'
 				>
-					{params.tenantPhone}
+					{report.tenantPhone}
 				</ListItem>
 				<ListItem
 					id='tenantEmail'
@@ -55,7 +54,7 @@ export function ConfirmPage() {
 					label='Tenant Email'
 					margin='dense'
 				>
-					{params.tenantEmail}
+					{report.tenantEmail}
 				</ListItem>
 				<ListItem
 					id='user'
@@ -63,7 +62,7 @@ export function ConfirmPage() {
 					label='User ID'
 					margin='dense'
 				>
-					{params.user?.facilityName}
+					{report.user.facilityName}
 				</ListItem>
 				<ListItem
 					id='reason'
@@ -71,7 +70,7 @@ export function ConfirmPage() {
 					label='Reason'
 					margin='dense'
 				>
-					{params.reason?.desc}
+					{report.reason.desc}
 				</ListItem>
 				<ListItem
 					id='evictedOn'
@@ -79,58 +78,63 @@ export function ConfirmPage() {
 					label='Evicted On'
 					margin='dense'
 				>
-					{params.evictedOn}
+					{report.evictedOn}
 				</ListItem>
-				<ListItem
-					id='details'
-					name='details'
-					label='Details'
-					margin='dense'
-				>
-					{params.details}
-				</ListItem>
+				{report.details.map((d) => (
+					<ListItem
+						key={d._id}
+						id='details'
+						name={'details-' + d._id}
+						label={'Details - ' + d.createdAt}
+						margin='dense'
+					>
+						{d.content}
+					</ListItem>
+				))}
 				<Form method='POST'>
 					<input
 						type='hidden'
 						id='tenantName'
 						name='tenantName'
-						value={params.tenantName}
+						value={report.tenantName}
 					/>
 					<input
 						type='hidden'
 						id='tenantPhone'
 						name='tenantPhone'
-						value={params.tenantPhone}
+						value={report.tenantPhone}
 					/>
 					<input
 						type='hidden'
 						id='tenantEmail'
 						name='tenantEmail'
-						value={params.tenantEmail}
+						value={report.tenantEmail}
 					/>
 					<input
 						type='hidden'
 						id='user'
 						name='user'
-						value={params.user?._id}
+						value={report.user?._id}
 					/>
 					<input
 						type='hidden'
 						id='reason'
 						name='reason'
-						value={params.reason?._id}
+						value={report.reason?._id}
 					/>
-					<input
-						type='hidden'
-						id='details'
-						name='details'
-						value={params.details}
-					/>
+					{report.details.map((d) => (
+						<input
+							key={d._id}
+							type='hidden'
+							id='details'
+							name='details'
+							value={d.content}
+						/>))}
 					<input
 						type='hidden'
 						id='evictedOn'
 						name='evictedOn'
-						value={params.evictedOn}
+						value={report.evictedOn}
 					/>
 					<Container direction='row' maxWidth='md'>
 						<Button
