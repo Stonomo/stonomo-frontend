@@ -38,7 +38,7 @@ export function SearchPage() {
 		>
 			<Container sx={{ bgcolor: 'white', borderRadius: 2 }}>
 				<Container
-					sx={{ textAlign: "center", padding: 2 }}
+					sx={{ textAlign: "center", paddingTop: 2 }}
 				>
 					<Typography variant='h3'>
 						Search Eviction Database
