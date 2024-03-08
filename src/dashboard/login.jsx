@@ -3,26 +3,6 @@ import { Form, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
 
-function Copyright() {
-	return (
-		<Container className='Copyright'
-			sx={{
-				textAlign: 'center',
-				padding: 1
-			}}>
-			<Box
-				sx={{ bgcolor: 'white', borderRadius: 2 }}>
-				{'Copyright © '}
-				<Link color='inherit' to='/'>
-					Stonomo LLC
-				</Link>{' '}
-				{new Date().getFullYear()}
-				{'.'}
-			</Box>
-		</Container>
-	);
-}
-
 export function SignIn() {
 	const { login } = useAuth();
 	const [failedLogin, setFailedLogin] = useState(false);
@@ -36,6 +16,26 @@ export function SignIn() {
 			password: data.get('password'),
 		};
 		login(user, () => setFailedLogin(true));
+	}
+
+	function Copyright() {
+		return (
+			<Container className='Copyright'
+				sx={{
+					textAlign: 'center',
+					padding: 1
+				}}>
+				<Box
+					sx={{ bgcolor: 'white', borderRadius: 2 }}>
+					{'Copyright © '}
+					<Link color='inherit' to='/'>
+						Stonomo LLC
+					</Link>{' '}
+					{new Date().getFullYear()}
+					{'.'}
+				</Box>
+			</Container>
+		);
 	}
 
 	return (

@@ -1,39 +1,21 @@
 import { Button, Container, InputLabel, MenuItem, Select, Stack, TextField, Typography, styled } from '@mui/material';
-import { Form, redirect, useActionData, useLoaderData } from 'react-router-dom';
+import { Form, useLoaderData } from 'react-router-dom';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { DatePicker } from '@mui/x-date-pickers';
-import { getReasons } from '../scripts/reasons';
 import dayjs from 'dayjs';
-import { createConfirmEviction } from '../scripts/evictions';
-
-export async function loader() {
-	return await getReasons()
-}
-
-export async function action({ request }) {
-	const formData = await request.formData()
-	const confirmDocId = await createConfirmEviction(
-		formData.get('tenantName'),
-		formData.get('tenantPhone'),
-		formData.get('tenantEmail'),
-		formData.get('evictedOn'),
-		formData.get('reason'),
-		formData.get('details'),
-		formData.get('user')
-	)
-	console.log(confirmDocId)
-	return redirect(`/dashboard/confirm/${confirmDocId}`)
-}
+import { maskPhoneInput } from '../scripts/validation';
 
 export function ReportPage() {
-	const [formData, setFormData] = useLocalStorage('reportForm', {})
-	const actionData = useActionData()
+	const [formData, setFormData] = useLocalStorage('reportForm', {
+		tenantName: '',
+		tenantPhone: '',
+		tenantEmail: '',
+		reason: '',
+		evictedOn: '',
+		details: '',
+	})
+	// const actionData = useActionData()
 	const reasons = useLoaderData()
-
-	function handlePhoneInput(e) {
-		const m = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/)
-		e.target.value = !m[2] ? m[1] : '(' + m[1] + ')' + m[2] + (m[3] ? '-' + m[3] : '')
-	}
 
 	function handleChange(e) {
 		let field, value
@@ -44,8 +26,7 @@ export function ReportPage() {
 			field = e.target.name
 			value = e.target.value
 		}
-		setFormData(d => ({ ...d, [field]: value }))
-		// console.log(formData)
+		setFormData(({ ...formData, [field]: value }))
 	}
 
 	const TextInput = styled(TextField)(({ theme }) => ({
@@ -68,11 +49,12 @@ export function ReportPage() {
 							label='Tenant Name'
 							required
 							onChange={handleChange}
-							value={formData.tenantName || ''}
+							value={formData.tenantName}
+							defaultValue=''
 							placeholder='Tenant Name'
 						/>
-						{actionData?.tenantName &&
-							<Typography variant='small'>{actionData?.tenantName}</Typography>}
+						{/* {actionData?.tenantName &&
+							<Typography variant='small'>{actionData?.tenantName}</Typography>} */}
 						<TextInput
 							id='tenantPhone'
 							name='tenantPhone'
@@ -80,23 +62,25 @@ export function ReportPage() {
 							label='Tenant Phone'
 							required
 							onChange={handleChange}
-							onInput={handlePhoneInput}
-							value={formData.tenantPhone || ''}
+							onInput={maskPhoneInput}
+							value={formData.tenantPhone}
+							defaultValue=''
 							placeholder='Tenant Phone'
 						/>
-						{actionData?.tenantPhone &&
-							<Typography variant='small'>{actionData?.tenantPhone}</Typography>}
+						{/* {actionData?.tenantPhone &&
+							<Typography variant='small'>{actionData?.tenantPhone}</Typography>} */}
 						<TextInput
 							id='tenantEmail'
 							name='tenantEmail'
 							type='email'
 							label='Tenant Email'
 							onChange={handleChange}
-							value={formData.tenantEmail || ''}
+							value={formData.tenantEmail}
+							defaultValue=''
 							placeholder='Tenant Email'
 						/>
-						{actionData?.tenantEmail &&
-							<Typography variant='small'>{actionData?.tenantEmail}</Typography>}
+						{/* {actionData?.tenantEmail &&
+							<Typography variant='small'>{actionData?.tenantEmail}</Typography>} */}
 						<DatePicker
 							id='evictedOn'
 							name='evictedOn'
@@ -108,14 +92,15 @@ export function ReportPage() {
 							required
 							sx={{ marginTop: 2 }}
 						/>
-						{actionData?.evictedOn &&
-							<Typography variant='small'>{actionData?.evictedOn}</Typography>}
+						{/* {actionData?.evictedOn &&
+							<Typography variant='small'>{actionData?.evictedOn}</Typography>} */}
 						<InputLabel id='reason-select-label'>Reason For Eviction</InputLabel>
 						<Select
 							id='reason'
 							name='reason'
 							labelId='reason-select-label'
-							value={formData.reason || ''}
+							value={formData.reason}
+							defaultValue=''
 							onChange={handleChange}
 							displayEmpty
 							required
@@ -130,20 +115,20 @@ export function ReportPage() {
 								</MenuItem>
 							))}
 						</Select>
-						<TextField
+						<TextInput
 							id='details'
 							name='details'
 							label='Details'
-							placeholder='Please provide as many details as possible'
+							placeholder='Please provide as much detail as possible'
 							multiline
 							required
 							rows={4}
-							margin='dense'
 							onChange={handleChange}
 							value={formData.details}
+							defaultValue=''
 						/>
-						{actionData?.details &&
-							<Typography variant='small'>{actionData?.details}</Typography>}
+						{/* {actionData?.details &&
+							<Typography variant='small'>{actionData?.details}</Typography>} */}
 						<Container direction='row' maxWidth='md'
 							sx={{ textAlign: 'center', margin: 1 }}>
 							<Button

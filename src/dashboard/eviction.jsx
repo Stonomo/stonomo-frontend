@@ -10,15 +10,7 @@ import {
 } from '@mui/material';
 import { DeleteForever } from '@mui/icons-material';
 import { useState } from 'react';
-import { modifyEviction } from '../scripts/evictions';
 import { Form } from 'react-router-dom';
-
-export async function action({ request }) {
-	const formData = await request.formData()
-	const id = formData.get('id')
-	const details = formData.get('details')
-	return await modifyEviction(id, details)
-}
 
 export function Eviction({ params, allowEdit = false, setConfirmDelete }) {
 	const [showDetails, setShowDetails] = useState(false)
@@ -47,8 +39,7 @@ export function Eviction({ params, allowEdit = false, setConfirmDelete }) {
 				<Grid xs={4}><Typography sx={blurredText}>{params.tenantEmail}</Typography></Grid>
 			</Grid>
 			<Grid container xs={12}>
-				{/* <Grid xs={4}><Typography>{params.evictedOn}</Typography></Grid> */}
-				<Grid xs={4}><Typography>{params.user?.facilityName}</Typography></Grid>
+				<Grid xs={4}><Typography>{params.user.facilityName}</Typography></Grid>
 				<Grid xs={4}><Typography>{params.reason.desc}</Typography></Grid>
 				<Grid xs={4}>
 					<Button

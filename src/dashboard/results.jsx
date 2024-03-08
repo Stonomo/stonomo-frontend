@@ -1,19 +1,10 @@
 import { useLoaderData } from 'react-router'
-import { Eviction } from '../routes/eviction'
+import { Eviction } from './eviction'
 import { searchEvictions } from '../scripts/evictions'
 import {
 	Container,
 	Stack
 } from '@mui/material'
-
-export async function loader({ params }) {
-	const { searchName, searchPhone, searchEmail } = params
-	return await searchEvictions(
-		searchName,
-		searchPhone,
-		searchEmail
-	)
-}
 
 export function ResultsPage({ params }) {
 	const results = useLoaderData()

@@ -2,28 +2,9 @@ import { useState } from "react";
 import { Form, Outlet, redirect, useLoaderData } from "react-router-dom";
 import { Button, Typography, Container, TextField, Stack } from "@mui/material";
 
-export async function action({ request }) {
-	const formData = await request.formData();
-	const searchName = formData.get('searchName')
-	const searchPhone = formData.get('searchPhone')
-	const searchEmail = formData.get('searchEmail')
-	return redirect(`results/${searchName}/${searchPhone}/${searchEmail}`)
-}
-
-export async function loader({ params }) {
-	const searchName = params.searchName
-	const searchPhone = params.searchPhone
-	const searchEmail = params.searchEmail
-	return {
-		searchName: searchName,
-		searchPhone: searchPhone,
-		searchEmail: searchEmail
-	}
-}
-
 export function SearchPage() {
-	const q = useLoaderData()
-	const [searchValues, setSearchValues] = useState(q || {})
+	const searchParams = useLoaderData()
+	const [searchValues, setSearchValues] = useState(searchParams || {})
 
 
 	function handleChange(e) {

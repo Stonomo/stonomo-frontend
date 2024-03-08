@@ -1,10 +1,6 @@
-import {
-	useLoaderData
-} from "react-router"
-import {
-	deleteEviction,
-	getEvictionsByUser
-} from "../scripts/evictions"
+import { useState } from "react"
+import { useLoaderData } from "react-router"
+import { deleteEviction } from "../scripts/evictions"
 import {
 	Button,
 	Container,
@@ -16,13 +12,7 @@ import {
 	Stack,
 	Typography
 } from "@mui/material"
-import { useState } from "react"
-import { Eviction } from "../routes/eviction"
-
-
-export async function loader() {
-	return await getEvictionsByUser()
-}
+import { Eviction } from "./eviction"
 
 export function ManagePage() {
 	const [evictions, setEvictions] = useState(useLoaderData())
