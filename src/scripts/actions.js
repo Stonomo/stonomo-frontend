@@ -1,5 +1,9 @@
 import { redirect } from "react-router"
-import { createConfirmEviction, createEviction, modifyEviction } from "./evictions"
+import {
+	createConfirmEviction,
+	createEviction,
+	modifyEviction
+} from "../routes/evictions.js"
 
 export async function searchAction({ request }) {
 	const formData = await request.formData();

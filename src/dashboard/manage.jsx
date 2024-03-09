@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useLoaderData } from "react-router"
-import { deleteEviction } from "../scripts/evictions"
+import { deleteEviction } from "../routes/evictions.js"
 import {
 	Button,
 	Container,

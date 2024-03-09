@@ -1,12 +1,11 @@
 import { useLoaderData } from 'react-router'
 import { Eviction } from './eviction'
-import { searchEvictions } from '../scripts/evictions'
 import {
 	Container,
 	Stack
 } from '@mui/material'
 
-export function ResultsPage({ params }) {
+export function ResultsPage() {
 	const results = useLoaderData()
 
 	return (

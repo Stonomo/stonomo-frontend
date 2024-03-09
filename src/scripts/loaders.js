@@ -2,9 +2,9 @@ import {
 	getConfirmEviction,
 	getEvictionsByUser,
 	searchEvictions
-} from './evictions';
-import { getReasons } from './reasons'
-import { getProfile } from './users';
+} from '../routes/evictions.js';
+import { getReasons } from '../routes/reasons.js'
+import { getProfile } from '../routes/users.js';
 
 export async function searchLoader({ params }) {
 	return {

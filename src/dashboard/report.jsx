@@ -3,7 +3,11 @@ import { Form, useLoaderData } from 'react-router-dom';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
-import { maskPhoneInput } from '../scripts/validation';
+import { maskPhoneInput } from '../scripts/handlers';
+
+const TextInput = styled(TextField)(({ theme }) => ({
+	marginTop: 12
+}))
 
 export function ReportPage() {
 	const [formData, setFormData] = useLocalStorage('reportForm', {
@@ -29,12 +33,15 @@ export function ReportPage() {
 		setFormData(({ ...formData, [field]: value }))
 	}
 
-	const TextInput = styled(TextField)(({ theme }) => ({
-		marginTop: 12
-	}))
-
 	return (
-		<Container sx={{ bgcolor: 'primary.main', paddingBottom: 2, borderBottomLeftRadius: 5, borderBottomRightRadius: 5 }}>
+		<Container
+			sx={{
+				bgcolor: 'primary.main',
+				paddingBottom: 2,
+				borderBottomLeftRadius: 5,
+				borderBottomRightRadius: 5
+			}}
+		>
 			<Container sx={{ bgcolor: 'white', borderRadius: 2 }}>
 				<Typography variant='h3'>
 					Report an Eviction
