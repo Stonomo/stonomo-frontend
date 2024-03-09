@@ -15,7 +15,12 @@ export function SearchPage() {
 
 	return (
 		<Container
-			sx={{ bgcolor: 'primary.main', paddingBottom: 2, borderBottomLeftRadius: 5, borderBottomRightRadius: 5 }}
+			sx={{
+				bgcolor: 'primary.main',
+				paddingBottom: 2,
+				borderBottomLeftRadius: 5,
+				borderBottomRightRadius: 5
+			}}
 		>
 			<Container sx={{ bgcolor: 'white', borderRadius: 2 }}>
 				<Container
@@ -40,7 +45,6 @@ export function SearchPage() {
 							sx={{ margin: 1 }}
 						/>
 						<TextField
-							required
 							id="searchPhone"
 							name="searchPhone"
 							onChange={handleChange}

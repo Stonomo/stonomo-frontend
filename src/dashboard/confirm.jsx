@@ -10,7 +10,14 @@ export function ConfirmPage() {
 	}))
 
 	return (
-		<Container sx={{ bgcolor: 'primary.main' }}>
+		<Container
+			sx={{
+				bgcolor: 'primary.main',
+				paddingBottom: 2,
+				borderBottomLeftRadius: 5,
+				borderBottomRightRadius: 5
+			}}
+		>
 			<Container sx={{ bgcolor: 'white', borderRadius: 2 }}>
 				<Typography variant='h3'>
 					Confirm Report
