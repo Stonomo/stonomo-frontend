@@ -41,7 +41,7 @@ export function ProtectedLayout() {
 				</Button>
 				<Button
 					sx={buttonStyle}
-					onClick={() => navigate('profile/settings')}>
+					onClick={() => navigate('settings')}>
 					Settings
 				</Button>
 				<Button
