@@ -1,9 +1,20 @@
 import { useLoaderData } from 'react-router'
-import { Eviction } from './eviction'
+import { EvictionCard } from './evictionCard'
 import {
 	Container,
-	Stack
+	Paper,
+	Stack,
+	styled
 } from '@mui/material'
+
+const Item = styled(Paper)(({ theme }) => ({
+	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+	...theme.typography.body2,
+	padding: theme.spacing(1),
+	textAlign: 'center',
+	color: theme.palette.text.secondary,
+}));
+
 
 export function ResultsPage() {
 	const results = useLoaderData()
@@ -13,9 +24,15 @@ export function ResultsPage() {
 			<Stack>
 				{(results && results.length) ? results.map((result) => (
 					<Container key={result._id} sx={{ my: 1 }} >
-						<Eviction params={result} />
+						<EvictionCard params={result} />
 					</Container>
-				)) : 'No results found'}
+				)) :
+					<Container>
+						<Item>
+							<Typography>No reported evictions found</Typography>
+						</Item>
+					</Container>
+				}
 			</Stack>
 		</Container >
 	)

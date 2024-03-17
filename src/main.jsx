@@ -24,9 +24,10 @@ import { ResultsPage } from './dashboard/results'
 import { ReportPage } from './dashboard/report'
 import { ConfirmPage } from './dashboard/confirm'
 import { ManagePage } from './dashboard/manage'
-import { Eviction } from './dashboard/eviction'
+import { EvictionPage } from './dashboard/evictionPage'
 import {
 	confirmLoader,
+	evictionLoader,
 	manageLoader,
 	profileLoader,
 	reportLoader,
@@ -72,10 +73,6 @@ const router = createBrowserRouter([
 						path: 'settings',
 						element: <SettingsPage />,
 					}, {
-						path: 'user/:username',
-						element: <UserPage />,
-						loader: userLoader
-					}, {
 						path: 'search',
 						element: <SearchPage />,
 						action: searchAction,
@@ -99,13 +96,15 @@ const router = createBrowserRouter([
 						path: 'manage/:docId?',
 						element: <ManagePage />,
 						loader: manageLoader,
-						children: [
-							{
-								path: 'eviction',
-								element: <Eviction />,
-								action: evictionAction,
-							}
-						]
+					}, {
+						path: 'eviction/:evictionId',
+						element: <EvictionPage />,
+						loader: evictionLoader,
+						action: evictionAction,
+					}, {
+						path: 'user/:userId',
+						element: <UserPage />,
+						loader: userLoader
 					}]
 			}]
 	}

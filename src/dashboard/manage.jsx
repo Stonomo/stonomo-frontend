@@ -1,7 +1,8 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useLoaderData } from "react-router"
 import { deleteEviction } from "../routes/evictions.js"
 import {
+	Box,
 	Button,
 	Container,
 	Dialog,
@@ -9,58 +10,48 @@ import {
 	DialogContent,
 	DialogContentText,
 	DialogTitle,
+	Paper,
 	Stack,
-	Typography
+	Typography,
+	styled
 } from "@mui/material"
-import { Eviction } from "./eviction"
+import { EvictionCard } from "./evictionCard.jsx"
 
-export function ManagePage() {
-	const [evictions, setEvictions] = useState(useLoaderData())
-	const [confirmDelete, setConfirmDelete] = useState('')
+const Item = styled(Paper)(({ theme }) => ({
+	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+	...theme.typography.body2,
+	padding: theme.spacing(1),
+	textAlign: 'center',
+	color: theme.palette.text.secondary,
+}));
 
-	function ConfirmDeleteDialog() {
-		async function handleClose(del = false) {
-			setConfirmDelete('')
-			if (del) {
-				return setEvictions(await deleteEviction(confirmDelete, token))
-			}
-		}
-
-		return (
-			<Dialog
-				open={confirmDelete !== ''}
-				onClose={handleClose}
-				aria-labelledby='delete-dialog-title'
-				aria-describedby='delete-dialog-desc'
-			>
-				<DialogTitle
-					id='delete-dialog-title'
-				>
-					{'Delete Eviction Record?'}
-				</DialogTitle>
-				<DialogContent>
-					<DialogContentText id='delete-dialog-desc'>
-						Are you sure you want to delete this record? (CANNOT BE UNDONE!)
-					</DialogContentText>
-				</DialogContent>
-				<DialogActions>
-					<Button variant='outlined' onClick={() => handleClose(true)}>Yes</Button>
-					<Button variant='contained' onClick={() => handleClose(false)}>No</Button>
-				</DialogActions>
-			</Dialog>
-		)
-	}
+export function ManagePage({ params }) {
+	const evictions = useLoaderData()
+	const scrollRef = useRef()
 
 	return (
-		<Container sx={{ bgcolor: 'primary.main' }}>
+		<Container
+			sx={{ bgcolor: 'primary.main' }}
+		>
 			<Stack>
 				{evictions.length ? evictions.map((e) => (
-					<Container key={e._id} sx={{ my: 1 }}>
-						<Eviction params={e} allowEdit={true} setConfirmDelete={setConfirmDelete} />
+					<Box
+						key={e._id}
+						sx={{ my: 1 }}
+					>
+						<EvictionCard
+							params={e}
+							managePage={true}
+						/>
+					</Box>
+				)) :
+					<Container>
+						<Item>
+							<Typography color='white'>No reported evictions found</Typography>
+						</Item>
 					</Container>
-				)) : <Typography color='white'>No reported evictions found</Typography>}
-			</Stack>
-			{confirmDelete !== '' && <ConfirmDeleteDialog id={confirmDelete} />}
-		</Container>
+				}
+			</Stack >
+		</Container >
 	);
 }

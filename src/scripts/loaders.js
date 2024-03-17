@@ -1,10 +1,11 @@
 import {
 	getConfirmEviction,
+	getEviction,
 	getEvictionsByUser,
 	searchEvictions
 } from '../routes/evictions.js';
 import { getReasons } from '../routes/reasons.js'
-import { getProfile } from '../routes/users.js';
+import { getProfile, getUser } from '../routes/users.js';
 
 export async function searchLoader({ params }) {
 	return {
@@ -39,5 +40,9 @@ export async function profileLoader() {
 }
 
 export async function userLoader({ params }) {
-	return await getUser(params.username)
+	return await getUser(params.userId)
+}
+
+export async function evictionLoader({ params }) {
+	return await getEviction(params.evictionId)
 }
