@@ -8,7 +8,6 @@ export const AuthProvider = () => {
 	const refreshToken = useRef();
 	const navigate = useNavigate();
 
-	// call this function when you want to authenticate the user
 	const login = (data, onFailCallback) => {
 		fetch(import.meta.env.VITE_STONOMO_API_URL + 'login', {
 			method: 'POST',
@@ -22,7 +21,6 @@ export const AuthProvider = () => {
 				if (!response.ok) {
 					throw new Error('HTTP status ' + response.status);
 				}
-				// console.log('HTTP status ' + response.status)
 				// decode and cache refresh token from response
 				response.json().then((data) => {
 					refreshToken.current = jwtDecode(data)
@@ -32,7 +30,7 @@ export const AuthProvider = () => {
 	}
 
 	const isLoggedIn = () => {
-		if (!refreshToken.current || refreshToken.current === '') {
+		if (!refreshToken.current || refreshToken.current === undefined || refreshToken.current === '') {
 			return false
 		}
 		const expiresAt = refreshToken.current.exp
@@ -44,17 +42,28 @@ export const AuthProvider = () => {
 		navigate('/', { replace: true })
 	}
 
+	const getLoggedInUserId = () => {
+		return refreshToken.current?.id
+	}
+
+	const getLoggedInUserName = () => {
+		return refreshToken.current?.name
+	}
 
 	const loginCallback = useCallback(login, [login])
 	const logoutCallback = useCallback(logout, [logout])
 	const isLoggedInCallback = useCallback(isLoggedIn, [isLoggedIn])
+	const getLoggedInUserIdCallback = useCallback(getLoggedInUserId, [getLoggedInUserId])
+	const getLoggedInUserNameCallback = useCallback(getLoggedInUserName, [getLoggedInUserName])
 	const value = useMemo(
 		() => ({
 			isLoggedIn: isLoggedInCallback,
 			login: loginCallback,
-			logout: logoutCallback
+			logout: logoutCallback,
+			currentUserId: getLoggedInUserIdCallback,
+			currentUserName: getLoggedInUserNameCallback
 		}),
-		[isLoggedInCallback, loginCallback, logoutCallback]
+		[isLoggedInCallback, loginCallback, logoutCallback, getLoggedInUserNameCallback]
 	);
 	return (
 		<AuthContext.Provider value={value}>
