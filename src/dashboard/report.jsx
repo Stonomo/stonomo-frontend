@@ -126,9 +126,8 @@ export function ReportPage() {
 							id='details'
 							name='details'
 							label='Details'
-							placeholder='Please provide as much detail as possible'
+							placeholder='Please provide any details. Do not include personal information.'
 							multiline
-							required
 							rows={4}
 							onChange={handleChange}
 							value={formData.details}
