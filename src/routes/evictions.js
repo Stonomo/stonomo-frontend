@@ -122,7 +122,7 @@ export async function getEviction(id) {
 	if (!response.ok) {
 		throw new Error('Failed to fetch eviction. Status: ' + response.status);
 	}
-	return response.text();
+	return response.json();
 }
 
 export async function getConfirmEviction(id) {
@@ -157,7 +157,7 @@ export async function modifyEviction(id, details) {
 	if (!response.ok) {
 		throw new Error('Failed to modify eviction. Status: ' + response.status);
 	}
-	return response.json();
+	return response.text();
 }
 
 export async function deleteEviction(id) {
@@ -174,5 +174,5 @@ export async function deleteEviction(id) {
 	if (!response.ok) {
 		throw new Error('Failed to delete eviction. Status: ' + response.status);
 	}
-	return response.json();
+	return response.text();
 }
