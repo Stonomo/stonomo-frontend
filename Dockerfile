@@ -1,6 +1,10 @@
 FROM node:lts-slim
 WORKDIR /app
+RUN corepack enable
+COPY package.json .
+COPY yarn.lock .
+RUN yarn install
 COPY . .
-RUN npm install
-CMD ["node", "src/main.jsx"]
-EXPOSE 3000
+RUN yarn run build
+CMD [ "yarn", "run", "preview" ]
+EXPOSE 80
