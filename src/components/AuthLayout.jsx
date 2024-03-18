@@ -1,5 +1,5 @@
 import { useOutlet } from "react-router-dom";
-import { AuthProvider } from "../hooks/useAuth";
+import { AuthProvider } from "../providers/AuthProvider";
 
 export const AuthLayout = () => {
 	const outlet = useOutlet();
