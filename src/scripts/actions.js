@@ -29,7 +29,6 @@ export async function reportAction({ request }) {
 
 export async function confirmAction({ request }) {
 	const formData = await request.formData()
-	const token = formData.get('token');
 	const docId = await createEviction(
 		formData.get('tenantName'),
 		formData.get('tenantPhone'),

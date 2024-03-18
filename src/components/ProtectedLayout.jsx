@@ -1,6 +1,6 @@
-import { Navigate, Outlet, Link, Form, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { AppBar, Button, Container, Toolbar } from "@mui/material";
+import { Button, Container } from "@mui/material";
 import { useEffect } from "react";
 import { NavBar } from "./NavBar";
 
@@ -53,4 +53,4 @@ export function ProtectedLayout() {
 			<Outlet />
 		</Container >
 	)
-};
+}

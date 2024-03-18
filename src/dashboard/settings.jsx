@@ -1,8 +1,6 @@
 import { Container, Typography } from "@mui/material";
-import { useAuth } from "../hooks/useAuth";
 
 export function SettingsPage() {
-	const { isLoggedIn } = useAuth();
 
 	return (
 		<Container

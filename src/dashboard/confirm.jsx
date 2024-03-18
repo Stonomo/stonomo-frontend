@@ -1,12 +1,11 @@
-import { Button, Container, Stack, TextField, Typography } from "@mui/material";
+import { Button, Container, Stack, TextField, Typography, styled } from "@mui/material";
 import { Form, useLoaderData } from "react-router-dom";
 
 export function ConfirmPage() {
 	const report = useLoaderData()
 
-	const ConfirmInput = styled(TextField)(({ theme }) => ({
-		marginTop: 12,
-		disabled
+	const ConfirmInput = styled(TextField)(() => ({
+		marginTop: 12
 	}))
 
 	return (
@@ -29,6 +28,7 @@ export function ConfirmPage() {
 							name='tenantName'
 							label='Tenant Name'
 							value={report.tenantName}
+							disabled
 						/>
 
 						<ConfirmInput
@@ -36,6 +36,7 @@ export function ConfirmPage() {
 							name='tenantPhone'
 							label='Tenant Phone'
 							value={report.tenantPhone}
+							disabled
 						/>
 
 						<ConfirmInput
@@ -43,24 +44,28 @@ export function ConfirmPage() {
 							name='tenantEmail'
 							label='Tenant Email'
 							value={report.tenantEmail}
+							disabled
 						/>
 						<ConfirmInput
 							id='user'
 							name='user'
 							label='User ID'
 							value={report.user.facilityName}
+							disabled
 						/>
 						<ConfirmInput
 							id='reason'
 							name='reason'
 							label='Reason'
 							value={report.reason.desc}
+							disabled
 						/>
 						<ConfirmInput
 							id='evictedOn'
 							name='evictedOn'
 							label='Evicted On'
 							value={report.evictedOn}
+							disabled
 						/>
 						{report.details.map((d) => (
 							<ConfirmInput
@@ -69,6 +74,7 @@ export function ConfirmPage() {
 								name={'details-' + d._id}
 								label={'Details - ' + d.createdAt}
 								value={d.content}
+								disabled
 							/>
 
 						))}

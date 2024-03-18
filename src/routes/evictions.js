@@ -16,7 +16,7 @@ export async function searchEvictions(searchName, searchPhone, searchEmail) {
 			credentials: 'include',
 			body: JSON.stringify({
 				searchName: searchName,
-				searchPhone, searchPhone,
+				searchPhone: searchPhone,
 				searchEmail: searchEmail
 			})
 		})

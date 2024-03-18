@@ -1,10 +1,8 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { Button, Container } from "@mui/material";
 import { NavBar } from "./NavBar";
-import { useAuth } from "../hooks/useAuth";
 
 export const HomeLayout = () => {
-	const { isLoggedIn } = useAuth()
 	const navigate = useNavigate()
 
 	const buttonStyle = { color: 'white' }
