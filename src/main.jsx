@@ -93,7 +93,7 @@ const router = createBrowserRouter([
 						loader: confirmLoader,
 						action: confirmAction,
 					}, {
-						path: 'manage/:docId?',
+						path: 'manage',
 						element: <ManagePage />,
 						loader: manageLoader,
 					}, {
