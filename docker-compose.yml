@@ -1,0 +1,9 @@
+version: "3"
+services:
+  stonomo-frontend:
+    container_name: stonomo-frontend
+    image: stonomo/frontend
+    build:
+      dockerfile: ./Dockerfile
+    ports:
+      - "80:80"
