@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Outlet, redirect, useLoaderData } from "react-router-dom";
+import { Form, Outlet, useLoaderData } from "react-router-dom";
 import { Button, Typography, Container, TextField, Stack } from "@mui/material";
 
 export function SearchPage() {

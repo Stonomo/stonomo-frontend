@@ -1,3 +1,12 @@
+import { useEffect, useState } from 'react';
+import {
+	Form,
+	Link,
+	useFetcher,
+	useLoaderData,
+	useNavigate,
+	useSearchParams
+} from 'react-router-dom';
 import {
 	Unstable_Grid2 as Grid,
 	styled,
@@ -15,8 +24,6 @@ import {
 	DialogActions
 } from '@mui/material';
 import { DeleteForever } from '@mui/icons-material';
-import { useEffect, useState } from 'react';
-import { Form, Link, redirect, useFetcher, useLoaderData, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { deleteEviction } from '../routes/evictions';
 
@@ -41,7 +48,7 @@ export function EvictionPage() {
 		if (fetcher.state === "idle" && !fetcher.data) {
 			fetcher.load(`/dashboard/eviction/${eviction._id}`);
 		}
-	}, [fetcher]);
+	}, [fetcher, eviction._id]);
 
 	function ConfirmDeleteDialog() {
 		async function handleClose(del = false) {

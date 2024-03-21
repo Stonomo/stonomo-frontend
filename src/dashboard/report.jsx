@@ -5,7 +5,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { maskPhoneInput } from '../scripts/handlers';
 
-const TextInput = styled(TextField)(({ theme }) => ({
+const TextInput = styled(TextField)(() => ({
 	marginTop: 12
 }))
 
