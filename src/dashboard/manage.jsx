@@ -1,15 +1,7 @@
-import { useRef, useState } from "react"
 import { useLoaderData } from "react-router"
-import { deleteEviction } from "../routes/evictions.js"
 import {
 	Box,
-	Button,
 	Container,
-	Dialog,
-	DialogActions,
-	DialogContent,
-	DialogContentText,
-	DialogTitle,
 	Paper,
 	Stack,
 	Typography,
@@ -25,9 +17,8 @@ const Item = styled(Paper)(({ theme }) => ({
 	color: theme.palette.text.secondary,
 }));
 
-export function ManagePage({ params }) {
+export function ManagePage() {
 	const evictions = useLoaderData()
-	const scrollRef = useRef()
 
 	return (
 		<Container
@@ -35,15 +26,12 @@ export function ManagePage({ params }) {
 		>
 			<Stack>
 				{evictions.length ? evictions.map((e) => (
-					<Box
-						key={e._id}
-						sx={{ my: 1 }}
-					>
+					<Container key={e._id} sx={{ my: 1 }} >
 						<EvictionCard
-							params={e}
+							eviction={e}
 							managePage={true}
 						/>
-					</Box>
+					</Container>
 				)) :
 					<Container>
 						<Item>

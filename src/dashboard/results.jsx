@@ -4,6 +4,7 @@ import {
 	Container,
 	Paper,
 	Stack,
+	Typography,
 	styled
 } from '@mui/material'
 
@@ -24,7 +25,7 @@ export function ResultsPage() {
 			<Stack>
 				{(results && results.length) ? results.map((result) => (
 					<Container key={result._id} sx={{ my: 1 }} >
-						<EvictionCard params={result} />
+						<EvictionCard eviction={result} />
 					</Container>
 				)) :
 					<Container>

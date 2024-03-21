@@ -14,9 +14,7 @@ const Item = styled(Paper)(({ theme }) => ({
 	color: theme.palette.text.secondary,
 }));
 
-export function EvictionCard({ params, managePage = false }) {
-	const eviction = params
-
+export function EvictionCard({ eviction, managePage = false }) {
 	const blurredText = { color: 'transparent', textShadow: '0 0 10px rgba(0,0,0,0.75)', userSelect: 'none' };
 
 	return (
@@ -28,7 +26,7 @@ export function EvictionCard({ params, managePage = false }) {
 			</Grid>
 			<Grid container xs={12}>
 				<Grid xs={4}>
-					<Link to={`/dashboard/user/${eviction.user?._id}`}>
+					<Link to={`/dashboard/user/${eviction.user._id}`}>
 						<Typography>{eviction.user.facilityName}</Typography>
 					</Link>
 					<Typography>{`${eviction.user.facilityAddress.city}, ${eviction.user.facilityAddress.state}`}</Typography>
