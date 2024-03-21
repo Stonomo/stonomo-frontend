@@ -96,7 +96,7 @@ export async function getEvictionsByUser() {
 	const response = await fetch(
 		byUserUrl,
 		{
-			method: 'POST',
+			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
 			},
