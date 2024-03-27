@@ -1,13 +1,15 @@
-import { useLoaderData } from "react-router"
+import { useState } from "react";
+import { Outlet } from "react-router"
+import { Form } from "react-router-dom";
 import {
-	Box,
+	Button,
 	Container,
 	Paper,
 	Stack,
+	TextField,
 	Typography,
 	styled
 } from "@mui/material"
-import { EvictionCard } from "./evictionCard.jsx"
 
 const Item = styled(Paper)(({ theme }) => ({
 	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -18,28 +20,79 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export function ManagePage() {
-	const evictions = useLoaderData()
+	const [searchValues, setSearchValues] = useState({})
+
+	function handleChange(e) {
+		const field = e.target.name
+		const value = e.target.value
+		setSearchValues(val => ({ ...val, [field]: value }));
+	}
 
 	return (
 		<Container
-			sx={{ bgcolor: 'primary.main' }}
+			sx={{
+				bgcolor: 'primary.main',
+				paddingBottom: 2,
+			}}
 		>
-			<Stack>
-				{evictions.length ? evictions.map((e) => (
-					<Container key={e._id} sx={{ my: 1 }} >
-						<EvictionCard
-							eviction={e}
-							managePage={true}
+			<Container sx={{ bgcolor: 'white', borderRadius: 2 }}>
+				<Container
+					sx={{ textAlign: "center", paddingTop: 1 }}
+				>
+					<Typography variant='h3'>
+						Manage Reported Evictions
+					</Typography>
+				</Container>
+				<Form method="POST">
+					<Stack alignItems='center' className="search">
+						<TextField
+							required
+							id="searchName"
+							name="searchName"
+							onChange={handleChange}
+							value={searchValues.searchName || ''}
+							fullWidth
+							autoFocus
+							placeholder="Name"
+							label="Name"
+							sx={{ margin: 1 }}
 						/>
-					</Container>
-				)) :
-					<Container>
-						<Item>
-							<Typography color='white'>No reported evictions found</Typography>
-						</Item>
-					</Container>
-				}
-			</Stack >
+						<TextField
+							id="searchPhone"
+							name="searchPhone"
+							onChange={handleChange}
+							value={searchValues.searchPhone || ''}
+							fullWidth
+							placeholder="Phone Number (Optional)"
+							label="Phone Number"
+							sx={{ margin: 1 }}
+						/>
+						<TextField
+							id="searchEmail"
+							name="searchEmail"
+							onChange={handleChange}
+							value={searchValues.searchEmail || ''}
+							fullWidth
+							placeholder="Email (Optional)"
+							label="Email"
+							sx={{ margin: 1 }}
+						/>
+						<Button
+							variant="contained"
+							type="submit"
+							sx={{ margin: 1 }}
+						>
+							<Typography
+								variant="h6"
+								component="a"
+							>
+								Search
+							</Typography>
+						</Button>
+					</Stack>
+				</Form >
+			</Container>
+			<Outlet />
 		</Container >
 	);
 }

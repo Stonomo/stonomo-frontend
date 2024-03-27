@@ -4,13 +4,26 @@ import {
 	createEviction,
 	modifyEviction
 } from "../routes/evictions.js"
+import { createSearchParams } from "react-router-dom";
 
 export async function searchAction({ request }) {
 	const formData = await request.formData();
-	const searchName = formData.get('searchName')
-	const searchPhone = formData.get('searchPhone')
-	const searchEmail = formData.get('searchEmail')
-	return redirect(`results/${searchName}/${searchPhone}/${searchEmail}`)
+	const params = {
+		searchName: formData.get('searchName'),
+		searchPhone: formData.get('searchPhone'),
+		searchEmail: formData.get('searchEmail')
+	}
+	return redirect(`results?${createSearchParams(params)}`)
+}
+
+export async function searchManageAction({ request }) {
+	const formData = await request.formData();
+	const params = {
+		searchName: formData.get('searchName'),
+		searchPhone: formData.get('searchPhone'),
+		searchEmail: formData.get('searchEmail')
+	}
+	return redirect(`results?${createSearchParams(params)}`)
 }
 
 export async function reportAction({ request }) {

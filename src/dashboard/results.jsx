@@ -17,7 +17,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 
-export function ResultsPage() {
+export function ResultsPage({ managePage }) {
 	const results = useLoaderData()
 
 	return (
@@ -25,7 +25,7 @@ export function ResultsPage() {
 			<Stack>
 				{(results && results.length) ? results.map((result) => (
 					<Container key={result._id} sx={{ my: 1 }} >
-						<EvictionCard eviction={result} />
+						<EvictionCard eviction={result} managePage={managePage} />
 					</Container>
 				)) :
 					<Container>

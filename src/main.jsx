@@ -29,6 +29,7 @@ import {
 	confirmLoader,
 	evictionLoader,
 	manageLoader,
+	manageResultsLoader,
 	profileLoader,
 	reportLoader,
 	resultsLoader,
@@ -38,7 +39,8 @@ import {
 	confirmAction,
 	evictionAction,
 	reportAction,
-	searchAction
+	searchAction,
+	searchManageAction
 } from './scripts/actions'
 
 import '@fontsource/roboto/300.css'
@@ -78,7 +80,7 @@ const router = createBrowserRouter([
 						action: searchAction,
 						children: [
 							{
-								path: 'results/:searchName/:searchPhone?/:searchEmail?',
+								path: 'results',
 								element: <ResultsPage />,
 								loader: resultsLoader,
 							}]
@@ -95,7 +97,12 @@ const router = createBrowserRouter([
 					}, {
 						path: 'manage',
 						element: <ManagePage />,
-						loader: manageLoader,
+						action: searchManageAction,
+						children: [{
+							path: 'results',
+							element: <ResultsPage managePage={true} />,
+							loader: manageResultsLoader,
+						}]
 					}, {
 						path: 'eviction/:evictionId',
 						element: <EvictionPage />,

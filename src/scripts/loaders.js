@@ -1,8 +1,10 @@
+import { useSearchParams } from 'react-router-dom';
 import {
 	getConfirmEviction,
 	getEviction,
 	getEvictionsByUser,
-	searchEvictions
+	searchEvictions,
+	searchManageEvictions
 } from '../routes/evictions.js';
 import { getReasons } from '../routes/reasons.js'
 import { getProfile, getUser } from '../routes/users.js';
@@ -15,16 +17,28 @@ export async function searchLoader({ params }) {
 	}
 }
 
-export async function resultsLoader({ params }) {
+export async function resultsLoader({ request }) {
+	const url = new URL(request.url);
+	const params = url.searchParams
 	return await searchEvictions(
-		params.searchName,
-		params.searchPhone,
-		params.searchEmail
+		params.get('searchName'),
+		params.get('searchPhone'),
+		params.get('searchEmail')
 	)
 }
 
 export async function manageLoader() {
 	return await getEvictionsByUser()
+}
+
+export async function manageResultsLoader({ request }) {
+	const url = new URL(request.url);
+	const params = url.searchParams
+	return await searchManageEvictions(
+		params.get('searchName'),
+		params.get('searchPhone'),
+		params.get('searchEmail')
+	)
 }
 
 export async function reportLoader() {

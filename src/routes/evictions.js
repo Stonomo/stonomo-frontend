@@ -1,13 +1,35 @@
 const STONOMO_API_URL = import.meta.env.VITE_STONOMO_API_URL
 const searchUrl = STONOMO_API_URL + 'search/'
+const searchByUserUrl = searchUrl + 'by-user/'
 const evictionsUrl = STONOMO_API_URL + 'evictions/'
-const byUserUrl = evictionsUrl + 'by-user/'
+const evictionsByUserUrl = evictionsUrl + 'by-user/'
 const confirmUrl = evictionsUrl + 'confirm/'
 
 
 export async function searchEvictions(searchName, searchPhone, searchEmail) {
 	const response = await fetch(
 		searchUrl,
+		{
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			credentials: 'include',
+			body: JSON.stringify({
+				searchName: searchName,
+				searchPhone: searchPhone,
+				searchEmail: searchEmail
+			})
+		})
+	if (!response.ok) {
+		throw new Error('HTTP status ' + response.status)
+	}
+	return response.json()
+}
+
+export async function searchManageEvictions(searchName, searchPhone, searchEmail) {
+	const response = await fetch(
+		searchByUserUrl,
 		{
 			method: 'POST',
 			headers: {
@@ -94,7 +116,7 @@ export async function createConfirmEviction(
 
 export async function getEvictionsByUser() {
 	const response = await fetch(
-		byUserUrl,
+		evictionsByUserUrl,
 		{
 			method: 'GET',
 			headers: {
@@ -104,7 +126,7 @@ export async function getEvictionsByUser() {
 		}
 	);
 	if (!response.ok) {
-		throw new Error('Failed to fetch eviction list. Status: ' + response.status);
+		throw new Error('Failed to fetch eviction list. Status: ' + response.status + ' ' + response.error);
 	}
 	return response.json();
 }
