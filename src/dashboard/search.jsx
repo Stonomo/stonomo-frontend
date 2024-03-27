@@ -50,7 +50,7 @@ export function SearchPage() {
 							onChange={handleChange}
 							value={searchValues.searchPhone || ''}
 							fullWidth
-							placeholder="Phone Number"
+							placeholder="Phone Number (Optional)"
 							label="Phone Number"
 							sx={{ margin: 1 }}
 						/>
