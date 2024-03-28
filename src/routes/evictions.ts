@@ -84,12 +84,12 @@ export async function createEviction(
 }
 
 export async function createConfirmEviction(
-	tenantName: string,
-	tenantPhone: string,
-	tenantEmail: string,
-	evictedOn: string,
-	reason: string,
-	details: string
+	tenantName: FormDataEntryValue | null,
+	tenantPhone: FormDataEntryValue | null,
+	tenantEmail: FormDataEntryValue | null,
+	evictedOn: FormDataEntryValue | null,
+	reason: FormDataEntryValue | null,
+	details: FormDataEntryValue | null
 ) {
 	const response = await fetch(
 		confirmUrl,

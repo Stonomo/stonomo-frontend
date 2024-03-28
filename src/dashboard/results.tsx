@@ -18,7 +18,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 
-export function ResultsPage(managePage: boolean) {
+export function ResultsPage({ managePage }: { managePage: boolean }) {
 	const results: evictionCardFields[] = useLoaderData() as evictionCardFields[]
 
 	return (
