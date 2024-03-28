@@ -3,7 +3,7 @@ import { Form, useLoaderData } from 'react-router-dom';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
-import { maskPhoneInput } from '../scripts/handlers';
+import { maskPhoneInput } from '../lib/handlers';
 
 const TextInput = styled(TextField)(() => ({
 	marginTop: 12

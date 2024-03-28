@@ -3,7 +3,7 @@ import {
 	createConfirmEviction,
 	createEviction,
 	modifyEviction
-} from "../routes/evictions.js"
+} from "../routes/evictions"
 import { createSearchParams } from "react-router-dom";
 
 export async function searchAction({ request }) {

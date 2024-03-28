@@ -7,6 +7,7 @@ import {
 	Typography,
 	styled
 } from '@mui/material'
+import { evictionCardFields } from '../lib/types';
 
 const Item = styled(Paper)(({ theme }) => ({
 	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -17,13 +18,13 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 
-export function ResultsPage({ managePage }) {
-	const results = useLoaderData()
+export function ResultsPage(managePage: boolean) {
+	const results: evictionCardFields[] = useLoaderData() as evictionCardFields[]
 
 	return (
 		<Container sx={{ bgcolor: 'primary.main', my: 2 }}>
 			<Stack>
-				{(results && results.length) ? results.map((result) => (
+				{(results && results.length) ? results.map((result: evictionCardFields) => (
 					<Container key={result._id} sx={{ my: 1 }} >
 						<EvictionCard eviction={result} managePage={managePage} />
 					</Container>

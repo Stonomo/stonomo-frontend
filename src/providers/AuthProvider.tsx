@@ -1,13 +1,13 @@
 import { useCallback, useMemo, useRef } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode'
+import { JwtPayload, jwtDecode } from 'jwt-decode'
 import { AuthContext } from '../contexts/AuthContext';
 
-export const AuthProvider = () => {
-	const refreshToken = useRef();
+export const AuthProvider = (props: any) => {
+	const refreshToken = useRef<any>();
 	const navigate = useNavigate();
 
-	const login = (data, onFailCallback) => {
+	const login = (data: { username: any; password: any; }, onFailCallback: (() => PromiseLike<never> | void) | null) => {
 		fetch(import.meta.env.VITE_STONOMO_API_URL + 'login', {
 			method: 'POST',
 			headers: {
@@ -28,7 +28,7 @@ export const AuthProvider = () => {
 			}).catch(onFailCallback);
 	}
 
-	const isLoggedIn = () => {
+	const isLoggedIn = (): boolean => {
 		if (!refreshToken.current || refreshToken.current === undefined || refreshToken.current === '') {
 			return false
 		}
@@ -37,16 +37,16 @@ export const AuthProvider = () => {
 	}
 
 	const logout = () => {
-		refreshToken.current = ''
+		refreshToken.current = useRef().current
 		navigate('/', { replace: true })
 	}
 
-	const getLoggedInUserId = () => {
-		return refreshToken.current?.id
+	const getLoggedInUserId = (): (string | null) => {
+		return refreshToken.current ? refreshToken.current.id : null
 	}
 
-	const getLoggedInUserName = () => {
-		return refreshToken.current?.name
+	const getLoggedInUserName = (): (string | null) => {
+		return refreshToken.current ? refreshToken.current.name : null
 	}
 
 	const loginCallback = useCallback(login, [login])

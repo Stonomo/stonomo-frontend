@@ -7,7 +7,7 @@ export function SignIn() {
 	const { login } = useAuth();
 	const [failedLogin, setFailedLogin] = useState(false);
 
-	async function handleSubmit(event) {
+	async function handleSubmit(event: { preventDefault: () => void; currentTarget: HTMLFormElement | undefined; }) {
 		event.preventDefault();
 
 		const data = new FormData(event.currentTarget);

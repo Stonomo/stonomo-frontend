@@ -9,7 +9,7 @@ import {
 	Typography,
 	styled
 } from "@mui/material";
-import { maskPhoneInput } from "../scripts/handlers";
+import { maskPhoneInput } from "../lib/handlers";
 import { useState } from "react";
 
 const Label = styled(Typography)({

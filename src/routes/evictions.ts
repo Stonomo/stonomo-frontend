@@ -1,3 +1,5 @@
+import { DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_FORM_ACTIONS } from "react"
+
 const STONOMO_API_URL = import.meta.env.VITE_STONOMO_API_URL
 const searchUrl = STONOMO_API_URL + 'search/'
 const searchByUserUrl = searchUrl + 'by-user/'
@@ -6,7 +8,7 @@ const evictionsByUserUrl = evictionsUrl + 'by-user/'
 const confirmUrl = evictionsUrl + 'confirm/'
 
 
-export async function searchEvictions(searchName, searchPhone, searchEmail) {
+export async function searchEvictions(searchName: string, searchPhone: string | null, searchEmail: string | null) {
 	const response = await fetch(
 		searchUrl,
 		{
@@ -27,7 +29,7 @@ export async function searchEvictions(searchName, searchPhone, searchEmail) {
 	return response.json()
 }
 
-export async function searchManageEvictions(searchName, searchPhone, searchEmail) {
+export async function searchManageEvictions(searchName: string, searchPhone: string | null, searchEmail: string | null) {
 	const response = await fetch(
 		searchByUserUrl,
 		{
@@ -49,12 +51,12 @@ export async function searchManageEvictions(searchName, searchPhone, searchEmail
 }
 
 export async function createEviction(
-	tenantName,
-	tenantPhone,
-	tenantEmail,
-	evictedOn,
-	reason,
-	details
+	tenantName: string,
+	tenantPhone: string,
+	tenantEmail: string,
+	evictedOn: string,
+	reason: string,
+	details: string
 ) {
 	// TODO: add check for required fields
 	const response = await fetch(
@@ -82,12 +84,12 @@ export async function createEviction(
 }
 
 export async function createConfirmEviction(
-	tenantName,
-	tenantPhone,
-	tenantEmail,
-	evictedOn,
-	reason,
-	details
+	tenantName: string,
+	tenantPhone: string,
+	tenantEmail: string,
+	evictedOn: string,
+	reason: string,
+	details: string
 ) {
 	const response = await fetch(
 		confirmUrl,
@@ -126,12 +128,12 @@ export async function getEvictionsByUser() {
 		}
 	);
 	if (!response.ok) {
-		throw new Error('Failed to fetch eviction list. Status: ' + response.status + ' ' + response.error);
+		throw new Error('Failed to fetch eviction list. Status: ' + response.status);
 	}
 	return response.json();
 }
 
-export async function getEviction(id) {
+export async function getEviction(id: string) {
 	const response = await fetch(
 		evictionsUrl + id,
 		{
@@ -147,7 +149,7 @@ export async function getEviction(id) {
 	return response.json();
 }
 
-export async function getConfirmEviction(id) {
+export async function getConfirmEviction(id: string) {
 	const response = await fetch(
 		confirmUrl + id,
 		{
@@ -163,7 +165,7 @@ export async function getConfirmEviction(id) {
 	return response.json();
 }
 
-export async function modifyEviction(id, details) {
+export async function modifyEviction(id: string, details: string) {
 	// TODO: add check for required fields
 	const response = await fetch(
 		evictionsUrl + id,
@@ -182,7 +184,7 @@ export async function modifyEviction(id, details) {
 	return response.text();
 }
 
-export async function deleteEviction(id) {
+export async function deleteEviction(id: string) {
 	const response = await fetch(
 		evictionsUrl + id,
 		{

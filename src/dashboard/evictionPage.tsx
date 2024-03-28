@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { FormEvent, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useState } from 'react';
 import {
 	Form,
 	Link,
@@ -26,6 +26,7 @@ import {
 import { DeleteForever } from '@mui/icons-material';
 import { useAuth } from '../hooks/useAuth';
 import { deleteEviction } from '../routes/evictions';
+import { evictionPageFields } from '../lib/types';
 
 const Item = styled(Paper)(({ theme }) => ({
 	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -39,9 +40,9 @@ export function EvictionPage() {
 	const navigate = useNavigate()
 	const fetcher = useFetcher()
 	const [searchParams] = useSearchParams()
-	const [confirmDelete, setConfirmDelete] = useState('')
+	const [confirmDelete, setConfirmDelete] = useState<string>('')
 	const { currentUserId } = useAuth()
-	const eviction = useLoaderData()
+	const eviction: evictionPageFields = useLoaderData() as evictionPageFields
 	const allowEdit = searchParams.get('m') === 'edit' && currentUserId() === eviction.user._id
 
 	useEffect(() => {
@@ -50,11 +51,11 @@ export function EvictionPage() {
 		}
 	}, [fetcher, eviction._id]);
 
-	function ConfirmDeleteDialog() {
-		async function handleClose(del = false) {
+	function ConfirmDeleteDialog(params: { id: string }) {
+		async function handleClose(del: boolean) {
 			setConfirmDelete('')
 			if (del) {
-				await deleteEviction(confirmDelete)
+				await deleteEviction(params.id)
 				return navigate('/dashboard/manage')
 			}
 		}
@@ -62,7 +63,7 @@ export function EvictionPage() {
 		return (
 			<Dialog
 				open={confirmDelete !== ''}
-				onClose={handleClose}
+				onClose={() => handleClose(false)}
 				aria-labelledby='delete-dialog-title'
 				aria-describedby='delete-dialog-desc'
 			>
@@ -84,7 +85,7 @@ export function EvictionPage() {
 		)
 	}
 
-	function handleDeleteClick(e) {
+	function handleDeleteClick(e: FormEvent) {
 		e.preventDefault()
 		setConfirmDelete(eviction._id)
 	}
@@ -122,7 +123,7 @@ export function EvictionPage() {
 					</Grid>
 					<Grid xs={4}>
 						{(allowEdit) && (
-							<Form method='DELETE' onSubmit={handleDeleteClick}>
+							<Form method='DELETE' onSubmit={(e) => handleDeleteClick(e)}>
 								<Button type='submit'>
 									<DeleteForever />
 								</Button>
@@ -131,9 +132,8 @@ export function EvictionPage() {
 					</Grid>
 					<Grid container xs={12}>
 						<Stack>
-							{eviction.details?.map((d) => (
+							{eviction.details?.map((d: { _id: Key | null | undefined; content: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }) => (
 								<Item
-									xs={12}
 									key={d._id}
 									sx={{ marginBottom: 1 }}
 								>

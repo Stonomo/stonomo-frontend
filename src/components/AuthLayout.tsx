@@ -1,7 +1,7 @@
 import { useOutlet } from "react-router-dom";
 import { AuthProvider } from "../providers/AuthProvider";
 
-export const AuthLayout = () => {
+export const AuthLayout = (props: any) => {
 	const outlet = useOutlet();
 
 	return (

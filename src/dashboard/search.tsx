@@ -1,13 +1,18 @@
 import { useState } from "react";
 import { Form, Outlet, useLoaderData } from "react-router-dom";
 import { Button, Typography, Container, TextField, Stack } from "@mui/material";
+import { searchFields } from "../lib/types";
 
 export function SearchPage() {
 	const searchParams = useLoaderData()
-	const [searchValues, setSearchValues] = useState(searchParams || {})
+	const [searchValues, setSearchValues] = useState<searchFields>((searchParams as searchFields) || {
+		searchName: '',
+		searchPhone: '',
+		searchEmail: ''
+	})
 
 
-	function handleChange(e) {
+	function handleChange(e: { target: { name: string; value: any; }; }) {
 		const field = e.target.name
 		const value = e.target.value
 		setSearchValues(val => ({ ...val, [field]: value }));

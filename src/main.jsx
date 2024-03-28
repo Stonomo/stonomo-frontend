@@ -34,14 +34,14 @@ import {
 	reportLoader,
 	resultsLoader,
 	userLoader
-} from './scripts/loaders'
+} from './lib/loaders'
 import {
 	confirmAction,
 	evictionAction,
 	reportAction,
 	searchAction,
 	searchManageAction
-} from './scripts/actions'
+} from './lib/actions'
 
 import '@fontsource/roboto/300.css'
 import theme from './theme'
@@ -81,7 +81,7 @@ const router = createBrowserRouter([
 						children: [
 							{
 								path: 'results',
-								element: <ResultsPage />,
+								element: <ResultsPage managePage={false} />,
 								loader: resultsLoader,
 							}]
 					}, {

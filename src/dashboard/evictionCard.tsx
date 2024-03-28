@@ -5,6 +5,8 @@ import {
 	Typography
 } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { evictionCardFields } from '../lib/types';
+import { ManagePage } from './manage';
 
 const Item = styled(Paper)(({ theme }) => ({
 	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -14,7 +16,9 @@ const Item = styled(Paper)(({ theme }) => ({
 	color: theme.palette.text.secondary,
 }));
 
-export function EvictionCard({ eviction, managePage = false }) {
+export function EvictionCard(params: { eviction: evictionCardFields, managePage: boolean }) {
+	const eviction = params.eviction
+	const onManagePage = params.managePage || false
 	const blurredText = { color: 'transparent', textShadow: '0 0 10px rgba(0,0,0,0.75)', userSelect: 'none' };
 
 	return (
@@ -33,7 +37,7 @@ export function EvictionCard({ eviction, managePage = false }) {
 				</Grid>
 				<Grid xs={4}><Typography>{eviction.reason.desc}</Typography></Grid>
 				<Grid xs={4}>
-					<Link to={`/dashboard/eviction/${eviction._id}?m=${managePage ? 'edit' : ''}`}>
+					<Link to={`/dashboard/eviction/${eviction._id}?m=${onManagePage ? 'edit' : ''}`}>
 						Show Details
 					</Link>
 				</Grid>

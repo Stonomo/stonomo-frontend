@@ -15,9 +15,9 @@ export async function getProfile() {
 	return response.json()
 }
 
-export async function getUser(userid) {
+export async function getUser(userId: string) {
 	const response = await fetch(
-		usersUrl + userid,
+		usersUrl + userId,
 		{
 			headers: {
 				'Content-Type': 'application/json',
