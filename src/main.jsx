@@ -121,11 +121,9 @@ createRoot(document.getElementById('root')).render(
 	<StrictMode>
 		<ThemeProvider theme={theme}>
 			<LocalizationProvider dateAdapter={AdapterDayjs}>
-				<Container maxWidth='xl'>
-					<Container maxWidth='md'>
-						<CssBaseline />
-						<RouterProvider router={router} />
-					</Container>
+				<Container maxWidth='md'>
+					<CssBaseline />
+					<RouterProvider router={router} />
 				</Container>
 			</LocalizationProvider>
 		</ThemeProvider>
