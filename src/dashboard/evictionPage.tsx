@@ -1,4 +1,10 @@
-import { FormEvent, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useState } from 'react';
+import {
+	ChangeEvent,
+	FormEvent,
+	Key,
+	useEffect,
+	useState
+} from 'react';
 import {
 	Form,
 	Link,
@@ -27,6 +33,7 @@ import { DeleteForever } from '@mui/icons-material';
 import { useAuth } from '../hooks/useAuth';
 import { deleteEviction } from '../routes/evictions';
 import { evictionPageFields } from '../lib/types';
+import dayjs from 'dayjs';
 
 const Item = styled(Paper)(({ theme }) => ({
 	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -40,6 +47,7 @@ export function EvictionPage() {
 	const navigate = useNavigate()
 	const fetcher = useFetcher()
 	const [searchParams] = useSearchParams()
+	const [appendDetails, setAppendDetails] = useState<string>('')
 	const [confirmDelete, setConfirmDelete] = useState<string>('')
 	const { currentUserId } = useAuth()
 	const eviction: evictionPageFields = useLoaderData() as evictionPageFields
@@ -48,6 +56,7 @@ export function EvictionPage() {
 	useEffect(() => {
 		if (fetcher.state === "idle" && !fetcher.data) {
 			fetcher.load(`/dashboard/eviction/${eviction._id}`);
+			setAppendDetails('')
 		}
 	}, [fetcher, eviction._id]);
 
@@ -83,6 +92,10 @@ export function EvictionPage() {
 				</DialogActions>
 			</Dialog>
 		)
+	}
+
+	function handleChange(e: ChangeEvent<HTMLInputElement>) {
+		setAppendDetails(e.target.value);
 	}
 
 	function handleDeleteClick(e: FormEvent) {
@@ -122,17 +135,11 @@ export function EvictionPage() {
 						<Typography>{eviction.reason?.desc}</Typography>
 					</Grid>
 					<Grid xs={4}>
-						{(allowEdit) && (
-							<Form method='DELETE' onSubmit={(e) => handleDeleteClick(e)}>
-								<Button type='submit'>
-									<DeleteForever />
-								</Button>
-							</Form>
-						)}
+						<Typography>{dayjs(eviction.evictedOn).format('MMM-DD-YYYY')}</Typography>
 					</Grid>
 					<Grid container xs={12}>
 						<Stack>
-							{eviction.details?.map((d: { _id: Key | null | undefined; content: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; }) => (
+							{eviction.details?.map((d: { _id: Key; content: string; createdAt: string }) => (
 								<Item
 									key={d._id}
 									sx={{ marginBottom: 1 }}
@@ -141,21 +148,23 @@ export function EvictionPage() {
 										variant='body1'
 										style={{ whiteSpace: 'pre-wrap' }}
 									>
-										{d.content}
+										{dayjs(d.createdAt).format('MMM-DD-YYYY')}: {d.content}
 									</Typography>
 								</Item>))}
 						</Stack>
 					</Grid>
 					{allowEdit && <Grid xs={12}>
-						<fetcher.Form method='PATCH' id='detailsForm'>
-							<TextField
-								name='details'
-								id='details'
-								label='Additional Details'
-								fullWidth
-							/>
-							<input type='hidden' name='id' id='id' value={eviction._id} />
-							<Box>
+						<TextField
+							name='details'
+							id='details'
+							label='Additional Details'
+							fullWidth
+							value={appendDetails}
+							onChange={handleChange}
+						/>
+						<Box>
+							<fetcher.Form method='PATCH' id='detailsForm'>
+								<input type='hidden' name='id' id='id' value={eviction._id} />
 								<Button type='submit'
 									variant='outlined'>
 									Append
@@ -164,8 +173,13 @@ export function EvictionPage() {
 									variant='contained'>
 									Cancel
 								</Button>
-							</Box>
-						</fetcher.Form>
+							</fetcher.Form>
+							<Form method='DELETE' onSubmit={(e) => handleDeleteClick(e)}>
+								<Button type='submit'>
+									<DeleteForever />
+								</Button>
+							</Form>
+						</Box>
 					</Grid>}
 				</Grid >
 			</Item>
