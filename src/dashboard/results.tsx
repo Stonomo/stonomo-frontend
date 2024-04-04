@@ -23,6 +23,7 @@ export function ResultsPage({ managePage }: { managePage: boolean }) {
 
 	return (
 		<Container sx={{ bgcolor: 'primary.main', my: 2 }}>
+			<Typography sx={{ color: 'white' }}>{results.length} records found</Typography>
 			<Stack>
 				{(results && results.length) ? results.map((result: evictionCardFields) => (
 					<Container key={result._id} sx={{ my: 1 }} >
