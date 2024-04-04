@@ -1,6 +1,6 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { Button, Container } from "@mui/material";
+import { Box, Button, Container } from "@mui/material";
 import { useEffect } from "react";
 import { NavBar } from "./NavBar";
 
@@ -17,22 +17,22 @@ export function ProtectedLayout() {
 	})
 
 	return (
-		<Container>
+		<Box>
 			<NavBar>
 				<Button
 					sx={buttonStyle}
 					onClick={() => navigate('search')}>
-					Search Evictions
+					Search
 				</Button>
 				<Button
 					sx={buttonStyle}
 					onClick={() => navigate('report')}>
-					Report Eviction
+					Report
 				</Button>
 				<Button
 					sx={buttonStyle}
 					onClick={() => navigate('manage')}>
-					Manage Reports
+					Manage
 				</Button>
 				<Button
 					sx={buttonStyle}
@@ -44,13 +44,8 @@ export function ProtectedLayout() {
 					onClick={() => navigate('settings')}>
 					Settings
 				</Button>
-				<Button
-					sx={buttonStyle}
-					onClick={() => { logout(); navigate('/') }}>
-					Log Out
-				</Button>
 			</NavBar>
 			<Outlet />
-		</Container >
+		</Box >
 	)
 }
