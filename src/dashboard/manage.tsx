@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Outlet } from "react-router"
 import { Form } from "react-router-dom";
 import {
@@ -10,6 +10,7 @@ import {
 	Typography,
 	styled
 } from "@mui/material"
+import { searchFields } from "../lib/types";
 
 const Item = styled(Paper)(({ theme }) => ({
 	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -20,9 +21,13 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export function ManagePage() {
-	const [searchValues, setSearchValues] = useState({})
+	const [searchValues, setSearchValues] = useState<searchFields>({
+		searchName: '',
+		searchPhone: '',
+		searchEmail: ''
+	})
 
-	function handleChange(e) {
+	function handleChange(e: ChangeEvent<HTMLInputElement>) {
 		const field = e.target.name
 		const value = e.target.value
 		setSearchValues(val => ({ ...val, [field]: value }));
