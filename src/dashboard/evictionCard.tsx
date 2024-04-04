@@ -7,6 +7,7 @@ import {
 import { Link } from 'react-router-dom';
 import { evictionCardFields } from '../lib/types';
 import { ManagePage } from './manage';
+import dayjs from 'dayjs';
 
 const Item = styled(Paper)(({ theme }) => ({
 	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -17,27 +18,20 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export function EvictionCard(params: { eviction: evictionCardFields, managePage: boolean }) {
-	const eviction = params.eviction
+	const ev = params.eviction
 	const onManagePage = params.managePage || false
-	const blurredText = { color: 'transparent', textShadow: '0 0 10px rgba(0,0,0,0.75)', userSelect: 'none' };
+	const matchCriteria = `Matches: ${ev.nameMatches ? 'Name' : ''} ${ev.phoneMatches ? 'Phone' : ''} ${ev.emailMatches ? 'Email' : ''}`
 
 	return (
 		<Item>
 			<Grid container xs={12}>
-				<Grid xs={4}><Typography>{eviction.tenantName}</Typography></Grid>
-				<Grid xs={4}><Typography sx={blurredText}>XXX-XX-XXXX</Typography></Grid>
-				<Grid xs={4}><Typography sx={blurredText}>placeholder@facility.com</Typography></Grid>
-			</Grid>
-			<Grid container xs={12}>
 				<Grid xs={4}>
-					<Link to={`/dashboard/user/${eviction.user._id}`}>
-						<Typography>{eviction.user.facilityName}</Typography>
-					</Link>
-					<Typography>{`${eviction.user.facilityAddress.city}, ${eviction.user.facilityAddress.state}`}</Typography>
+					<Typography>{dayjs(ev.evictedOn).format('MMM-DD-YYYY')}</Typography>
 				</Grid>
-				<Grid xs={4}><Typography>{eviction.reason.desc}</Typography></Grid>
+				<Grid xs={4}><Typography>{matchCriteria}</Typography></Grid>
 				<Grid xs={4}>
-					<Link to={`/dashboard/eviction/${eviction._id}?m=${onManagePage ? 'edit' : ''}`}>
+
+					<Link to={`/dashboard/eviction/${ev._id}?m=${onManagePage ? 'edit' : ''}`}>
 						Show Details
 					</Link>
 				</Grid>
