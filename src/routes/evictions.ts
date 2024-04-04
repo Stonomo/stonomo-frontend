@@ -51,14 +51,8 @@ export async function searchManageEvictions(searchName: string, searchPhone: str
 }
 
 export async function createEviction(
-	tenantName: string,
-	tenantPhone: string,
-	tenantEmail: string,
-	evictedOn: string,
-	reason: string,
-	details: string
+	confirmId: string
 ) {
-	// TODO: add check for required fields
 	const response = await fetch(
 		evictionsUrl,
 		{
@@ -68,12 +62,7 @@ export async function createEviction(
 			},
 			credentials: 'include',
 			body: JSON.stringify({
-				tenantName: tenantName,
-				tenantPhone: tenantPhone,
-				tenantEmail: tenantEmail,
-				evictedOn: evictedOn,
-				reason: reason,
-				details: details
+				id: confirmId
 			})
 		}
 	);

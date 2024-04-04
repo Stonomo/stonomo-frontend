@@ -41,15 +41,9 @@ export async function reportAction({ request }: { request: Request }) {
 
 export async function confirmAction({ request }: { request: Request }) {
 	const formData = await request.formData()
-	const docId = await createEviction(
-		formData.get('tenantName') as string,
-		formData.get('tenantPhone') as string,
-		formData.get('tenantEmail') as string,
-		formData.get('evictedOn') as string,
-		formData.get('reason') as string,
-		formData.get('details') as string
-	)
-	return redirect(`/dashboard/manage/${docId}`)
+	const confirmId = formData.get('confirmId')?.toString() || ''
+	const docId = await createEviction(confirmId)
+	return redirect(`/dashboard/eviction/${docId}?m=edit`)
 }
 
 export async function evictionAction({ request }: { request: Request }) {
