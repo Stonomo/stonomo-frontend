@@ -10,17 +10,17 @@ import {
 	styled
 } from "@mui/material";
 import { maskPhoneInput } from "../lib/handlers";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
+import { profileFields } from "../lib/types";
 
 const Label = styled(Typography)({
-	textAlign: 'right',
 	height: '100%',
 	width: '100%',
 	padding: '10px'
 })
 
 export function ProfilePage() {
-	const profile = useLoaderData()
+	const profile = useLoaderData() as profileFields
 	const [formData, setFormData] = useState({
 		facilityName: profile.facilityName,
 		facilityAddress: profile.facilityAddress,
@@ -29,7 +29,7 @@ export function ProfilePage() {
 	})
 	const [changed, setChanged] = useState(false)
 
-	function handleChange(e) {
+	function handleChange(e: FormEvent<HTMLInputElement> & { target: HTMLInputElement }) {
 		setFormData(({ ...formData, [e.target.name]: e.target.value }))
 		setChanged(true)
 	}
@@ -41,59 +41,90 @@ export function ProfilePage() {
 			borderBottomLeftRadius: 5,
 			borderBottomRightRadius: 5
 		}}>
-			<Container sx={{ bgcolor: 'white', borderRadius: 2 }}>
+			<Container sx={{ bgcolor: 'white', borderRadius: 2, paddingBottom: 2 }}>
 				<Form method='POST'>
 					<Stack>
-						<Grid container>
-							<Grid xs={4}>
-								<Label variant='h5'>Facility Name:</Label>
-							</Grid>
-							<Grid xs={8}>
+						<Grid xs={4}>
+							<Label variant='h5'>Facility Name:</Label>
+						</Grid>
+						<Grid xs={8}>
+							<TextField
+								onChange={handleChange}
+								defaultValue={formData.facilityName}
+								fullWidth
+							/>
+						</Grid>
+						<Grid xs={4}>
+							<Label variant='h5'>Address:</Label>
+						</Grid>
+						<Grid xs={8}>
+							<Stack direction='column'>
 								<TextField
+									id='street1'
 									onChange={handleChange}
-									defaultValue={formData.facilityName}
+									defaultValue={formData.facilityAddress.street1}
+									placeholder="Street 1"
 									fullWidth
 								/>
-							</Grid>
-						</Grid>
-						<Grid container>
-							<Grid xs={4}>
-								<Label variant='h5'>Address:</Label>
-							</Grid>
-							<Grid xs={8}>
 								<TextField
+									id='street2'
 									onChange={handleChange}
-									defaultValue={formData.facilityAddress}
+									defaultValue={formData.facilityAddress.street2}
+									placeholder="Street 2"
 									fullWidth
 								/>
-							</Grid>
-						</Grid>
-						<Grid container>
-							<Grid xs={4}>
-								<Label variant='h5'>Phone:</Label>
-							</Grid>
-							<Grid xs={8}>
 								<TextField
+									id='street3'
 									onChange={handleChange}
-									onInput={maskPhoneInput}
-									defaultValue={formData.facilityPhone}
+									defaultValue={formData.facilityAddress.street3}
+									placeholder="Street 3"
 									fullWidth
 								/>
-							</Grid>
-						</Grid>
-						<Grid container>
-							<Grid xs={4}>
-								<Label variant='h5'>Email:</Label>
-							</Grid>
-							<Grid xs={8}>
 								<TextField
+									id='city'
 									onChange={handleChange}
-									defaultValue={formData.facilityEmail}
+									defaultValue={formData.facilityAddress.city}
+									placeholder="City"
 									fullWidth
 								/>
-							</Grid>
+								<TextField
+									id='state'
+									onChange={handleChange}
+									defaultValue={formData.facilityAddress.state}
+									placeholder="State"
+									fullWidth
+								/>
+								<TextField
+									id='zip'
+									onChange={handleChange}
+									defaultValue={formData.facilityAddress.zip}
+									placeholder="Zip"
+									fullWidth
+								/>
+							</Stack>
 						</Grid>
-						{changed && <Container direction='row' maxWidth='md'
+						<Grid xs={4}>
+							<Label variant='h5'>Phone:</Label>
+						</Grid>
+						<Grid xs={8}>
+							<TextField
+								onChange={handleChange}
+								onInput={maskPhoneInput}
+								defaultValue={formData.facilityPhone}
+								fullWidth
+							/>
+						</Grid>
+						<Grid xs={4}>
+							<Label variant='h5'>Email:</Label>
+						</Grid>
+						<Grid xs={8}>
+							<TextField
+								onChange={handleChange}
+								defaultValue={formData.facilityEmail}
+								fullWidth
+							/>
+						</Grid>
+						{changed && <Container maxWidth='md'
 							sx={{ textAlign: 'center', margin: 1 }}>
 							<Button
 								type='submit'
@@ -102,6 +133,7 @@ export function ProfilePage() {
 							</Button>
 							<Button
 								type='reset'
+								onClick={() => setChanged(false)}
 								variant='contained'
 								color='warning'
 							>Reset
