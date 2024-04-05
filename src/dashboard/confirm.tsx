@@ -57,7 +57,7 @@ export function ConfirmPage() {
 						id='reason'
 						name='reason'
 						label='Reason'
-						value={report.reason.desc}
+						value={report.reason}
 						disabled
 					/>
 					<ConfirmInput
