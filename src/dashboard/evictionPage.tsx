@@ -34,14 +34,8 @@ import { useAuth } from '../hooks/useAuth';
 import { deleteEviction } from '../routes/evictions';
 import { evictionPageFields } from '../lib/types';
 import dayjs from 'dayjs';
+import { Item } from '../components/styled';
 
-const Item = styled(Paper)(({ theme }) => ({
-	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-	...theme.typography.body2,
-	padding: theme.spacing(1),
-	textAlign: 'center',
-	color: theme.palette.text.secondary,
-}));
 
 export function EvictionPage() {
 	const navigate = useNavigate()
@@ -138,11 +132,11 @@ export function EvictionPage() {
 						<Typography>{dayjs(eviction.evictedOn).format('MMM-DD-YYYY')}</Typography>
 					</Grid>
 					<Grid container xs={12}>
-						<Stack>
+						<Stack sx={{ width: '100%' }}>
 							{eviction.details?.map((d: { _id: Key; content: string; createdAt: string }) => (
 								<Item
 									key={d._id}
-									sx={{ marginBottom: 1 }}
+									sx={{ marginBottom: 1, }}
 								>
 									<Typography
 										variant='body1'
