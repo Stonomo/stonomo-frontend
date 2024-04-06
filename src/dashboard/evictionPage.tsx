@@ -27,14 +27,22 @@ import {
 	DialogTitle,
 	DialogContent,
 	DialogContentText,
-	DialogActions
+	DialogActions,
+	Theme
 } from '@mui/material';
 import { DeleteForever } from '@mui/icons-material';
 import { useAuth } from '../hooks/useAuth';
 import { deleteEviction } from '../routes/evictions';
 import { evictionPageFields } from '../lib/types';
 import dayjs from 'dayjs';
-import { Item } from '../components/styled';
+
+export const Item = styled(Paper)(({ theme }: { theme: Theme }) => ({
+	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+	...theme.typography.body2,
+	padding: theme.spacing(1),
+	textAlign: 'center',
+	color: theme.palette.text.secondary,
+}));
 
 
 export function EvictionPage() {
