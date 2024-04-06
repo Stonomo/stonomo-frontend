@@ -1,9 +1,25 @@
-import { Button, Container, InputLabel, MenuItem, Select, Stack, TextField, Typography, styled } from '@mui/material';
-import { Form, useLoaderData } from 'react-router-dom';
+import {
+	Button,
+	Container,
+	InputLabel,
+	MenuItem,
+	Select,
+	SelectChangeEvent,
+	Stack,
+	TextField,
+	Typography,
+	styled
+} from '@mui/material';
+import {
+	Form,
+	useLoaderData
+} from 'react-router-dom';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { DatePicker } from '@mui/x-date-pickers';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { maskPhoneInput } from '../lib/handlers';
+import { ChangeEvent } from 'react';
+import { reasonFields } from '../lib/types';
 
 const TextInput = styled(TextField)(() => ({
 	marginTop: 12
@@ -15,22 +31,23 @@ export function ReportPage() {
 		tenantPhone: '',
 		tenantEmail: '',
 		reason: '',
-		evictedOn: '',
+		evictedOn: dayjs(''),
 		details: '',
 	})
-	// const actionData = useActionData()
-	const reasons = useLoaderData()
+	const reasons = useLoaderData() as reasonFields[]
 
-	function handleChange(e) {
-		let field, value
-		if (!e.target) {
-			field = 'evictedOn'
-			value = dayjs(e).format()
-		} else {
-			field = e.target.name
-			value = e.target.value
+	function handleChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<HTMLInputElement | string> | null) {
+		if (e) {
+			let field, value
+			if (!e.target) {
+				field = 'evictedOn'
+				value = dayjs(e.toString()).format()
+			} else {
+				field = e.target.name
+				value = e.target.value
+			}
+			setFormData(({ ...formData, [field]: value }))
 		}
-		setFormData(({ ...formData, [field]: value }))
 	}
 
 	return (
@@ -60,8 +77,6 @@ export function ReportPage() {
 							defaultValue=''
 							placeholder='Tenant Name'
 						/>
-						{/* {actionData?.tenantName &&
-							<Typography variant='small'>{actionData?.tenantName}</Typography>} */}
 						<TextInput
 							id='tenantPhone'
 							name='tenantPhone'
@@ -74,8 +89,6 @@ export function ReportPage() {
 							defaultValue=''
 							placeholder='Tenant Phone'
 						/>
-						{/* {actionData?.tenantPhone &&
-							<Typography variant='small'>{actionData?.tenantPhone}</Typography>} */}
 						<TextInput
 							id='tenantEmail'
 							name='tenantEmail'
@@ -86,21 +99,17 @@ export function ReportPage() {
 							defaultValue=''
 							placeholder='Tenant Email'
 						/>
-						{/* {actionData?.tenantEmail &&
-							<Typography variant='small'>{actionData?.tenantEmail}</Typography>} */}
 						<DatePicker
 							id='evictedOn'
 							name='evictedOn'
 							label='Evicted On'
 							views={['year', 'month', 'day']}
 							value={dayjs(formData.evictedOn)}
-							defaultValue={dayjs()}
 							onChange={handleChange}
 							required
 							sx={{ marginTop: 2 }}
+						// disableFuture={true}
 						/>
-						{/* {actionData?.evictedOn &&
-							<Typography variant='small'>{actionData?.evictedOn}</Typography>} */}
 						<InputLabel id='reason-select-label'>Reason For Eviction</InputLabel>
 						<Select
 							id='reason'
@@ -113,10 +122,10 @@ export function ReportPage() {
 							required
 						>
 							<MenuItem disabled value=''><em>Select Reason for Eviction</em></MenuItem>
-							{reasons.map((r) => (
+							{reasons.map((r: reasonFields) => (
 								<MenuItem
-									key={r._id}
-									value={r._id}
+									key={r.label}
+									value={r.label}
 								>
 									{r.desc}
 								</MenuItem>
@@ -133,9 +142,7 @@ export function ReportPage() {
 							value={formData.details}
 							defaultValue=''
 						/>
-						{/* {actionData?.details &&
-							<Typography variant='small'>{actionData?.details}</Typography>} */}
-						<Container direction='row' maxWidth='md'
+						<Container maxWidth='md'
 							sx={{ textAlign: 'center', margin: 1 }}>
 							<Button
 								type='submit'
