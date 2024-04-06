@@ -31,7 +31,7 @@ export function SearchPage() {
 				<Container
 					sx={{ textAlign: "center", paddingTop: 1 }}
 				>
-					<Typography variant='h3'>
+					<Typography variant='h5'>
 						Search Eviction Database
 					</Typography>
 				</Container>
