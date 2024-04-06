@@ -1,9 +1,23 @@
-import { Link, useNavigate } from "react-router-dom";
-import { evictionCardFields } from "../lib/types";
-import { Typography, TableContainer, Paper, TableRow, TableCell, TableBody, TableHead, TableFooter, TablePagination } from "@mui/material";
-import { KeyboardArrowRightRounded } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import { ChangeEvent, useState } from "react";
+import {
+	Typography,
+	TableContainer,
+	Paper,
+	TableRow,
+	TableCell,
+	TableBody,
+	TableHead,
+	TableFooter,
+	TablePagination
+} from "@mui/material";
+import {
+	CancelOutlined,
+	CheckBoxRounded,
+	KeyboardArrowRightRounded
+} from "@mui/icons-material";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { evictionCardFields } from "../lib/types";
 
 export function EvictionList({ ev: evictions, managePage }: { ev: evictionCardFields[], managePage: boolean }) {
 	const navigate = useNavigate()
@@ -14,46 +28,52 @@ export function EvictionList({ ev: evictions, managePage }: { ev: evictionCardFi
 		setPage(newPage);
 	};
 
-	const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
 		setRowsPerPage(+event.target.value);
 		setPage(0);
 	};
 
-	return (
-		<TableContainer component={Paper} sx={{ width: '100%' }}>
-			{(evictions && evictions.length) ?
-				(<TableHead>
-					<TableRow>
-						<TableCell>
-							<Typography>Eviction Date</Typography>
-						</TableCell>
-						<TableCell>
-							<Typography>Match Criteria</Typography>
-						</TableCell>
-						<TableCell>
-							<Typography>Details</Typography>
-						</TableCell>
-					</TableRow>
-				</TableHead>) :
-				<TableBody>
-					<TableRow>
-						<TableCell>
-							<Typography>No reported evictions found</Typography>
-						</TableCell>
-					</TableRow>
-				</TableBody>}
-			<TableBody sx={{ width: '100%' }}>
+	return ((evictions && evictions.length) ?
+		(<TableContainer component={Paper} sx={{
+			display: 'table',
+			borderRadius: 2
+		}}>
+			<TableHead component='div'>
+				<TableRow>
+					<TableCell sx={{ textAlign: 'center' }}>
+						<Typography fontWeight='bold'>Eviction Date</Typography>
+					</TableCell>
+					<TableCell sx={{ textAlign: 'center' }}>
+						<Typography fontWeight='bold'>Name</Typography>
+					</TableCell>
+					<TableCell sx={{ textAlign: 'center' }}>
+						<Typography fontWeight='bold'>Phone</Typography>
+					</TableCell>
+					<TableCell sx={{ textAlign: 'center' }}>
+						<Typography fontWeight='bold'>Email</Typography>
+					</TableCell>
+					<TableCell>&nbsp;
+					</TableCell>
+				</TableRow>
+			</TableHead>
+			<TableBody>
 				{evictions
 					.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 					.map((ev: evictionCardFields) => (
 						<TableRow onClick={() => navigate(`/dashboard/eviction/${ev._id}${managePage ? '?m=edit' : ''}`)}>
-							<TableCell sx={{ width: '40%' }}>
+							<TableCell sx={{ textAlign: 'center' }}>
 								<Typography>{dayjs(ev.evictedOn).format('MMM-DD-YYYY')}</Typography>
 							</TableCell>
-							<TableCell sx={{ width: '50%' }}>
-								<Typography>{`${ev.nameMatches ? 'Name' : ''} ${ev.phoneMatches ? 'Phone' : ''} ${ev.emailMatches ? 'Email' : ''}`}</Typography>
+							<TableCell sx={{ textAlign: 'center' }}>
+								{ev.nameMatches ? <CheckBoxRounded /> : <CancelOutlined />}
 							</TableCell>
-							<TableCell sx={{ width: '10%', textAlign: 'right' }}>
+							<TableCell sx={{ textAlign: 'center' }}>
+								{ev.phoneMatches ? <CheckBoxRounded /> : <CancelOutlined />}
+							</TableCell>
+							<TableCell sx={{ textAlign: 'center' }}>
+								{ev.emailMatches ? <CheckBoxRounded /> : <CancelOutlined />}
+							</TableCell>
+							<TableCell sx={{ textAlign: 'right' }}>
 								<KeyboardArrowRightRounded />
 							</TableCell>
 						</TableRow>
@@ -67,12 +87,22 @@ export function EvictionList({ ev: evictions, managePage }: { ev: evictionCardFi
 						rowsPerPageOptions={[10, 25, { label: 'All', value: -1 }]}
 						rowsPerPage={rowsPerPage}
 						page={page}
-						colSpan={3}
+						colSpan={5}
 						onPageChange={handleChangePage}
 						onRowsPerPageChange={handleChangeRowsPerPage}
+						sx={{ borderRadius: 2 }}
 					/>
 				</TableRow>
 			</TableFooter>
-		</TableContainer>
+		</TableContainer>) :
+		(<TableContainer component={Paper} sx={{ display: 'table' }}>
+			<TableBody>
+				<TableRow>
+					<TableCell sx={{ textAlign: 'center' }}>
+						<Typography>No evictions found</Typography>
+					</TableCell>
+				</TableRow>
+			</TableBody>
+		</TableContainer>)
 	)
 }
