@@ -30,7 +30,7 @@ import {
 	DialogActions,
 	Theme
 } from '@mui/material';
-import { DeleteForever } from '@mui/icons-material';
+import { DeleteForever, KeyboardArrowRight } from '@mui/icons-material';
 import { useAuth } from '../hooks/useAuth';
 import { deleteEviction } from '../routes/evictions';
 import { evictionPageFields } from '../lib/types';
@@ -40,10 +40,7 @@ export const Item = styled(Paper)(({ theme }: { theme: Theme }) => ({
 	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
 	...theme.typography.body2,
 	padding: theme.spacing(1),
-	textAlign: 'center',
-	color: theme.palette.text.secondary,
 }));
-
 
 export function EvictionPage() {
 	const navigate = useNavigate()
@@ -115,47 +112,44 @@ export function EvictionPage() {
 			}}
 		>
 			<Item sx={{ bgcolor: 'white', borderRadius: 2 }}>
-				<Grid container xs={12}>
-					<Grid xs={4}>
-						<Typography>{eviction.tenantName}</Typography>
-					</Grid>
-					<Grid xs={4}>
-						<Typography>{eviction.tenantPhone}</Typography>
-					</Grid>
-					<Grid xs={4}>
-						<Typography>{eviction.tenantEmail}</Typography>
-					</Grid>
-				</Grid>
-				<Grid container xs={12}>
-					<Grid xs={4}>
-						<Link to={`/dashboard/user/${eviction.user?._id}`}>
-							<Typography>{eviction.user?.facilityName}</Typography>
-						</Link>
-						<Typography>{`${eviction.user.facilityAddress.city}, ${eviction.user.facilityAddress.state}`}</Typography>
-					</Grid>
-					<Grid xs={4}>
-						<Typography>{eviction.reason?.desc}</Typography>
-					</Grid>
-					<Grid xs={4}>
-						<Typography>{dayjs(eviction.evictedOn).format('MMM-DD-YYYY')}</Typography>
-					</Grid>
-					<Grid container xs={12}>
-						<Stack sx={{ width: '100%' }}>
-							{eviction.details?.map((d: { _id: Key; content: string; createdAt: string }) => (
-								<Item
-									key={d._id}
-									sx={{ marginBottom: 1, }}
+				<Stack>
+					<Typography variant='h5' fontWeight='bold'>Eviction Report</Typography>
+					<Typography>Tenant Name:</Typography>
+					<TextField disabled
+						value={eviction.tenantName} />
+					<Typography>Tenant Phone:</Typography>
+					<TextField disabled
+						value={eviction.tenantPhone} />
+					<Typography>Tenant Email:</Typography>
+					<TextField disabled
+						value={eviction.tenantEmail} />
+					<Typography>Facility:</Typography>
+					<Button onClick={() => navigate(`/dashboard/user/${eviction.user?._id}`)}>
+						<Typography>{eviction.user?.facilityName}<br />{`${eviction.user.facilityAddress.city}, ${eviction.user.facilityAddress.state}`}</Typography>
+						<KeyboardArrowRight />
+					</Button>
+					<Typography>Reason:</Typography>
+					<TextField disabled
+						value={eviction.reason} />
+					<Typography>Evicted On:</Typography>
+					<TextField disabled
+						value={dayjs(eviction.evictedOn).format('MMM-DD-YYYY')} />
+					<Typography>Details:</Typography>
+					<Stack sx={{ width: '100%' }}>
+						{eviction.details?.map((d: { _id: Key; content: string; createdAt: string }) => (
+							<Item
+								key={d._id}
+								sx={{ marginBottom: 1, }}
+							>
+								<Typography
+									variant='body1'
+									style={{ whiteSpace: 'pre-wrap' }}
 								>
-									<Typography
-										variant='body1'
-										style={{ whiteSpace: 'pre-wrap' }}
-									>
-										{dayjs(d.createdAt).format('MMM-DD-YYYY')}: {d.content}
-									</Typography>
-								</Item>))}
-						</Stack>
-					</Grid>
-					{allowEdit && <Grid xs={12}>
+									{dayjs(d.createdAt).format('MMM-DD-YYYY')}: {d.content}
+								</Typography>
+							</Item>))}
+					</Stack>
+					{allowEdit && <Box>
 						<TextField
 							name='details'
 							id='details'
@@ -164,7 +158,7 @@ export function EvictionPage() {
 							value={appendDetails}
 							onChange={handleChange}
 						/>
-						<Box>
+						<Box textAlign='center'>
 							<fetcher.Form method='PATCH' id='detailsForm'>
 								<input type='hidden' name='id' id='id' value={eviction._id} />
 								<Button type='submit'
@@ -182,8 +176,8 @@ export function EvictionPage() {
 								</Button>
 							</Form>
 						</Box>
-					</Grid>}
-				</Grid >
+					</Box>}
+				</Stack >
 			</Item>
 			{confirmDelete !== '' && <ConfirmDeleteDialog id={confirmDelete} />}
 		</Container>
