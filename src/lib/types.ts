@@ -59,3 +59,8 @@ export interface profileFields {
 export interface settingsFields {
 	username: string;
 }
+
+export interface reasonFields {
+	label: string;
+	desc: string;
+}
