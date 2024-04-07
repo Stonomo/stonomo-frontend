@@ -24,6 +24,12 @@ export interface evictionPageFields {
 	tenantPhone: string;
 	tenantEmail: string;
 	evictedOn: string;
+	reason: string;
+	details: [{
+		_id: string;
+		content: string;
+		createdAt: string;
+	}]
 	user: {
 		_id: string;
 		facilityName: string;
@@ -32,14 +38,6 @@ export interface evictionPageFields {
 			state: string;
 		}
 	}
-	reason: {
-		desc: string
-	}
-	details: [{
-		_id: string;
-		content: string;
-		createdAt: string;
-	}]
 }
 
 export interface profileFields {

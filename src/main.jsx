@@ -14,21 +14,20 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { AuthLayout } from './components/AuthLayout'
 import { HomeLayout } from './components/HomeLayout'
 import { ProtectedLayout } from './components/ProtectedLayout'
-import { HomePage } from './dashboard/home'
-import { SignIn } from './dashboard/login'
-import { ProfilePage } from './dashboard/profile'
-import { SettingsPage } from './dashboard/settings'
-import { UserPage } from './dashboard/user'
-import { SearchPage } from './dashboard/search'
-import { ResultsPage } from './dashboard/results'
-import { ReportPage } from './dashboard/report'
-import { ConfirmPage } from './dashboard/confirm'
-import { ManagePage } from './dashboard/manage'
-import { EvictionPage } from './dashboard/evictionPage'
+import { HomePage } from './ui/home'
+import { SignIn } from './ui/login'
+import { ProfilePage } from './ui/profile'
+import { SettingsPage } from './ui/settings'
+import { UserPage } from './ui/user'
+import { SearchPage } from './ui/search'
+import { ResultsPage } from './ui/results'
+import { ReportPage } from './ui/report'
+import { ConfirmPage } from './ui/confirm'
+import { ManagePage } from './ui/manage'
+import { Eviction } from './ui/eviction'
 import {
 	confirmLoader,
 	evictionLoader,
-	manageLoader,
 	manageResultsLoader,
 	profileLoader,
 	reportLoader,
@@ -105,7 +104,7 @@ const router = createBrowserRouter([
 						}]
 					}, {
 						path: 'eviction/:evictionId',
-						element: <EvictionPage />,
+						element: <Eviction />,
 						loader: evictionLoader,
 						action: evictionAction,
 					}, {

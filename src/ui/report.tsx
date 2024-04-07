@@ -1,4 +1,5 @@
 import {
+	Box,
 	Button,
 	Container,
 	InputLabel,
@@ -20,6 +21,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { maskPhoneInput } from '../lib/handlers';
 import { ChangeEvent } from 'react';
 import { reasonFields } from '../lib/types';
+import { textAlign } from '@mui/system';
 
 const TextInput = styled(TextField)(() => ({
 	marginTop: 12
@@ -31,7 +33,7 @@ export function ReportPage() {
 		tenantPhone: '',
 		tenantEmail: '',
 		reason: '',
-		evictedOn: dayjs(''),
+		evictedOn: dayjs(),
 		details: '',
 	})
 	const reasons = useLoaderData() as reasonFields[]
@@ -60,9 +62,11 @@ export function ReportPage() {
 			}}
 		>
 			<Container sx={{ bgcolor: 'white', borderRadius: 2 }}>
-				<Typography variant='h3'>
-					Report an Eviction
-				</Typography>
+				<Box sx={{ width: '100%', textAlign: 'center' }}>
+					<Typography variant='h5'>
+						Report an Eviction
+					</Typography>
+				</Box>
 				<Form
 					method='POST'
 				>

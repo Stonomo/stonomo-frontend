@@ -35,6 +35,7 @@ import { useAuth } from '../hooks/useAuth';
 import { deleteEviction } from '../routes/evictions';
 import { evictionPageFields } from '../lib/types';
 import dayjs from 'dayjs';
+import { Content, Label, dayjsDateFormat } from '../lib/styled';
 
 export const Item = styled(Paper)(({ theme }: { theme: Theme }) => ({
 	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -42,7 +43,7 @@ export const Item = styled(Paper)(({ theme }: { theme: Theme }) => ({
 	padding: theme.spacing(1),
 }));
 
-export function EvictionPage() {
+export function Eviction() {
 	const navigate = useNavigate()
 	const fetcher = useFetcher()
 	const [searchParams] = useSearchParams()
@@ -114,7 +115,29 @@ export function EvictionPage() {
 			<Item sx={{ bgcolor: 'white', borderRadius: 2 }}>
 				<Stack>
 					<Typography variant='h5' fontWeight='bold'>Eviction Report</Typography>
-					<Typography>Tenant Name:</Typography>
+					<Label>Facility:</Label>
+					<Button onClick={() => navigate(`/dashboard/user/${eviction.user?._id}`)} sx={{ textAlign: 'left' }}>
+						<Typography sx={{ width: '100%' }}>{eviction.user?.facilityName}<br />{`${eviction.user.facilityAddress.city}, ${eviction.user.facilityAddress.state}`}</Typography>
+						<KeyboardArrowRight />
+					</Button>
+					<Label>Evicted On:</Label>
+					<Content>{dayjs(eviction.evictedOn).format(dayjsDateFormat)}</Content>
+					<Label>Tenant Name:</Label>
+					<Content>{eviction.tenantName}</Content>
+					<Label>Tenant Phone:</Label>
+					<Content>{eviction.tenantPhone}</Content>
+					<Label>Tenant Email:</Label>
+					<Content>{eviction.tenantEmail}</Content>
+					<Label>Reason:</Label>
+					<Content>{eviction.reason}</Content>
+					<Label>Details:</Label>
+					{eviction.details.map((d) => (
+						<>
+							<Typography sx={{ paddingLeft: '5px', fontStyle: 'italic' }}>{dayjs(d.createdAt).format(dayjsDateFormat)}:</Typography>
+							<Content>{d.content}</Content>
+						</>
+					))}
+					{/* <Typography>Tenant Name:</Typography>
 					<TextField disabled
 						value={eviction.tenantName} />
 					<Typography>Tenant Phone:</Typography>
@@ -148,7 +171,7 @@ export function EvictionPage() {
 									{dayjs(d.createdAt).format('MMM-DD-YYYY')}: {d.content}
 								</Typography>
 							</Item>))}
-					</Stack>
+					</Stack> */}
 					{allowEdit && <Box>
 						<TextField
 							name='details'
