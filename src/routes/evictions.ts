@@ -155,7 +155,6 @@ export async function getConfirmEviction(id: string) {
 }
 
 export async function modifyEviction(id: string, details: string) {
-	// TODO: add check for required fields
 	const response = await fetch(
 		evictionsUrl + id,
 		{
