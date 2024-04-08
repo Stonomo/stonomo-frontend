@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Form, Outlet, useLoaderData } from "react-router-dom";
 import { Button, Typography, Container, TextField, Stack } from "@mui/material";
 import { searchFields } from "../lib/types";
+import { maskPhoneInput } from "../lib/handlers";
 
 export function SearchPage() {
 	const searchParams = useLoaderData()
@@ -53,6 +54,7 @@ export function SearchPage() {
 							id="searchPhone"
 							name="searchPhone"
 							onChange={handleChange}
+							onInput={maskPhoneInput}
 							value={searchValues.searchPhone || ''}
 							fullWidth
 							placeholder="Phone Number (Optional)"

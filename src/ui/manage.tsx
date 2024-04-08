@@ -11,6 +11,7 @@ import {
 	styled
 } from "@mui/material"
 import { searchFields } from "../lib/types";
+import { maskPhoneInput } from "../lib/handlers";
 
 export function ManagePage() {
 	const [searchValues, setSearchValues] = useState<searchFields>({
@@ -58,6 +59,7 @@ export function ManagePage() {
 							id="searchPhone"
 							name="searchPhone"
 							onChange={handleChange}
+							onInput={maskPhoneInput}
 							value={searchValues.searchPhone || ''}
 							fullWidth
 							placeholder="Phone Number (Optional)"
