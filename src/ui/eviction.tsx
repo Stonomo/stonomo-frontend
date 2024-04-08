@@ -57,8 +57,8 @@ export function Eviction() {
 
 	useEffect(() => {
 		if (fetcher.state === "idle" && !fetcher.data) {
-			fetcher.load(`/dashboard/eviction/${eviction._id}`);
 			setAppendDetails('')
+			fetcher.load(`/dashboard/eviction/${eviction._id}`);
 		}
 	}, [fetcher, eviction._id]);
 
@@ -139,58 +139,24 @@ export function Eviction() {
 							<Content>{d.content}</Content>
 						</>
 					))}
-					{/* <Typography>Tenant Name:</Typography>
-					<TextField disabled
-						value={eviction.tenantName} />
-					<Typography>Tenant Phone:</Typography>
-					<TextField disabled
-						value={eviction.tenantPhone} />
-					<Typography>Tenant Email:</Typography>
-					<TextField disabled
-						value={eviction.tenantEmail} />
-					<Typography>Facility:</Typography>
-					<Button onClick={() => navigate(`/dashboard/user/${eviction.user?._id}`)}>
-						<Typography>{eviction.user?.facilityName}<br />{`${eviction.user.facilityAddress.city}, ${eviction.user.facilityAddress.state}`}</Typography>
-						<KeyboardArrowRight />
-					</Button>
-					<Typography>Reason:</Typography>
-					<TextField disabled
-						value={eviction.reason} />
-					<Typography>Evicted On:</Typography>
-					<TextField disabled
-						value={dayjs(eviction.evictedOn).format('MMM-DD-YYYY')} />
-					<Typography>Details:</Typography>
-					<Stack sx={{ width: '100%' }}>
-						{eviction.details?.map((d: { _id: Key; content: string; createdAt: string }) => (
-							<Item
-								key={d._id}
-								sx={{ marginBottom: 1, }}
-							>
-								<Typography
-									variant='body1'
-									style={{ whiteSpace: 'pre-wrap' }}
-								>
-									{dayjs(d.createdAt).format('MMM-DD-YYYY')}: {d.content}
-								</Typography>
-							</Item>))}
-					</Stack> */}
 					{allowEdit && <Box>
-						<TextField
-							name='details'
-							id='details'
-							label='Additional Details'
-							fullWidth
-							value={appendDetails}
-							onChange={handleChange}
-						/>
 						<Box textAlign='center'>
 							<fetcher.Form method='PATCH' id='detailsForm'>
+								<TextField
+									name='details'
+									id='details'
+									label='Additional Details'
+									fullWidth
+									value={appendDetails}
+									onChange={handleChange}
+								/>
 								<input type='hidden' name='id' id='id' value={eviction._id} />
 								<Button type='submit'
 									variant='outlined'>
 									Append
 								</Button>
 								<Button type='reset'
+									onClick={() => setAppendDetails('')}
 									variant='contained'>
 									Cancel
 								</Button>
