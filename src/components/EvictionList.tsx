@@ -17,12 +17,16 @@ import {
 	KeyboardArrowRightRounded
 } from "@mui/icons-material";
 import dayjs from "dayjs";
+import utc from 'dayjs/plugin/utc'
 import { evictionCardFields } from "../lib/types";
+import { dayjsDateFormat } from "../lib/styled";
 
 export function EvictionList({ ev: evictions, managePage }: { ev: evictionCardFields[], managePage: boolean }) {
 	const navigate = useNavigate()
 	const [page, setPage] = useState(0)
 	const [rowsPerPage, setRowsPerPage] = useState(10)
+
+	dayjs.extend(utc)
 
 	const handleChangePage = (event: unknown, newPage: number) => {
 		setPage(newPage);
@@ -38,21 +42,21 @@ export function EvictionList({ ev: evictions, managePage }: { ev: evictionCardFi
 			display: 'table',
 			borderRadius: 2
 		}}>
-			<TableHead component='div'>
+			<TableHead>
 				<TableRow>
-					<TableCell sx={{ textAlign: 'center' }}>
+					<TableCell sx={{ textAlign: 'center', px: 0 }}>
 						<Typography fontWeight='bold'>Eviction Date</Typography>
 					</TableCell>
-					<TableCell sx={{ textAlign: 'center' }}>
+					<TableCell sx={{ textAlign: 'center', px: 0 }}>
 						<Typography fontWeight='bold'>Name</Typography>
 					</TableCell>
-					<TableCell sx={{ textAlign: 'center' }}>
+					<TableCell sx={{ textAlign: 'center', px: 0 }}>
 						<Typography fontWeight='bold'>Phone</Typography>
 					</TableCell>
-					<TableCell sx={{ textAlign: 'center' }}>
+					<TableCell sx={{ textAlign: 'center', px: 0 }}>
 						<Typography fontWeight='bold'>Email</Typography>
 					</TableCell>
-					<TableCell>&nbsp;
+					<TableCell sx={{ px: 0 }}>&nbsp;
 					</TableCell>
 				</TableRow>
 			</TableHead>
@@ -60,20 +64,20 @@ export function EvictionList({ ev: evictions, managePage }: { ev: evictionCardFi
 				{evictions
 					.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 					.map((ev: evictionCardFields) => (
-						<TableRow onClick={() => navigate(`/dashboard/eviction/${ev._id}${managePage ? '?m=edit' : ''}`)}>
-							<TableCell sx={{ textAlign: 'center' }}>
-								<Typography>{dayjs(ev.evictedOn).format('MMM-DD-YYYY')}</Typography>
+						<TableRow onClick={() => navigate(`/dashboard/eviction/${ev._id}${managePage ? '?m=edit' : ''}`)} sx={{ cursor: 'pointer' }}>
+							<TableCell sx={{ textAlign: 'center', px: 0 }}>
+								<Typography>{dayjs(ev.evictedOn).utc().format(dayjsDateFormat)}</Typography>
 							</TableCell>
-							<TableCell sx={{ textAlign: 'center' }}>
+							<TableCell sx={{ textAlign: 'center', px: 0 }}>
 								{ev.nameMatches ? <CheckBoxRounded /> : <CancelOutlined />}
 							</TableCell>
-							<TableCell sx={{ textAlign: 'center' }}>
+							<TableCell sx={{ textAlign: 'center', px: 0 }}>
 								{ev.phoneMatches ? <CheckBoxRounded /> : <CancelOutlined />}
 							</TableCell>
-							<TableCell sx={{ textAlign: 'center' }}>
+							<TableCell sx={{ textAlign: 'center', px: 0 }}>
 								{ev.emailMatches ? <CheckBoxRounded /> : <CancelOutlined />}
 							</TableCell>
-							<TableCell sx={{ textAlign: 'right' }}>
+							<TableCell sx={{ textAlign: 'right', px: 0 }}>
 								<KeyboardArrowRightRounded />
 							</TableCell>
 						</TableRow>

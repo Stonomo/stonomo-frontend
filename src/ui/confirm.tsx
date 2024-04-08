@@ -2,10 +2,12 @@ import { Box, Button, Container, Stack, TextField, Typography, styled } from "@m
 import { Form, useLoaderData } from "react-router-dom";
 import { evictionPageFields } from "../lib/types";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import { Content, Label, dayjsDateFormat } from "../lib/styled";
 
 export function ConfirmPage() {
 	const report = useLoaderData() as evictionPageFields
+	dayjs.extend(utc)
 
 	return (
 		<Container
@@ -30,7 +32,7 @@ export function ConfirmPage() {
 					<Label>Tenant Email:</Label>
 					<Content>{report.tenantEmail}</Content>
 					<Label>Evicted On:</Label>
-					<Content>{dayjs(report.evictedOn).format(dayjsDateFormat)}</Content>
+					<Content>{dayjs(report.evictedOn).utc().format(dayjsDateFormat)}</Content>
 					<Label>Reason:</Label>
 					<Content>{report.reason}</Content>
 					<Label>Details:</Label>

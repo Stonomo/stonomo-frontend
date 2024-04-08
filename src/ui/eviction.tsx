@@ -35,6 +35,7 @@ import { useAuth } from '../hooks/useAuth';
 import { deleteEviction } from '../routes/evictions';
 import { evictionPageFields } from '../lib/types';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc'
 import { Content, Label, dayjsDateFormat } from '../lib/styled';
 
 export const Item = styled(Paper)(({ theme }: { theme: Theme }) => ({
@@ -52,6 +53,7 @@ export function Eviction() {
 	const { currentUserId } = useAuth()
 	const eviction: evictionPageFields = useLoaderData() as evictionPageFields
 	const allowEdit = searchParams.get('m') === 'edit' && currentUserId() === eviction.user._id
+	dayjs.extend(utc)
 
 	useEffect(() => {
 		if (fetcher.state === "idle" && !fetcher.data) {
@@ -121,7 +123,7 @@ export function Eviction() {
 						<KeyboardArrowRight />
 					</Button>
 					<Label>Evicted On:</Label>
-					<Content>{dayjs(eviction.evictedOn).format(dayjsDateFormat)}</Content>
+					<Content>{dayjs(eviction.evictedOn).utc().format(dayjsDateFormat)}</Content>
 					<Label>Tenant Name:</Label>
 					<Content>{eviction.tenantName}</Content>
 					<Label>Tenant Phone:</Label>
