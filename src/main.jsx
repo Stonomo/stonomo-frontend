@@ -37,6 +37,7 @@ import {
 import {
 	confirmAction,
 	evictionAction,
+	profileAction,
 	reportAction,
 	searchAction,
 	searchManageAction
@@ -70,6 +71,7 @@ const router = createBrowserRouter([
 						path: 'profile',
 						element: <ProfilePage />,
 						loader: profileLoader,
+						action: profileAction,
 					}, {
 						path: 'settings',
 						element: <SettingsPage />,

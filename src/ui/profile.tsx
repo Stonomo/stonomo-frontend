@@ -38,68 +38,75 @@ export function ProfilePage() {
 			borderBottomRightRadius: 5
 		}}>
 			<Container sx={{ bgcolor: 'white', borderRadius: 2, paddingBottom: 2 }}>
-				<Form method='POST'>
+				<Form method='PATCH'>
 					<Stack>
+						<Typography variant='h5'>Facility Profile</Typography>
 						<Label>Facility Name:</Label>
 						<TextField
 							onChange={handleChange}
-							defaultValue={formData.facilityName}
-							fullWidth
-						/>
-						<Label>Address:</Label>
-						<TextField
-							id='street1'
-							onChange={handleChange}
-							defaultValue={formData.facilityAddress.street1}
-							placeholder="Street 1"
-							fullWidth
-						/>
-						<TextField
-							id='street2'
-							onChange={handleChange}
-							defaultValue={formData.facilityAddress.street2}
-							placeholder="Street 2"
-							fullWidth
-						/>
-						<TextField
-							id='street3'
-							onChange={handleChange}
-							defaultValue={formData.facilityAddress.street3}
-							placeholder="Street 3"
-							fullWidth
-						/>
-						<TextField
-							id='city'
-							onChange={handleChange}
-							defaultValue={formData.facilityAddress.city}
-							placeholder="City"
-							fullWidth
-						/>
-						<TextField
-							id='state'
-							onChange={handleChange}
-							defaultValue={formData.facilityAddress.state}
-							placeholder="State"
-							fullWidth
-						/>
-						<TextField
-							id='zip'
-							onChange={handleChange}
-							defaultValue={formData.facilityAddress.zip}
-							placeholder="Zip"
+							value={formData.facilityName}
 							fullWidth
 						/>
 						<Label>Phone:</Label>
 						<TextField
 							onChange={handleChange}
 							onInput={maskPhoneInput}
-							defaultValue={formData.facilityPhone}
+							value={formData.facilityPhone}
 							fullWidth
 						/>
 						<Label>Email:</Label>
 						<TextField
 							onChange={handleChange}
-							defaultValue={formData.facilityEmail}
+							value={formData.facilityEmail}
+							fullWidth
+						/>
+						<Label>Address:</Label>
+						<TextField
+							id='street1'
+							name='street1'
+							onChange={handleChange}
+							value={formData.facilityAddress.street1}
+							placeholder="Street 1"
+							fullWidth
+						/>
+						<TextField
+							id='street2'
+							name='street2'
+							onChange={handleChange}
+							value={formData.facilityAddress.street2}
+							placeholder="Street 2"
+							fullWidth
+						/>
+						<TextField
+							id='street3'
+							name='street3'
+							onChange={handleChange}
+							value={formData.facilityAddress.street3}
+							placeholder="Street 3"
+							fullWidth
+						/>
+						<TextField
+							id='city'
+							name='city'
+							onChange={handleChange}
+							value={formData.facilityAddress.city}
+							placeholder="City"
+							fullWidth
+						/>
+						<TextField
+							id='state'
+							name='state'
+							onChange={handleChange}
+							value={formData.facilityAddress.state}
+							placeholder="State"
+							fullWidth
+						/>
+						<TextField
+							id='zip'
+							name='zip'
+							onChange={handleChange}
+							value={formData.facilityAddress.zip}
+							placeholder="Zip"
 							fullWidth
 						/>
 						{changed && <Container maxWidth='md'

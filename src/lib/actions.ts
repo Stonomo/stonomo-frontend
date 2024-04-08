@@ -5,6 +5,7 @@ import {
 	modifyEviction
 } from "../routes/evictions"
 import { URLSearchParamsInit, createSearchParams } from "react-router-dom";
+import { modifyUser } from "../routes/users";
 
 export async function searchAction({ request }: { request: Request }) {
 	const formData = await request.formData();
@@ -51,4 +52,17 @@ export async function evictionAction({ request }: { request: Request }) {
 	const id = formData.get('id') as string
 	const details = formData.get('details') as string
 	return await modifyEviction(id, details)
+}
+
+export async function profileAction({ request }: { request: Request }) {
+	const formData = await request.formData()
+	const phone = formData.get('phone') as string
+	const email = formData.get('email') as string
+	const addrSt1 = formData.get('street1') as string
+	const addrSt2 = formData.get('street2') as string
+	const addrSt3 = formData.get('street3') as string
+	const addrCity = formData.get('city') as string
+	const addrState = formData.get('state') as string
+	const addrZip = formData.get('zip') as string
+	return await modifyUser(phone, email, addrSt1, addrSt2, addrSt3, addrCity, addrState, addrZip)
 }
