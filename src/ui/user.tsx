@@ -16,6 +16,7 @@ export function UserPage() {
 		}}>
 			<Container sx={{ bgcolor: 'white', paddingBottom: 2, borderRadius: 2 }}>
 				<Stack>
+					<Typography variant='h5'>Facility Profile</Typography>
 					<Label>Facility Name:</Label>
 					<Content>{userData.facilityName}</Content>
 					<Label>Address:</Label>
