@@ -7,7 +7,7 @@ import {
 	searchManageEvictions
 } from '../routes/evictions.js';
 import { getReasons } from '../routes/reasons.js'
-import { getProfile, getUser } from '../routes/users.js';
+import { getProfile, getSettings, getUser } from '../routes/users.js';
 import { searchFields } from './types.js';
 
 export async function searchLoader({ params }: { params: searchFields }) {
@@ -60,4 +60,8 @@ export async function userLoader({ params }: { params: { userId: string } }) {
 
 export async function evictionLoader({ params }: { params: { evictionId: string } }) {
 	return await getEviction(params.evictionId)
+}
+
+export async function settingsLoader() {
+	return await getSettings()
 }

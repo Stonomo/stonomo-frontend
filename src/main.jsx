@@ -14,6 +14,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { AuthLayout } from './components/AuthLayout'
 import { HomeLayout } from './components/HomeLayout'
 import { ProtectedLayout } from './components/ProtectedLayout'
+import { FreeLayout } from './components/FreeLayout'
+import { PaidLayout } from './components/PaidLayout'
 import { HomePage } from './ui/home'
 import { SignIn } from './ui/login'
 import { ProfilePage } from './ui/profile'
@@ -32,6 +34,7 @@ import {
 	profileLoader,
 	reportLoader,
 	resultsLoader,
+	settingsLoader,
 	userLoader
 } from './lib/loaders'
 import {
@@ -66,16 +69,41 @@ const router = createBrowserRouter([
 			{
 				path: '/dashboard',
 				element: <ProtectedLayout />,
-				children: [
-					{
-						path: 'profile',
-						element: <ProfilePage />,
-						loader: profileLoader,
-						action: profileAction,
-					}, {
-						path: 'settings',
-						element: <SettingsPage />,
-					}, {
+				children: [{
+					element: <FreeLayout />,
+					children: [
+						{
+							path: 'profile',
+							element: <ProfilePage />,
+							loader: profileLoader,
+							action: profileAction,
+						}, {
+							path: 'settings',
+							element: <SettingsPage />,
+							loader: settingsLoader,
+						}, {
+							path: 'report',
+							element: <ReportPage />,
+							loader: reportLoader,
+							action: reportAction,
+						}, {
+							path: 'confirm/:confirmId',
+							element: <ConfirmPage />,
+							loader: confirmLoader,
+							action: confirmAction,
+						}, {
+							path: 'manage',
+							element: <ManagePage />,
+							action: searchManageAction,
+							children: [{
+								path: 'results',
+								element: <ResultsPage managePage={true} />,
+								loader: manageResultsLoader,
+							}]
+						}]
+				}, {
+					element: <PaidLayout />,
+					children: [{
 						path: 'search',
 						element: <SearchPage />,
 						action: searchAction,
@@ -86,25 +114,6 @@ const router = createBrowserRouter([
 								loader: resultsLoader,
 							}]
 					}, {
-						path: 'report',
-						element: <ReportPage />,
-						loader: reportLoader,
-						action: reportAction,
-					}, {
-						path: 'confirm/:confirmId',
-						element: <ConfirmPage />,
-						loader: confirmLoader,
-						action: confirmAction,
-					}, {
-						path: 'manage',
-						element: <ManagePage />,
-						action: searchManageAction,
-						children: [{
-							path: 'results',
-							element: <ResultsPage managePage={true} />,
-							loader: manageResultsLoader,
-						}]
-					}, {
 						path: 'eviction/:evictionId',
 						element: <Eviction />,
 						loader: evictionLoader,
@@ -114,9 +123,10 @@ const router = createBrowserRouter([
 						element: <UserPage />,
 						loader: userLoader
 					}]
+				}]
 			}]
-	}
-]);
+	}]
+);
 
 createRoot(document.getElementById('root')).render(
 	<StrictMode>

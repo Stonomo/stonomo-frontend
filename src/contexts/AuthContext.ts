@@ -3,6 +3,7 @@ import { createContext } from 'react';
 
 const contextProps = {
 	isLoggedIn: (): boolean => { return false },
+	isPaidUser: (): boolean => { return false },
 	login: (
 		data: { username: any; password: any; },
 		onFailCallback: ((() => PromiseLike<never> | void) | null)

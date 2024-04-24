@@ -1,11 +1,18 @@
-import { useCallback, useMemo, useRef } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
-import { JwtPayload, jwtDecode } from 'jwt-decode'
+import {
+	useCallback,
+	useMemo,
+	useRef
+} from 'react';
+import {
+	Outlet,
+	useNavigate
+} from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode'
 import { AuthContext } from '../contexts/AuthContext';
 
 export const AuthProvider = (props: any) => {
-	const refreshToken = useRef<any>();
-	const navigate = useNavigate();
+	const refreshToken = useRef<any>()
+	const navigate = useNavigate()
 
 	const login = (data: { username: any; password: any; }, onFailCallback: (() => PromiseLike<never> | void) | null) => {
 		fetch(import.meta.env.VITE_STONOMO_API_URL + 'login', {
@@ -23,9 +30,10 @@ export const AuthProvider = (props: any) => {
 				// decode and cache refresh token from response
 				response.json().then((data) => {
 					refreshToken.current = jwtDecode(data)
+					console.log(refreshToken.current)
 					navigate('/dashboard/search', { replace: true })
 				});
-			}).catch(onFailCallback);
+			}).catch(onFailCallback)
 	}
 
 	const isLoggedIn = (): boolean => {
@@ -34,6 +42,12 @@ export const AuthProvider = (props: any) => {
 		}
 		const expiresAt = refreshToken.current.exp
 		return Date.now() > expiresAt
+	}
+
+	const isPaidUser = (): boolean => {
+		if (!isLoggedIn()) { return false }
+		const plan = refreshToken.current.plan
+		return plan !== 'FREE'
 	}
 
 	const logout = () => {
@@ -52,17 +66,20 @@ export const AuthProvider = (props: any) => {
 	const loginCallback = useCallback(login, [login])
 	const logoutCallback = useCallback(logout, [logout])
 	const isLoggedInCallback = useCallback(isLoggedIn, [isLoggedIn])
+	const isPaidUserCallback = useCallback(isPaidUser, [isPaidUser])
 	const getLoggedInUserIdCallback = useCallback(getLoggedInUserId, [getLoggedInUserId])
 	const getLoggedInUserNameCallback = useCallback(getLoggedInUserName, [getLoggedInUserName])
+
 	const value = useMemo(
 		() => ({
 			isLoggedIn: isLoggedInCallback,
+			isPaidUser: isPaidUserCallback,
 			login: loginCallback,
 			logout: logoutCallback,
 			currentUserId: getLoggedInUserIdCallback,
 			currentUserName: getLoggedInUserNameCallback
 		}),
-		[isLoggedInCallback, loginCallback, logoutCallback, getLoggedInUserIdCallback, getLoggedInUserNameCallback]
+		[isLoggedInCallback, isPaidUserCallback, loginCallback, logoutCallback, getLoggedInUserIdCallback, getLoggedInUserNameCallback]
 	);
 	return (
 		<AuthContext.Provider value={value}>

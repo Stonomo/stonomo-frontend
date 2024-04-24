@@ -66,3 +66,7 @@ export async function profileAction({ request }: { request: Request }) {
 	const addrZip = formData.get('zip') as string
 	return await modifyUser(phone, email, addrSt1, addrSt2, addrSt3, addrCity, addrState, addrZip)
 }
+
+export async function settingsAction({ request }: { request: Request }) {
+	const formData = await request.formData()
+}

@@ -1,4 +1,5 @@
 const usersUrl = import.meta.env.VITE_STONOMO_API_URL + 'users/'
+const settingsUrl = usersUrl + 'settings/'
 
 export async function getProfile() {
 	const response = await fetch(
@@ -55,4 +56,19 @@ export async function modifyUser(phone: string, email: string, addrSt1: string, 
 		throw new Error('Failed to modify user. Status: ' + response.status)
 	}
 	return response.text();
+}
+
+export async function getSettings() {
+	const response = await fetch(
+		settingsUrl,
+		{
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			credentials: 'include'
+		})
+	if (!response.ok) {
+		throw new Error('HTTP status ' + response.status)
+	}
+	return response.json()
 }
