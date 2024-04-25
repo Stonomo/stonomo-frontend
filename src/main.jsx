@@ -55,64 +55,60 @@ const router = createBrowserRouter([
 		children: [
 			{
 				element: <HomeLayout />,
-				children: [
-					{
-						path: '/',
-						element: <HomePage />,
-						index: true,
-					},
-					{
-						path: '/login',
-						element: <SignIn />,
-					}]
-			},
-			{
+				children: [{
+					path: '/',
+					element: <HomePage />,
+					index: true,
+				},
+				{
+					path: '/login',
+					element: <SignIn />,
+				}]
+			}, {
 				path: '/dashboard',
 				element: <ProtectedLayout />,
 				children: [{
 					element: <FreeLayout />,
-					children: [
-						{
-							path: 'profile',
-							element: <ProfilePage />,
-							loader: profileLoader,
-							action: profileAction,
-						}, {
-							path: 'settings',
-							element: <SettingsPage />,
-							loader: settingsLoader,
-						}, {
-							path: 'report',
-							element: <ReportPage />,
-							loader: reportLoader,
-							action: reportAction,
-						}, {
-							path: 'confirm/:confirmId',
-							element: <ConfirmPage />,
-							loader: confirmLoader,
-							action: confirmAction,
-						}, {
-							path: 'manage',
-							element: <ManagePage />,
-							action: searchManageAction,
-							children: [{
-								path: 'results',
-								element: <ResultsPage managePage={true} />,
-								loader: manageResultsLoader,
-							}]
+					children: [{
+						path: 'profile',
+						element: <ProfilePage />,
+						loader: profileLoader,
+						action: profileAction,
+					}, {
+						path: 'settings',
+						element: <SettingsPage />,
+						loader: settingsLoader,
+					}, {
+						path: 'report',
+						element: <ReportPage />,
+						loader: reportLoader,
+						action: reportAction,
+					}, {
+						path: 'confirm/:confirmId',
+						element: <ConfirmPage />,
+						loader: confirmLoader,
+						action: confirmAction,
+					}, {
+						path: 'manage',
+						element: <ManagePage />,
+						action: searchManageAction,
+						children: [{
+							path: 'results',
+							element: <ResultsPage managePage={true} />,
+							loader: manageResultsLoader,
 						}]
+					}]
 				}, {
 					element: <PaidLayout />,
 					children: [{
 						path: 'search',
 						element: <SearchPage />,
 						action: searchAction,
-						children: [
-							{
-								path: 'results',
-								element: <ResultsPage managePage={false} />,
-								loader: resultsLoader,
-							}]
+						children: [{
+							path: 'results',
+							element: <ResultsPage managePage={false} />,
+							loader: resultsLoader,
+						}]
 					}, {
 						path: 'eviction/:evictionId',
 						element: <Eviction />,
