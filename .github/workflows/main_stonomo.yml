@@ -13,7 +13,6 @@ on:
 # Optional: environment variables can be injected here
 # You can add these variables in your repository Settings - Secrets and variables - Actions - variables
 env:
-  VITE_STONOMO_URL: ${{ vars.VITE_STONOMO_URL }}
   VITE_STONOMO_API_URL: ${{ vars.VITE_STONOMO_API_URL }}
 
 # There are two jobs in this workflow - build and deploy
