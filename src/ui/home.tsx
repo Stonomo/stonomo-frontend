@@ -5,7 +5,8 @@ export function HomePage() {
 
 	return (
 		<div>
-			<h1>This is the Home Page</h1>
+			<h1>Stonomo</h1>
+			<p>Where they will Sto' no mo'</p>
 		</div>
 	);
 }
