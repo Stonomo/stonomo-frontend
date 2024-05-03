@@ -1,4 +1,5 @@
-const usersUrl = import.meta.env.VITE_STONOMO_API_URL + 'users/'
+const stonomo_api_url = import.meta.env.VITE_STONOMO_API_URL || process.env.STONOMO_API_URL
+const usersUrl = stonomo_api_url + 'users/'
 const settingsUrl = usersUrl + 'settings/'
 
 export async function getProfile() {

@@ -1,4 +1,5 @@
-const reasonsUrl = import.meta.env.VITE_STONOMO_API_URL + 'reasons/'
+const stonomo_api_url = import.meta.env.VITE_STONOMO_API_URL || process.env.STONOMO_API_URL
+const reasonsUrl = stonomo_api_url + 'reasons/'
 
 export async function getReasons() {
 	const response = await fetch(
