@@ -10,12 +10,14 @@ import {
 import { jwtDecode } from 'jwt-decode'
 import { AuthContext } from '../contexts/AuthContext';
 
+const stonomo_api_url = import.meta.env.VITE_STONOMO_API_URL || process.env.STONOMO_API_URL
+
 export const AuthProvider = (props: any) => {
 	const refreshToken = useRef<any>()
 	const navigate = useNavigate()
 
 	const login = (data: { username: any; password: any; }, onFailCallback: (() => PromiseLike<never> | void) | null) => {
-		fetch(import.meta.env.VITE_STONOMO_API_URL + 'login', {
+		fetch(stonomo_api_url + 'login', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
