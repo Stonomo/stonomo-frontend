@@ -9,6 +9,9 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  STONOMO_API_URL: http://stonomo-backend.azurewebsites.net/
+
 jobs:
   build:
     runs-on: ubuntu-latest
