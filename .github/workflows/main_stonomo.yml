@@ -16,9 +16,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      STONOMO_API_URL: http://stonomo-backend.azurewebsites.net/
-
     steps:
       - uses: actions/checkout@v4
 
