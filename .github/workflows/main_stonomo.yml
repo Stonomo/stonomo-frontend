@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 env:
-  VITE_STONOMO_API_URL: http://stonomo-backend.azurewebsites.net/v1/
+  VITE_STONOMO_API_URL: https://stonomoapi.com/v1/
 
 jobs:
   build:
