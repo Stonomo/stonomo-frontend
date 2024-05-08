@@ -10,11 +10,11 @@ export function PaidLayout() {
 
 	const buttonStyle = { color: 'white' }
 
-	useEffect(() => {
-		if (!isPaidUser()) {
-			return navigate('subscribe');
-		}
-	})
+	// useEffect(() => {
+	// 	if (!isPaidUser()) {
+	// 		return navigate('subscribe');
+	// 	}
+	// })
 
 	return (
 		<Box>
