@@ -10,42 +10,11 @@ export function PaidLayout() {
 
 	const buttonStyle = { color: 'white' }
 
-	// useEffect(() => {
-	// 	if (!isPaidUser()) {
-	// 		return navigate('subscribe');
-	// 	}
-	// })
+	useEffect(() => {
+		if (!isPaidUser()) {
+			return navigate('subscribe');
+		}
+	})
 
-	return (
-		<Box>
-			<NavBar>
-				<Button
-					sx={buttonStyle}
-					onClick={() => navigate('search')}>
-					Search
-				</Button>
-				<Button
-					sx={buttonStyle}
-					onClick={() => navigate('report')}>
-					Report
-				</Button>
-				<Button
-					sx={buttonStyle}
-					onClick={() => navigate('manage')}>
-					Manage
-				</Button>
-				<Button
-					sx={buttonStyle}
-					onClick={() => navigate('profile')}>
-					Profile
-				</Button>
-				<Button
-					sx={buttonStyle}
-					onClick={() => navigate('settings')}>
-					Settings
-				</Button>
-			</NavBar>
-			<Outlet />
-		</Box >
-	)
+	return (<Outlet />)
 }
