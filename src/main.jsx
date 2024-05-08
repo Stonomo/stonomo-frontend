@@ -48,6 +48,7 @@ import {
 
 import '@fontsource/roboto/300.css'
 import theme from './theme'
+import { SubscribePage } from './ui/subscribe'
 
 const router = createBrowserRouter([
 	{
@@ -59,8 +60,7 @@ const router = createBrowserRouter([
 					path: '/',
 					element: <HomePage />,
 					index: true,
-				},
-				{
+				}, {
 					path: '/login',
 					element: <SignIn />,
 				}]
@@ -97,6 +97,9 @@ const router = createBrowserRouter([
 							element: <ResultsPage managePage={true} />,
 							loader: manageResultsLoader,
 						}]
+					}, {
+						path: 'subscribe',
+						element: <SubscribePage />,
 					}]
 				}, {
 					element: <PaidLayout />,
