@@ -32,7 +32,6 @@ export const AuthProvider = (props: any) => {
 				// decode and cache refresh token from response
 				response.json().then((data) => {
 					refreshToken.current = jwtDecode(data)
-					console.log(refreshToken.current)
 					navigate('/dashboard/search', { replace: true })
 				});
 			}).catch(onFailCallback)
@@ -43,13 +42,15 @@ export const AuthProvider = (props: any) => {
 			return false
 		}
 		const expiresAt = refreshToken.current.exp
-		return Date.now() > expiresAt
+		const now = Math.floor(new Date().getTime() / 1000)
+		const valid = now < expiresAt
+		return valid
 	}
 
 	const isPaidUser = (): boolean => {
 		if (!isLoggedIn()) { return false }
 		const plan = refreshToken.current.plan
-		return plan !== 'FREE'
+		return plan === 'PAID'
 	}
 
 	const logout = () => {
