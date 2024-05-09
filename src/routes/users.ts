@@ -52,11 +52,11 @@ export async function modifyUser(phone: string, email: string, addrSt1: string, 
 				facilityAddrZip: addrZip,
 			})
 		}
-	);
+	)
 	if (!response.ok) {
 		throw new Error('Failed to modify user. Status: ' + response.status)
 	}
-	return response.text();
+	return response.text()
 }
 
 export async function getSettings() {
