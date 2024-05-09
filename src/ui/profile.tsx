@@ -3,14 +3,12 @@ import { Form } from "react-router-dom";
 import {
 	Button,
 	Container,
-	Unstable_Grid2 as Grid,
 	Stack,
 	TextField,
-	Typography,
-	styled
+	Typography
 } from "@mui/material";
 import { maskPhoneInput } from "../lib/handlers";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { profileFields } from "../lib/types";
 import { Label } from "../lib/styled";
 
