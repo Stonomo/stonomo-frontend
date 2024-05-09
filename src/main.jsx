@@ -34,7 +34,7 @@ import {
 	profileLoader,
 	reportLoader,
 	resultsLoader,
-	settingsLoader,
+	// settingsLoader,
 	userLoader
 } from './lib/loaders'
 import {
@@ -77,7 +77,7 @@ const router = createBrowserRouter([
 					}, {
 						path: 'settings',
 						element: <SettingsPage />,
-						loader: settingsLoader,
+						// loader: settingsLoader,
 					}, {
 						path: 'report',
 						element: <ReportPage />,
