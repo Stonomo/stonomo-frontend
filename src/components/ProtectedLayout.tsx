@@ -17,7 +17,7 @@ export function ProtectedLayout() {
 		}
 	})
 
-	const locked = isPaidUser() ? <LockOutlined /> : ''
+	const locked = !isPaidUser() ? <LockOutlined /> : ''
 
 	return (
 		<Box>
