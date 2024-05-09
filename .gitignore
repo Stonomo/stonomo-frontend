@@ -22,7 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables
 .env
+
+# Unused packageg manager files
+package-lock.json
 
 # backup files
 BAK*
