@@ -23,6 +23,7 @@ jobs:
         run: |
           git config --global user.name "Stonomo LLC"
           git config --global user.email "stonomollc@example.com"
+          sudo chown -R $USER:$USER .git/
           chmod -R 777 .  # Change permissions as necessary
       - name:  Disable  CI  
         run:  echo  "CI=false" >> $GITHUB_ENV
