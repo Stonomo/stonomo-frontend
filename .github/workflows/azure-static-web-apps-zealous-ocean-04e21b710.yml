@@ -8,6 +8,10 @@ on:
     types: [opened, synchronize, reopened, closed]
     branches:
       - main
+  workflow_dispatch:
+
+env:
+  VITE_STONOMO_API_URL: https://stonomoapi.com/v1/
 
 jobs:
   build_and_deploy_job:
