@@ -26,7 +26,7 @@ dist-ssr
 # Environment variables
 .env
 
-# Unused packageg manager files
+# Unused packager manager files
 package-lock.json
 
 # backup files

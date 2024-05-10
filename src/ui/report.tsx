@@ -15,20 +15,18 @@ import {
 	Form,
 	useLoaderData
 } from 'react-router-dom';
-import { useLocalStorage } from '../hooks/useLocalStorage';
 import { DatePicker } from '@mui/x-date-pickers';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { maskPhoneInput } from '../lib/handlers';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { reasonFields } from '../lib/types';
-import { textAlign } from '@mui/system';
 
 const TextInput = styled(TextField)(() => ({
 	marginTop: 12
 }))
 
 export function ReportPage() {
-	const [formData, setFormData] = useLocalStorage('reportForm', {
+	const [formData, setFormData] = useState({
 		tenantName: '',
 		tenantPhone: '',
 		tenantEmail: '',

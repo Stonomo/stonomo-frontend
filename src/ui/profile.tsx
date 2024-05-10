@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router";
-import { Form } from "react-router-dom";
+import { Form, useFetcher } from "react-router-dom";
 import {
 	Button,
 	Container,
@@ -8,7 +8,7 @@ import {
 	Typography
 } from "@mui/material";
 import { maskPhoneInput } from "../lib/handlers";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { profileFields } from "../lib/types";
 import { Label } from "../lib/styled";
 
@@ -17,15 +17,41 @@ export function ProfilePage() {
 	const profile = useLoaderData() as profileFields
 	const [formData, setFormData] = useState({
 		facilityName: profile.facilityName,
-		facilityAddress: profile.facilityAddress,
-		facilityPhone: profile.facilityPhone,
-		facilityEmail: profile.facilityEmail
+		phone: profile.facilityPhone,
+		email: profile.facilityEmail,
+		street1: profile.facilityAddress.street1,
+		street2: profile.facilityAddress.street2,
+		city: profile.facilityAddress.city,
+		state: profile.facilityAddress.state,
+		zip: profile.facilityAddress.zip,
 	})
 	const [changed, setChanged] = useState(false)
+	const fetcher = useFetcher()
+
+	useEffect(() => {
+		if (fetcher.state === "idle" && !fetcher.data) {
+			fetcher.load('/dashboard/profile')
+		}
+		setChanged(!fetcher.data)
+	}, [fetcher]);
 
 	function handleChange(e: ChangeEvent<HTMLInputElement>) {
 		setFormData(({ ...formData, [e.target.name]: e.target.value }))
 		setChanged(true)
+	}
+
+	function resetValues() {
+		setChanged(false)
+		setFormData(({
+			facilityName: profile.facilityName,
+			phone: profile.facilityPhone,
+			email: profile.facilityEmail,
+			street1: profile.facilityAddress.street1,
+			street2: profile.facilityAddress.street2,
+			city: profile.facilityAddress.city,
+			state: profile.facilityAddress.state,
+			zip: profile.facilityAddress.zip,
+		}))
 	}
 
 	return (
@@ -36,74 +62,72 @@ export function ProfilePage() {
 			borderBottomRightRadius: 5
 		}}>
 			<Container sx={{ bgcolor: 'white', borderRadius: 2, paddingBottom: 2 }}>
-				<Form method='PATCH'>
+				<fetcher.Form method='PATCH' id='profileForm'>
 					<Stack>
-						<Typography variant='h5'>Facility Profile</Typography>
+						<Typography variant='h5'>Your Facility Profile:</Typography>
 						<Label>Facility Name:</Label>
 						<TextField
-							onChange={handleChange}
+							id='facilityName'
+							name='facilityName'
+							onInput={handleChange}
 							value={formData.facilityName}
 							fullWidth
 						/>
 						<Label>Phone:</Label>
 						<TextField
+							id='phone'
+							name='phone'
 							onChange={handleChange}
-							onInput={maskPhoneInput}
-							value={formData.facilityPhone}
+							// onInput={maskPhoneInput}
+							value={formData.phone}
 							fullWidth
 						/>
 						<Label>Email:</Label>
 						<TextField
-							onChange={handleChange}
-							value={formData.facilityEmail}
+							id='email'
+							name='email'
+							onInput={handleChange}
+							value={formData.email}
 							fullWidth
 						/>
 						<Label>Address:</Label>
 						<TextField
 							id='street1'
 							name='street1'
-							onChange={handleChange}
-							value={formData.facilityAddress.street1}
+							onInput={handleChange}
+							value={formData.street1}
 							placeholder="Street 1"
 							fullWidth
 						/>
 						<TextField
 							id='street2'
 							name='street2'
-							onChange={handleChange}
-							value={formData.facilityAddress.street2}
+							onInput={handleChange}
+							value={formData.street2}
 							placeholder="Street 2"
-							fullWidth
-						/>
-						<TextField
-							id='street3'
-							name='street3'
-							onChange={handleChange}
-							value={formData.facilityAddress.street3}
-							placeholder="Street 3"
 							fullWidth
 						/>
 						<TextField
 							id='city'
 							name='city'
-							onChange={handleChange}
-							value={formData.facilityAddress.city}
+							onInput={handleChange}
+							value={formData.city}
 							placeholder="City"
 							fullWidth
 						/>
 						<TextField
 							id='state'
 							name='state'
-							onChange={handleChange}
-							value={formData.facilityAddress.state}
+							onInput={handleChange}
+							value={formData.state}
 							placeholder="State"
 							fullWidth
 						/>
 						<TextField
 							id='zip'
 							name='zip'
-							onChange={handleChange}
-							value={formData.facilityAddress.zip}
+							onInput={handleChange}
+							value={formData.zip}
 							placeholder="Zip"
 							fullWidth
 						/>
@@ -116,14 +140,14 @@ export function ProfilePage() {
 							</Button>
 							<Button
 								type='reset'
-								onClick={() => setChanged(false)}
+								onClick={resetValues}
 								variant='contained'
 								color='warning'
 							>Reset
 							</Button>
 						</Container>}
 					</Stack>
-				</Form>
+				</fetcher.Form>
 			</Container>
 		</Container>
 	);
