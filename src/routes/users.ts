@@ -32,7 +32,7 @@ export async function getUser(userId: string) {
 	return response.json()
 }
 
-export async function modifyUser(phone: string, email: string, addrSt1: string, addrSt2: string, addrSt3: string, addrCity: string, addrState: string, addrZip: string) {
+export async function modifyProfile(facilityName: string, phone: string, email: string, addrSt1: string, addrSt2: string, addrCity: string, addrState: string, addrZip: string) {
 	const response = await fetch(
 		usersUrl,
 		{
@@ -42,14 +42,15 @@ export async function modifyUser(phone: string, email: string, addrSt1: string, 
 			},
 			credentials: 'include',
 			body: JSON.stringify({
+				facilityName: facilityName,
 				facilityPhone: phone,
 				facilityEmail: email,
 				facilityAddrSt1: addrSt1,
 				facilityAddrSt2: addrSt2,
-				facilityAddrSt3: addrSt3,
 				facilityAddrCity: addrCity,
 				facilityAddrState: addrState,
 				facilityAddrZip: addrZip,
+				facilityAddrChange: (addrSt1 || addrSt2 || addrCity || addrState || addrZip)
 			})
 		}
 	)
