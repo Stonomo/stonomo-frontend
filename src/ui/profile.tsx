@@ -17,15 +17,13 @@ export function ProfilePage() {
 	const profile = useLoaderData() as profileFields
 	const [formData, setFormData] = useState({
 		facilityName: profile.facilityName,
-		facilityAddress: {
-			street1: profile.facilityAddress.street1,
-			street2: profile.facilityAddress.street2,
-			city: profile.facilityAddress.city,
-			state: profile.facilityAddress.state,
-			zip: profile.facilityAddress.zip,
-		},
-		facilityPhone: profile.facilityPhone,
-		facilityEmail: profile.facilityEmail
+		phone: profile.facilityPhone,
+		email: profile.facilityEmail,
+		street1: profile.facilityAddress.street1,
+		street2: profile.facilityAddress.street2,
+		city: profile.facilityAddress.city,
+		state: profile.facilityAddress.state,
+		zip: profile.facilityAddress.zip,
 	})
 	const [changed, setChanged] = useState(false)
 	const fetcher = useFetcher()
@@ -38,24 +36,22 @@ export function ProfilePage() {
 	}, [fetcher]);
 
 	function handleChange(e: ChangeEvent<HTMLInputElement>) {
-		setFormData({ ...formData, [e.target.name]: e.target.value })
+		setFormData(({ ...formData, [e.target.name]: e.target.value }))
 		setChanged(true)
 	}
 
 	function resetValues() {
 		setChanged(false)
-		setFormData({
+		setFormData(({
 			facilityName: profile.facilityName,
-			facilityAddress: {
-				street1: profile.facilityAddress.street1,
-				street2: profile.facilityAddress.street2,
-				city: profile.facilityAddress.city,
-				state: profile.facilityAddress.state,
-				zip: profile.facilityAddress.zip,
-			},
-			facilityPhone: profile.facilityPhone,
-			facilityEmail: profile.facilityEmail
-		})
+			phone: profile.facilityPhone,
+			email: profile.facilityEmail,
+			street1: profile.facilityAddress.street1,
+			street2: profile.facilityAddress.street2,
+			city: profile.facilityAddress.city,
+			state: profile.facilityAddress.state,
+			zip: profile.facilityAddress.zip,
+		}))
 	}
 
 	return (
@@ -68,22 +64,22 @@ export function ProfilePage() {
 			<Container sx={{ bgcolor: 'white', borderRadius: 2, paddingBottom: 2 }}>
 				<fetcher.Form method='PATCH' id='profileForm'>
 					<Stack>
-						<Typography variant='h5'>Facility Profile</Typography>
+						<Typography variant='h5'>Your Facility Profile:</Typography>
 						<Label>Facility Name:</Label>
 						<TextField
 							id='facilityName'
 							name='facilityName'
 							onInput={handleChange}
-							defaultValue={formData.facilityName}
+							value={formData.facilityName}
 							fullWidth
 						/>
 						<Label>Phone:</Label>
 						<TextField
 							id='phone'
 							name='phone'
-							onInput={handleChange}
+							onChange={handleChange}
 							// onInput={maskPhoneInput}
-							value={formData.facilityPhone}
+							value={formData.phone}
 							fullWidth
 						/>
 						<Label>Email:</Label>
@@ -91,7 +87,7 @@ export function ProfilePage() {
 							id='email'
 							name='email'
 							onInput={handleChange}
-							defaultValue={formData.facilityEmail}
+							value={formData.email}
 							fullWidth
 						/>
 						<Label>Address:</Label>
@@ -99,7 +95,7 @@ export function ProfilePage() {
 							id='street1'
 							name='street1'
 							onInput={handleChange}
-							defaultValue={formData.facilityAddress.street1}
+							value={formData.street1}
 							placeholder="Street 1"
 							fullWidth
 						/>
@@ -107,7 +103,7 @@ export function ProfilePage() {
 							id='street2'
 							name='street2'
 							onInput={handleChange}
-							defaultValue={formData.facilityAddress.street2}
+							value={formData.street2}
 							placeholder="Street 2"
 							fullWidth
 						/>
@@ -115,7 +111,7 @@ export function ProfilePage() {
 							id='city'
 							name='city'
 							onInput={handleChange}
-							defaultValue={formData.facilityAddress.city}
+							value={formData.city}
 							placeholder="City"
 							fullWidth
 						/>
@@ -123,7 +119,7 @@ export function ProfilePage() {
 							id='state'
 							name='state'
 							onInput={handleChange}
-							defaultValue={formData.facilityAddress.state}
+							value={formData.state}
 							placeholder="State"
 							fullWidth
 						/>
@@ -131,7 +127,7 @@ export function ProfilePage() {
 							id='zip'
 							name='zip'
 							onInput={handleChange}
-							defaultValue={formData.facilityAddress.zip}
+							value={formData.zip}
 							placeholder="Zip"
 							fullWidth
 						/>
@@ -139,7 +135,6 @@ export function ProfilePage() {
 							sx={{ textAlign: 'center', margin: 1 }}>
 							<Button
 								type='submit'
-								// onClick={() => setChanged(false)}
 								variant='contained'
 							>Save Changes
 							</Button>
