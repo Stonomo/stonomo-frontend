@@ -105,6 +105,10 @@ const router = createBrowserRouter([
 						element: <Eviction />,
 						loader: evictionLoader,
 						action: evictionAction,
+					}, {
+						path: 'user/:userId',
+						element: <UserPage />,
+						loader: userLoader
 					}]
 				}, {
 					element: <PaidLayout />,
@@ -117,10 +121,6 @@ const router = createBrowserRouter([
 							element: <ResultsPage managePage={false} />,
 							loader: resultsLoader,
 						}]
-					}, {
-						path: 'user/:userId',
-						element: <UserPage />,
-						loader: userLoader
 					}]
 				}]
 			}]
