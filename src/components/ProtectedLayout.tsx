@@ -6,7 +6,7 @@ import { NavBar } from "./NavBar"
 import { LockOutlined } from "@mui/icons-material"
 
 export function ProtectedLayout() {
-	const { isLoggedIn, isPaidUser } = useAuth()
+	const { isLoggedIn, userHasSearchAccess } = useAuth()
 	const navigate = useNavigate()
 
 	const buttonStyle = { color: 'white' }
@@ -17,7 +17,7 @@ export function ProtectedLayout() {
 		}
 	})
 
-	const locked = !isPaidUser() ? <LockOutlined /> : ''
+	const locked = !userHasSearchAccess() ? <LockOutlined /> : ''
 
 	return (
 		<Box>

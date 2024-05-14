@@ -9,11 +9,14 @@ import {
 } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode'
 import { AuthContext } from '../contexts/AuthContext';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 const stonomo_api_url = import.meta.env.VITE_STONOMO_API_URL || process.env.STONOMO_API_URL
+const users_url = stonomo_api_url + 'users/'
 
 export const AuthProvider = (props: any) => {
 	const refreshToken = useRef<any>()
+	const [freeSearches, setFreeSearches] = useLocalStorage('freeSearches', 0);
 	const navigate = useNavigate()
 
 	const login = (data: { username: any; password: any; }, onFailCallback: (() => PromiseLike<never> | void) | null) => {
@@ -32,8 +35,9 @@ export const AuthProvider = (props: any) => {
 				// decode and cache refresh token from response
 				response.json().then((data) => {
 					refreshToken.current = jwtDecode(data)
+					fetchFreeSearches()
 					navigate('/dashboard/search', { replace: true })
-				});
+				})
 			}).catch(onFailCallback)
 	}
 
@@ -53,6 +57,35 @@ export const AuthProvider = (props: any) => {
 		return plan === 'PAID'
 	}
 
+	const fetchFreeSearches = (): void => {
+		fetch(users_url + 'get-free-searches', {
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			credentials: 'include'
+		})
+			.then(async (response) => {
+				if (!response.ok) {
+					throw new Error('HTTP status ' + response.status);
+				}
+				// decode and cache refresh token from response
+				response.json().then((data) => {
+					setFreeSearches(data)
+				});
+			}).catch(console.error)
+	}
+
+	const userHasFreeSearches = (): boolean => {
+		return freeSearches > 0
+	}
+
+	const userHasSearchAccess = (): boolean => {
+		if (isPaidUser() || userHasFreeSearches()) {
+			return true
+		}
+		return false
+	}
+
 	const logout = () => {
 		refreshToken.current = useRef().current
 		navigate('/', { replace: true })
@@ -62,27 +95,35 @@ export const AuthProvider = (props: any) => {
 		return refreshToken.current ? refreshToken.current.id : null
 	}
 
-	const getLoggedInUserName = (): (string | null) => {
-		return refreshToken.current ? refreshToken.current.name : null
-	}
-
 	const loginCallback = useCallback(login, [login])
 	const logoutCallback = useCallback(logout, [logout])
 	const isLoggedInCallback = useCallback(isLoggedIn, [isLoggedIn])
 	const isPaidUserCallback = useCallback(isPaidUser, [isPaidUser])
+	const fetchFreeSearchesCallback = useCallback(fetchFreeSearches, [fetchFreeSearches])
+	const userHasSearchAccessCallback = useCallback(userHasSearchAccess, [userHasSearchAccess])
 	const getLoggedInUserIdCallback = useCallback(getLoggedInUserId, [getLoggedInUserId])
-	const getLoggedInUserNameCallback = useCallback(getLoggedInUserName, [getLoggedInUserName])
 
 	const value = useMemo(
 		() => ({
 			isLoggedIn: isLoggedInCallback,
 			isPaidUser: isPaidUserCallback,
+			freeSearches,
+			fetchFreeSearches: fetchFreeSearchesCallback,
+			userHasSearchAccess: userHasSearchAccessCallback,
 			login: loginCallback,
 			logout: logoutCallback,
 			currentUserId: getLoggedInUserIdCallback,
-			currentUserName: getLoggedInUserNameCallback
 		}),
-		[isLoggedInCallback, isPaidUserCallback, loginCallback, logoutCallback, getLoggedInUserIdCallback, getLoggedInUserNameCallback]
+		[
+			isLoggedInCallback,
+			isPaidUserCallback,
+			freeSearches,
+			fetchFreeSearchesCallback,
+			userHasSearchAccessCallback,
+			loginCallback,
+			logoutCallback,
+			getLoggedInUserIdCallback,
+		]
 	);
 	return (
 		<AuthContext.Provider value={value}>

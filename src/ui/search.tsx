@@ -1,23 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Outlet, useLoaderData } from "react-router-dom";
 import { Button, Typography, Container, TextField, Stack } from "@mui/material";
 import { searchFields } from "../lib/types";
 import { maskPhoneInput } from "../lib/handlers";
+import { useAuth } from "../hooks/useAuth";
 
 export function SearchPage() {
 	const searchParams = useLoaderData()
+	const { fetchFreeSearches, freeSearches } = useAuth()
 	const [searchValues, setSearchValues] = useState<searchFields>((searchParams as searchFields) || {
 		searchName: '',
 		searchPhone: '',
 		searchEmail: ''
 	})
 
-
 	function handleChange(e: { target: { name: string; value: any; }; }) {
 		const field = e.target.name
 		const value = e.target.value
 		setSearchValues(val => ({ ...val, [field]: value }));
 	}
+
+	useEffect(() => {
+		fetchFreeSearches()
+	})
 
 	return (
 		<Container
@@ -83,6 +88,7 @@ export function SearchPage() {
 								Search
 							</Typography>
 						</Button>
+						{Number(freeSearches) > 0 ? <Typography>You have {Number(freeSearches)} free searches available!</Typography> : ''}
 					</Stack>
 				</Form >
 			</Container>
