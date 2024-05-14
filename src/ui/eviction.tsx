@@ -30,13 +30,20 @@ import {
 	DialogActions,
 	Theme
 } from '@mui/material';
-import { DeleteForever, KeyboardArrowRight } from '@mui/icons-material';
+import {
+	DeleteForever,
+	KeyboardArrowRight
+} from '@mui/icons-material';
 import { useAuth } from '../hooks/useAuth';
 import { deleteEviction } from '../routes/evictions';
 import { evictionPageFields } from '../lib/types';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc'
-import { Content, Label, dayjsDateFormat } from '../lib/styled';
+import {
+	Content,
+	Label,
+	dayjsDateFormat
+} from '../lib/styled';
 
 export const Item = styled(Paper)(({ theme }: { theme: Theme }) => ({
 	backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -113,6 +120,7 @@ export function Eviction() {
 				borderBottomLeftRadius: 5,
 				borderBottomRightRadius: 5
 			}}
+			key={eviction._id}
 		>
 			<Item sx={{ bgcolor: 'white', borderRadius: 2 }}>
 				<Stack>
