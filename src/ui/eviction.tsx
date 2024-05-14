@@ -57,7 +57,7 @@ export function Eviction() {
 	const [searchParams] = useSearchParams()
 	const [appendDetails, setAppendDetails] = useState<string>('')
 	const [confirmDelete, setConfirmDelete] = useState<string>('')
-	const { currentUserId } = useAuth()
+	const { fetchFreeSearches, currentUserId } = useAuth()
 	const eviction: evictionPageFields = useLoaderData() as evictionPageFields
 	const allowEdit = searchParams.get('m') === 'edit' && currentUserId() === eviction.user._id
 	dayjs.extend(utc)
@@ -65,8 +65,9 @@ export function Eviction() {
 	useEffect(() => {
 		if (fetcher.state === "idle" && !fetcher.data) {
 			setAppendDetails('')
-			fetcher.load(`/dashboard/eviction/${eviction._id}`);
+			fetcher.load(`/dashboard/eviction/${eviction._id}`)
 		}
+		fetchFreeSearches()
 	}, [fetcher, eviction._id]);
 
 	function ConfirmDeleteDialog(params: { id: string }) {
@@ -104,7 +105,7 @@ export function Eviction() {
 	}
 
 	function handleChange(e: ChangeEvent<HTMLInputElement>) {
-		setAppendDetails(e.target.value);
+		setAppendDetails(e.target.value)
 	}
 
 	function handleDeleteClick(e: FormEvent) {
