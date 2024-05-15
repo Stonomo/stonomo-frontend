@@ -102,9 +102,9 @@ export async function createConfirmEviction(
 
 }
 
-export async function getEvictionsByUser() {
+export async function getEviction(id: string) {
 	const response = await fetch(
-		evictionsByUserUrl,
+		evictionsUrl + id,
 		{
 			method: 'POST',
 			headers: {
@@ -125,6 +125,7 @@ export async function getConfirmEviction(id: string) {
 	const response = await fetch(
 		confirmUrl + id,
 		{
+			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},

@@ -6,10 +6,13 @@ export async function getProfile() {
 	const response = await fetch(
 		usersUrl,
 		{
+			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			credentials: 'include'
+			body: JSON.stringify({
+				accessToken: localStorage.getItem('accessToken')
+			})
 		})
 	if (!response.ok) {
 		throw new Error('HTTP status ' + response.status)
@@ -21,10 +24,13 @@ export async function getUser(userId: string) {
 	const response = await fetch(
 		usersUrl + userId,
 		{
+			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			credentials: 'include',
+			body: JSON.stringify({
+				accessToken: localStorage.getItem('accessToken')
+			})
 		})
 	if (!response.ok) {
 		throw new Error('HTTP status ' + response.status)
@@ -50,7 +56,8 @@ export async function modifyProfile(facilityName: string, phone: string, email: 
 				facilityAddrCity: addrCity,
 				facilityAddrState: addrState,
 				facilityAddrZip: addrZip,
-				facilityAddrChange: (addrSt1 || addrSt2 || addrCity || addrState || addrZip)
+				facilityAddrChange: (addrSt1 || addrSt2 || addrCity || addrState || addrZip),
+				accessToken: localStorage.getItem('accessToken')
 			})
 		}
 	)
@@ -64,10 +71,13 @@ export async function getSettings() {
 	const response = await fetch(
 		settingsUrl,
 		{
+			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			credentials: 'include'
+			body: JSON.stringify({
+				accessToken: localStorage.getItem('accessToken')
+			})
 		})
 	if (!response.ok) {
 		throw new Error('HTTP status ' + response.status)

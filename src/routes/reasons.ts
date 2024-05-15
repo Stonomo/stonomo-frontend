@@ -5,6 +5,7 @@ export async function getReasons() {
 	const response = await fetch(
 		reasonsUrl,
 		{
+			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
