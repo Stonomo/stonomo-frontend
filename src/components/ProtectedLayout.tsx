@@ -6,7 +6,7 @@ import { NavBar } from "./NavBar"
 import { LockOutlined } from "@mui/icons-material"
 
 export function ProtectedLayout() {
-	const { isLoggedIn, userHasSearchAccess } = useAuth()
+	const { isLoggedIn, userHasSearchAccess, logout } = useAuth()
 	const navigate = useNavigate()
 
 	const buttonStyle = { color: 'white' }
@@ -46,6 +46,11 @@ export function ProtectedLayout() {
 					sx={buttonStyle}
 					onClick={() => navigate('settings')}>
 					Settings
+				</Button>
+				<Button
+					sx={buttonStyle}
+					onClick={logout}>
+					Logout
 				</Button>
 			</NavBar>
 			<Outlet />

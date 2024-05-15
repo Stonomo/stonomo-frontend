@@ -1,8 +1,7 @@
-import { LoaderFunction, LoaderFunctionArgs } from 'react-router';
+import { LoaderFunctionArgs } from 'react-router';
 import {
 	getConfirmEviction,
 	getEviction,
-	getEvictionsByUser,
 	searchEvictions,
 	searchManageEvictions
 } from '../routes/evictions.js';
@@ -26,10 +25,6 @@ export async function resultsLoader({ request }: { request: Request }) {
 		searchParams.get('searchPhone'),
 		searchParams.get('searchEmail')
 	)
-}
-
-export async function manageLoader() {
-	return await getEvictionsByUser()
 }
 
 export async function manageResultsLoader({ request }: { request: Request }) {

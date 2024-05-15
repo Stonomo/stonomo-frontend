@@ -5,9 +5,13 @@ export async function getReasons() {
 	const response = await fetch(
 		reasonsUrl,
 		{
+			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-			}
+			},
+			body: JSON.stringify({
+				accessToken: localStorage.getItem('accessToken')
+			})
 		}
 	);
 	if (!response.ok) {
