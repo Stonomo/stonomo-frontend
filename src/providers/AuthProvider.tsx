@@ -30,7 +30,7 @@ export const AuthProvider = (props: any) => {
 		})
 			.then(async (response) => {
 				if (!response.ok) {
-					throw new Error('HTTP status ' + response.status);
+					throw new Error('HTTP status ' + response.status)
 				}
 				// decode and cache refresh token from response
 				response.json().then((data) => {
@@ -66,12 +66,12 @@ export const AuthProvider = (props: any) => {
 		})
 			.then(async (response) => {
 				if (!response.ok) {
-					throw new Error('HTTP status ' + response.status);
+					throw new Error('HTTP status ' + response.status)
 				}
 				// decode and cache refresh token from response
 				response.json().then((data) => {
 					setFreeSearches(data)
-				});
+				})
 			}).catch(console.error)
 	}
 
@@ -124,10 +124,10 @@ export const AuthProvider = (props: any) => {
 			logoutCallback,
 			getLoggedInUserIdCallback,
 		]
-	);
+	)
 	return (
 		<AuthContext.Provider value={value}>
 			<Outlet />
 		</AuthContext.Provider>
-	);
-};
+	)
+}
