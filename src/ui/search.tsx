@@ -7,7 +7,8 @@ import { useAuth } from "../hooks/useAuth";
 
 export function SearchPage() {
 	const searchParams = useLoaderData()
-	const { fetchFreeSearches, freeSearches } = useAuth()
+	const { fetchFreeSearches, isPaidUser } = useAuth()
+	const freeSearches = localStorage.getItem('freeSearches')
 	const [searchValues, setSearchValues] = useState<searchFields>((searchParams as searchFields) || {
 		searchName: '',
 		searchPhone: '',
@@ -21,7 +22,9 @@ export function SearchPage() {
 	}
 
 	useEffect(() => {
-		fetchFreeSearches()
+		if (!isPaidUser()) {
+			fetchFreeSearches()
+		}
 	})
 
 	return (
@@ -88,7 +91,7 @@ export function SearchPage() {
 								Search
 							</Typography>
 						</Button>
-						{Number(freeSearches) > 0 ? <Typography>You have {Number(freeSearches)} free searches available!</Typography> : ''}
+						{!isPaidUser() ? <Typography>You have {freeSearches} free searches available!</Typography> : ''}
 					</Stack>
 				</Form >
 			</Container>

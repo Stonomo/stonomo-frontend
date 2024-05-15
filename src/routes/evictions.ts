@@ -5,7 +5,6 @@ const evictionsUrl = STONOMO_API_URL + 'evictions/'
 const evictionsByUserUrl = evictionsUrl + 'by-user/'
 const confirmUrl = evictionsUrl + 'confirm/'
 
-
 export async function searchEvictions(searchName: string, searchPhone: string | null, searchEmail: string | null) {
 	const response = await fetch(
 		searchUrl,
@@ -14,11 +13,11 @@ export async function searchEvictions(searchName: string, searchPhone: string | 
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			credentials: 'include',
 			body: JSON.stringify({
 				searchName: searchName,
 				searchPhone: searchPhone,
-				searchEmail: searchEmail
+				searchEmail: searchEmail,
+				accessToken: localStorage.getItem('accessToken')
 			})
 		})
 	if (!response.ok) {
@@ -35,11 +34,11 @@ export async function searchManageEvictions(searchName: string, searchPhone: str
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			credentials: 'include',
 			body: JSON.stringify({
 				searchName: searchName,
 				searchPhone: searchPhone,
-				searchEmail: searchEmail
+				searchEmail: searchEmail,
+				accessToken: localStorage.getItem('accessToken')
 			})
 		})
 	if (!response.ok) {
@@ -58,9 +57,9 @@ export async function createEviction(
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			credentials: 'include',
 			body: JSON.stringify({
-				id: confirmId
+				id: confirmId,
+				accessToken: localStorage.getItem('accessToken')
 			})
 		}
 	);
@@ -85,14 +84,14 @@ export async function createConfirmEviction(
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			credentials: 'include',
 			body: JSON.stringify({
 				tenantName: tenantName,
 				tenantPhone: tenantPhone,
 				tenantEmail: tenantEmail,
 				evictedOn: evictedOn,
 				reason: reason,
-				details: details
+				details: details,
+				accessToken: localStorage.getItem('accessToken')
 			})
 		}
 	);
@@ -107,11 +106,13 @@ export async function getEvictionsByUser() {
 	const response = await fetch(
 		evictionsByUserUrl,
 		{
-			method: 'GET',
+			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			credentials: 'include'
+			body: JSON.stringify({
+				accessToken: localStorage.getItem('accessToken')
+			})
 		}
 	);
 	if (!response.ok) {
@@ -127,7 +128,9 @@ export async function getEviction(id: string) {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			credentials: 'include'
+			body: JSON.stringify({
+				accessToken: localStorage.getItem('accessToken')
+			})
 		}
 	);
 	if (!response.ok) {
@@ -143,7 +146,9 @@ export async function getConfirmEviction(id: string) {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			credentials: 'include'
+			body: JSON.stringify({
+				accessToken: localStorage.getItem('accessToken')
+			})
 		}
 	);
 	if (!response.ok) {
@@ -160,8 +165,10 @@ export async function modifyEviction(id: string, details: string) {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			credentials: 'include',
-			body: JSON.stringify({ details: details })
+			body: JSON.stringify({
+				details: details,
+				accessToken: localStorage.getItem('accessToken')
+			})
 		}
 	);
 	if (!response.ok) {
@@ -178,7 +185,9 @@ export async function deleteEviction(id: string) {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			credentials: 'include'
+			body: JSON.stringify({
+				accessToken: localStorage.getItem('accessToken')
+			})
 		}
 	);
 	if (!response.ok) {

@@ -7,7 +7,10 @@ export async function getReasons() {
 		{
 			headers: {
 				'Content-Type': 'application/json',
-			}
+			},
+			body: JSON.stringify({
+				accessToken: localStorage.getItem('accessToken')
+			})
 		}
 	);
 	if (!response.ok) {

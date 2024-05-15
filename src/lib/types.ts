@@ -62,3 +62,23 @@ export interface reasonFields {
 	label: string;
 	desc: string;
 }
+
+export interface accessTokenFields {
+	name: string;
+	id: string;
+	plan: string,
+	tokenFamily: string,
+	nonce: string,
+	tokenType: string,
+	exp: number,
+	iat: number
+}
+
+export interface refreshTokenFields {
+	name: string;
+	tokenFamily: string,
+	nonce: string,
+	tokenType: string,
+	exp: number,
+	iat: number
+}
