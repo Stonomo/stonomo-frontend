@@ -1,6 +1,4 @@
-import { DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_FORM_ACTIONS } from "react"
-
-const STONOMO_API_URL = import.meta.env.VITE_STONOMO_API_URL
+const STONOMO_API_URL = import.meta.env.VITE_STONOMO_API_URL || process.env.STONOMO_API_URL
 const searchUrl = STONOMO_API_URL + 'search/'
 const searchByUserUrl = searchUrl + 'by-user/'
 const evictionsUrl = STONOMO_API_URL + 'evictions/'
