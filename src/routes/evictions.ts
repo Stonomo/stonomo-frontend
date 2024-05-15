@@ -116,24 +116,6 @@ export async function getEvictionsByUser() {
 		}
 	);
 	if (!response.ok) {
-		throw new Error('Failed to fetch eviction list. Status: ' + response.status);
-	}
-	return response.json();
-}
-
-export async function getEviction(id: string) {
-	const response = await fetch(
-		evictionsUrl + id,
-		{
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				accessToken: localStorage.getItem('accessToken')
-			})
-		}
-	);
-	if (!response.ok) {
 		throw new Error('Failed to fetch eviction. Status: ' + response.status);
 	}
 	return response.json();
