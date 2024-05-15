@@ -53,6 +53,7 @@ export const AuthProvider = (props: any) => {
 				})
 
 				const data = await response.json()
+
 				setAccessToken(data.accessToken)
 				setRefreshToken(data.refreshToken)
 			}
