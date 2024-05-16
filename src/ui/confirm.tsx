@@ -37,7 +37,7 @@ export function ConfirmPage() {
 					<Content>{report.reason}</Content>
 					<Label>Details:</Label>
 					{report.details.map((d) => (
-						<Content>{d.content}</Content>
+						<Content key={d._id}>{d.content}</Content>
 					))}
 				</Stack>
 				<Container sx={{ width: '100%', textAlign: 'center' }}>

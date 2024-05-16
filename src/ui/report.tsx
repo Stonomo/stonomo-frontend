@@ -76,7 +76,6 @@ export function ReportPage() {
 							required
 							onChange={handleChange}
 							value={formData.tenantName}
-							defaultValue=''
 							placeholder='Tenant Name'
 						/>
 						<TextInput
@@ -88,7 +87,6 @@ export function ReportPage() {
 							onChange={handleChange}
 							onInput={maskPhoneInput}
 							value={formData.tenantPhone}
-							defaultValue=''
 							placeholder='Tenant Phone'
 						/>
 						<TextInput
@@ -98,7 +96,6 @@ export function ReportPage() {
 							label='Tenant Email'
 							onChange={handleChange}
 							value={formData.tenantEmail}
-							defaultValue=''
 							placeholder='Tenant Email'
 						/>
 						<DatePicker
@@ -118,7 +115,6 @@ export function ReportPage() {
 							name='reason'
 							labelId='reason-select-label'
 							value={formData.reason}
-							defaultValue=''
 							onChange={handleChange}
 							displayEmpty
 							required

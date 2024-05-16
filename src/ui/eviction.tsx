@@ -143,10 +143,10 @@ export function Eviction() {
 					<Content>{eviction.reason}</Content>
 					<Label>Details:</Label>
 					{eviction.details.map((d) => (
-						<>
+						<Box key={d._id}>
 							<Typography sx={{ paddingLeft: '5px', fontStyle: 'italic' }}>{dayjs(d.createdAt).format(dayjsDateFormat)}:</Typography>
 							<Content>{d.content}</Content>
-						</>
+						</Box>
 					))}
 					{allowEdit && <Box>
 						<Box textAlign='center'>
